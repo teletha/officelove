@@ -19,11 +19,13 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
@@ -302,5 +304,18 @@ public class WordHeleper {
         CTP paraContext = paragraph.getCTP();
 
         return paraContext.isSetPPr() ? paraContext.getPPr() : paraContext.addNewPPr();
+    }
+
+    /**
+     * <p>
+     * Helper method to retrieve {@link CTSectPr}.
+     * </p>
+     * 
+     * @param document
+     */
+    public static CTSectPr section(XWPFDocument document) {
+        CTBody body = document.getDocument().getBody();
+
+        return body.isSetSectPr() ? body.getSectPr() : body.addNewSectPr();
     }
 }

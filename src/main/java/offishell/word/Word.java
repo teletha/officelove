@@ -351,8 +351,8 @@ public class Word {
                 if (i == 0) {
                     created.setPageBreak(true);
 
-                    CTSectPr inSec = para.getDocument().getDocument().getBody().getSectPr();
-                    CTSectPr outSec = created.getDocument().getDocument().getBody().getSectPr();
+                    CTSectPr inSec = WordHeleper.section(para.getDocument());
+                    CTSectPr outSec = WordHeleper.section(created.getDocument());
                     CTPageMar inMargin = inSec.getPgMar();
                     CTPageMar outMargin = outSec.addNewPgMar();
                     outMargin.setBottom(inMargin.getBottom());
