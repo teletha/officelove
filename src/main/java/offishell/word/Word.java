@@ -366,7 +366,7 @@ public class Word {
                 }
             } else if (element instanceof XWPFTable) {
                 XWPFTable table = (XWPFTable) element;
-                XWPFTable created = calculated.insertNewTbl(cursor);
+                XWPFTable created = calculated.createTable();
                 created.removeRow(0); // new table has one row and one column, so we must remove it
                 WordHeleper.copy(table, created, v -> v);
                 cursor = cursorAfter(created);
@@ -1012,6 +1012,12 @@ public class Word {
         private Object resolve(String paths) {
             Error error = null;
 
+            boolean optional = paths.endsWith("?");
+
+            if (optional) {
+                paths = paths.substring(0, paths.length() - 1);
+            }
+
             for (Object value : models) {
                 try {
                     return resolve(paths.split("\\."), 0, value);
@@ -1022,6 +1028,10 @@ public class Word {
                         error.addSuppressed(e);
                     }
                 }
+            }
+
+            if (optional) {
+                return "";
             }
 
             if (error == null) {
