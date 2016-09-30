@@ -54,6 +54,17 @@ public class WordHeleper {
         for (XWPFParagraph paragraph : document.getParagraphs()) {
             clearComment(paragraph);
         }
+
+        // for table
+        for (XWPFTable table : document.getTables()) {
+            for (XWPFTableRow row : table.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    for (XWPFParagraph para : cell.getParagraphs()) {
+                        clearComment(para);
+                    }
+                }
+            }
+        }
     }
 
     /**
