@@ -9,10 +9,33 @@
  */
 package offishell.macro;
 
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.AbstractExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.NativeInputEvent;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
 
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
+import com.sun.jna.platform.win32.WinDef.RECT;
 import com.sun.jna.platform.win32.WinUser;
 
 import kiss.Disposable;
@@ -25,6 +48,9 @@ import offishell.UI;
  */
 public class Window {
 
+    /** Robot. */
+    private final Robot robot;
+
     /** ID */
     private final HWND id;
 
@@ -32,7 +58,12 @@ public class Window {
      * @param id
      */
     private Window(HWND id) {
-        this.id = id;
+        try {
+            this.id = id;
+            this.robot = new Robot();
+        } catch (AWTException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -61,6 +92,132 @@ public class Window {
                 throw I.quiet(e);
             }
         }
+    }
+
+    /**
+     * 
+     */
+    public void color(int x, int y) {
+        Rectangle window = position();
+        Rectangle rect = new Rectangle(window.x + x, window.y + y, 1, 1);
+        BufferedImage image = robot.createScreenCapture(rect);
+        Color color = new Color(image.getRGB(0, 0));
+        System.out.println(color);
+        Icon icon = new ImageIcon(image);
+
+        JOptionPane.showMessageDialog(null, "←イメージ", // メッセージ
+                "イメージ確認", // タイトル
+                JOptionPane.PLAIN_MESSAGE, icon // 画像のアイコン
+        );
+    }
+
+    public static class ConsumeEvent implements NativeKeyListener {
+
+        public ConsumeEvent() throws NativeHookException {
+            // Create custom logger and level.
+            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+            logger.setLevel(Level.WARNING);
+
+            GlobalScreen.setEventDispatcher(new VoidDispatchService());
+            GlobalScreen.registerNativeHook();
+
+            GlobalScreen.addNativeKeyListener(this);
+        }
+
+        private class VoidDispatchService extends AbstractExecutorService {
+
+            private boolean running = false;
+
+            public VoidDispatchService() {
+                running = true;
+            }
+
+            @Override
+            public void shutdown() {
+                running = false;
+            }
+
+            @Override
+            public List<Runnable> shutdownNow() {
+                running = false;
+                return new ArrayList<Runnable>(0);
+            }
+
+            @Override
+            public boolean isShutdown() {
+                return !running;
+            }
+
+            @Override
+            public boolean isTerminated() {
+                return !running;
+            }
+
+            @Override
+            public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+                return true;
+            }
+
+            @Override
+            public void execute(Runnable r) {
+                r.run();
+            }
+        }
+
+        @Override
+        public void nativeKeyPressed(NativeKeyEvent e) {
+            if (e.getKeyCode() == NativeKeyEvent.VC_B) {
+                System.out.print("Attempting to consume B event...\t");
+                try {
+                    Field f = NativeInputEvent.class.getDeclaredField("reserved");
+                    f.setAccessible(true);
+                    f.setShort(e, (short) 0x01);
+
+                    System.out.print("[ OK ]\n");
+                } catch (Exception ex) {
+                    System.out.print("[ !! ]\n");
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void nativeKeyReleased(NativeKeyEvent e) {
+            if (e.getKeyCode() == NativeKeyEvent.VC_B) {
+                System.out.print("Attempting to consume B event...\t");
+                try {
+                    Field f = NativeInputEvent.class.getDeclaredField("reserved");
+                    f.setAccessible(true);
+                    f.setShort(e, (short) 0x01);
+
+                    System.out.print("[ OK ]\n");
+                } catch (Exception ex) {
+                    System.out.print("[ !! ]\n");
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void nativeKeyTyped(NativeKeyEvent e) {
+            /* Unimplemented */ }
+
+    }
+
+    public static void main(String[] args) throws NativeHookException {
+
+        new ConsumeEvent();
+    }
+
+    /**
+     * <p>
+     * ウインドウの位置及びサイズと取得。
+     * </p>
+     */
+    public Rectangle position() {
+        RECT rect = new RECT();
+        User32.INSTANCE.GetWindowRect(id, rect);
+        return rect.toRectangle();
     }
 
     /**
