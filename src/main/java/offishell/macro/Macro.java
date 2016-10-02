@@ -76,14 +76,8 @@ public abstract class Macro {
         }
     };
 
-    /**
-     * <p>
-     * Use the specified macro.
-     * </p>
-     */
-    public static <M extends Macro> void use(Class<M> clazz) {
-        Macro macro = I.make(clazz);
-    }
+    /** The window condition. */
+    private Predicate<Window> windowCondition = ANY;
 
     /**
      * <p>
@@ -105,10 +99,49 @@ public abstract class Macro {
      * @param key
      * @return
      */
-    protected final void press(Key key) {
-        // Bring the window to the front
-        Window window = Window.now();
-        window.input(key);
+    protected final Macro press(Key key) {
+        Window.now().press(key);
+        return this;
+    }
+
+    protected final Macro delay(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            throw I.quiet(e);
+        }
+        return this;
+    }
+
+    /**
+     * <p>
+     * Declare the condition of macro activation.
+     * </p>
+     * 
+     * @param condition
+     */
+    protected final void require(Predicate<Window> condition) {
+        windowCondition = windowCondition.and(condition);
+    }
+
+    /**
+     * <p>
+     * Declare the condition of macro activation.
+     * </p>
+     * 
+     * @param condition
+     */
+    protected final void requireTitle(String title) {
+        require(window -> window.title().contains(title));
+    }
+
+    /**
+     * <p>
+     * Use the specified macro.
+     * </p>
+     */
+    public static <M extends Macro> void use(Class<M> clazz) {
+        Macro macro = I.make(clazz);
     }
 
     /**
@@ -148,8 +181,10 @@ public abstract class Macro {
          */
         @Override
         public void nativeKeyPressed(NativeKeyEvent e) {
+            Window now = Window.now();
+
             for (KeyMacro macro : keyPresses) {
-                if (macro.condition.test(e)) {
+                if (macro.window.test(now) && macro.condition.test(e)) {
                     macro.action.run();
                 }
             }
@@ -173,7 +208,10 @@ public abstract class Macro {
     /**
      * @version 2016/10/02 17:30:48
      */
-    private static class KeyMacro implements MacroDSL {
+    private class KeyMacro implements MacroDSL {
+
+        /** The window condition. */
+        private Predicate<Window> window = windowCondition;
 
         /** The acceptable event type. */
         private Predicate<NativeKeyEvent> condition = ANY;

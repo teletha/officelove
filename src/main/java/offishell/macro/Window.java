@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef.DWORDByReference;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinDef.RECT;
 import com.sun.jna.platform.win32.WinUser;
@@ -112,6 +113,32 @@ public class Window {
         RECT rect = new RECT();
         User32.INSTANCE.GetWindowRect(id, rect);
         return rect.toRectangle();
+    }
+
+    /**
+     * @param key
+     */
+    public void press(Key key) {
+
+        int msgSend = 0x0100; // Press
+        long wParamSend = 0x53; // Letter s.
+        long lParamSend = 0;
+        int fuFlagsSend = 0x0000;
+        int uTimeoutSend = 5000;
+        DWORDByReference lpdwResult = null;
+
+        long result = User32.INSTANCE.SendMessageTimeout(id, msgSend, wParamSend, lParamSend, fuFlagsSend, uTimeoutSend, lpdwResult);
+        System.err.println(result);
+
+        msgSend = 0x0100; // Press
+        wParamSend = 0x53; // Letter s.
+        lParamSend = 0;
+        fuFlagsSend = 0x0000;
+        uTimeoutSend = 5000;
+        lpdwResult = null;
+
+        result = User32.INSTANCE.SendMessageTimeout(id, msgSend, wParamSend, lParamSend, fuFlagsSend, uTimeoutSend, lpdwResult);
+        System.err.println(result);
     }
 
     /**
