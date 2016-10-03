@@ -12,24 +12,16 @@ package offishell.macro;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinDef.DWORD;
+import com.sun.jna.platform.win32.WinDef.LPARAM;
 import com.sun.jna.platform.win32.WinDef.LRESULT;
 import com.sun.jna.platform.win32.WinDef.WORD;
 import com.sun.jna.platform.win32.WinDef.WPARAM;
@@ -41,27 +33,12 @@ import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import com.sun.jna.platform.win32.WinUser.MSG;
 
-import kiss.Events;
 import kiss.I;
 
 /**
- * @version 2016/10/02 17:12:29
+ * @version 2016/10/04 3:22:04
  */
 public abstract class Macro {
-
-    // initialization
-    static {
-        try {
-            // Create custom logger and level.
-            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-            logger.setLevel(Level.WARNING);
-
-            GlobalScreen.setEventDispatcher(new VoidDispatchService());
-            GlobalScreen.registerNativeHook();
-        } catch (Exception e) {
-            throw I.quiet(e);
-        }
-    }
 
     /** Acceptable condition. */
     private static final Predicate ANY = new Predicate() {
@@ -91,17 +68,17 @@ public abstract class Macro {
         }
     };
 
-    /** The event listener list. */
-    private Repository listeners = new Repository();
-
     /** The window condition. */
     private Predicate<Window> windowCondition = ANY;
+
+    /** The keyboard hook. */
+    private NativeKeyboardHook keyboard = new NativeKeyboardHook();
 
     /**
      * 
      */
     protected Macro() {
-        GlobalScreen.addNativeKeyListener(listeners);
+        keyboard.install();
     }
 
     /**
@@ -113,7 +90,7 @@ public abstract class Macro {
      * @return
      */
     protected final MacroDSL whenPress(Key key) {
-        return new KeyMacro().when(listeners.keyPresses).key(key);
+        return new KeyMacro().when(keyboard.presses).key(key);
     }
 
     /**
@@ -128,7 +105,7 @@ public abstract class Macro {
         INPUT ip = new INPUT();
         ip.type = new DWORD(INPUT.INPUT_KEYBOARD);
         ip.input.setType("ki");
-        ip.input.ki.wVk = new WORD(key.nativeCode);
+        ip.input.ki.wVk = new WORD(key.virtualCode);
         ip.input.ki.wScan = new WORD(key.scanCode);
 
         // press
@@ -206,58 +183,18 @@ public abstract class Macro {
     }
 
     /**
-     * @version 2016/10/02 17:24:52
-     */
-    private class Repository implements NativeKeyListener {
-
-        private final List<KeyMacro> keyPresses = new ArrayList();
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void nativeKeyPressed(NativeKeyEvent e) {
-            Window now = Window.now();
-
-            for (KeyMacro macro : keyPresses) {
-                if (macro.window.test(now) && macro.condition.test(e)) {
-                    macro.isActive.set(true);
-                    macro.action.run();
-                    macro.isActive.set(false);
-                }
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void nativeKeyReleased(NativeKeyEvent e) {
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void nativeKeyTyped(NativeKeyEvent e) {
-        }
-    }
-
-    /**
      * @version 2016/10/02 17:30:48
      */
     private class KeyMacro implements MacroDSL {
-
-        /** The macro activation state. */
-        private AtomicBoolean isActive = new AtomicBoolean();
 
         /** The window condition. */
         private Predicate<Window> window = windowCondition;
 
         /** The acceptable event type. */
-        private Predicate<NativeKeyEvent> condition = e -> {
-            return isActive.get() == false;
-        };
+        private Predicate<Key> condition = ANY;
+
+        /** The event should be consumed or not. */
+        private boolean consumable;
 
         /** The actual action. */
         private Runnable action = () -> {
@@ -272,13 +209,13 @@ public abstract class Macro {
          * @return
          */
         private KeyMacro key(Key key) {
-            condition = condition.and(key::match);
+            condition = condition.and(e -> e == key);
 
             return this;
         }
 
         /**
-         * @param keyPresses
+         * @param presses
          * @return
          */
         public KeyMacro when(List<KeyMacro> type) {
@@ -302,30 +239,8 @@ public abstract class Macro {
          */
         @Override
         public MacroDSL consume() {
-            condition = condition.and(key -> {
-                key.consume();
-                return true;
-            });
+            consumable = true;
             return this;
-        }
-    }
-
-    /**
-     * @version 2016/10/02 18:08:33
-     */
-    private static class VoidDispatchService extends ThreadPoolExecutor {
-
-        /**
-         * 
-         */
-        public VoidDispatchService() {
-            super(4, 20, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), runnable -> {
-                Thread thread = new Thread(runnable);
-                thread.setName("JNativeHook Dispatch Thread");
-                thread.setDaemon(true);
-
-                return thread;
-            });
         }
     }
 
@@ -334,15 +249,21 @@ public abstract class Macro {
      */
     private static class NativeKeyboardHook implements Runnable, LowLevelKeyboardProc {
 
-        /** The kye mapper. */
-        private static Key[] keys;
+        /**
+         * <p>
+         * Specifies whether the event was injected. The value is 1 if that is the case; otherwise,
+         * it is 0. Note that bit 1 is not necessarily set when bit 4 is set. <a href=
+         * "https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms644967(v=vs.85).aspx">REF</a>
+         * </p>
+         */
+        private static final int InjectedEvent = 1 << 4;
+
+        /** The key mapper. */
+        private static final Key[] keys = new Key[250];
 
         static {
-            Key[] values = Key.values();
-            keys = new Key[Events.from(values).map(key -> key.nativeCode).scan(0, Math::max).to().getValue() + 1];
-
-            for (Key key : values) {
-                keys[key.nativeCode] = key;
+            for (Key key : Key.values()) {
+                keys[key.virtualCode] = key;
             }
         }
 
@@ -351,18 +272,21 @@ public abstract class Macro {
             Thread thread = new Thread(runnable);
             thread.setName(NativeKeyboardHook.class.getSimpleName());
             thread.setPriority(Thread.MAX_PRIORITY);
-            thread.setDaemon(true);
+            thread.setDaemon(false);
             return thread;
         });
 
         /** The clean up. */
         private final Thread cleaner = new Thread(this::uninstall);
 
-        /** The actual native hook. */
-        private HHOOK nativeHook;
+        /** The event listeners. */
+        private final List<KeyMacro> presses = new ArrayList();
 
         /** The event listeners. */
-        private final List<KeyMacro> keyPresses = new ArrayList();
+        private final List<KeyMacro> releases = new ArrayList();
+
+        /** The actual native hook. */
+        private HHOOK nativeHook;
 
         /**
          * <p>
@@ -410,42 +334,52 @@ public abstract class Macro {
          */
         @Override
         public LRESULT callback(int nCode, WPARAM wParam, KBDLLHOOKSTRUCT info) {
-            if (nCode >= 0) {
+            boolean consumed = false;
+            boolean userInput = (info.flags & InjectedEvent) == 0;
+
+            if (0 <= nCode && userInput) {
+                Key key = keys[info.vkCode];
+
                 switch (wParam.intValue()) {
                 case WinUser.WM_KEYDOWN:
-                    System.out.println(info.vkCode + "  " + info.scanCode + "  " + keys[info.vkCode] + "   " + keys[info.scanCode]);
+                case WinUser.WM_SYSKEYDOWN:
+                    consumed = handle(key, presses);
+                    break;
 
                 case WinUser.WM_KEYUP:
                 case WinUser.WM_SYSKEYUP:
-                case WinUser.WM_SYSKEYDOWN:
-                    System.err.println("in callback, key=" + info.vkCode);
-                    if (info.vkCode == 81) {
-                        uninstall();
-                    }
+                    consumed = handle(key, releases);
                     break;
                 }
             }
-
-            Pointer ptr = info.getPointer();
-            long peer = Pointer.nativeValue(ptr);
-            LRESULT result = User32.INSTANCE.CallNextHookEx(nativeHook, nCode, wParam, new WinDef.LPARAM(peer));
-            return new WinDef.LRESULT(1);
+            return consumed ? new LRESULT(1)
+                    : User32.INSTANCE.CallNextHookEx(nativeHook, nCode, wParam, new LPARAM(Pointer.nativeValue(info.getPointer())));
         }
 
-        private void nativeKeyPressed(NativeKeyEvent e) {
-            Window now = Window.now();
+        /**
+         * <p>
+         * Handle key event.
+         * </p>
+         * 
+         * @param key
+         */
+        private boolean handle(Key key, List<KeyMacro> macros) {
+            boolean consumed = false;
 
-            for (KeyMacro macro : keyPresses) {
-                if (macro.window.test(now) && macro.condition.test(e)) {
-                    macro.isActive.set(true);
-                    macro.action.run();
-                    macro.isActive.set(false);
+            if (!macros.isEmpty()) {
+                Window now = Window.now();
+
+                for (KeyMacro macro : macros) {
+                    if (macro.window.test(now) && macro.condition.test(key)) {
+                        executor.execute(macro.action);
+
+                        if (macro.consumable) {
+                            consumed = true;
+                        }
+                    }
                 }
             }
+            return consumed;
         }
-    }
-
-    public static void main(String[] args) {
-        new NativeKeyboardHook().install();
     }
 }

@@ -33,6 +33,14 @@ public class SampleMacro extends Macro {
             press(Key.E).delay(2000);
             press(Key.Q);
         });
+
+        whenPress(Key.A).run(() -> {
+            press(Key.A);
+        });
+
+        whenPress(Key.Escape).consume().run(() -> {
+            System.exit(0);
+        });
     }
 
     /**

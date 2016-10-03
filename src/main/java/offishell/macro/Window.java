@@ -82,8 +82,8 @@ public class Window {
     }
 
     public void input(Key key) {
-        robot.keyPress(key.nativeCode);
-        robot.keyRelease(key.nativeCode);
+        robot.keyPress(key.virtualCode);
+        robot.keyRelease(key.virtualCode);
     }
 
     /**

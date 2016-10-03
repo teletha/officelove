@@ -17,7 +17,6 @@ public class Project extends bee.api.Project {
         require("net.java.dev.jna", "jna-platform", "4.2.2");
         require("org.apache.poi", "poi-ooxml", "3.15-beta1");
         require("org.apache.poi", "ooxml-schemas", "1.3");
-        require("com.1stleg", "jnativehook", "2.0.3");
         require("npc", "antibug", "0.3").atTest();
         requireLombok();
     }

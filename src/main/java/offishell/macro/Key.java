@@ -9,243 +9,291 @@
  */
 package offishell.macro;
 
-import static java.awt.event.KeyEvent.*;
-import static org.jnativehook.keyboard.NativeKeyEvent.*;
-
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 
 /**
- * @version 2016/10/02 17:14:34
+ * @version 2016/10/03 17:00:40
  */
 public enum Key {
-    /** Virtual Key Code */
-    N1('1', '1'),
+    BackSpace(8),
 
-    /** Virtual Key Code */
-    N2('2', '2'),
+    Tab(9),
 
-    /** Virtual Key Code */
-    N3('3', '3'),
+    Clear(12),
 
-    /** Virtual Key Code */
-    N4('4', '4'),
+    Return(13),
 
-    /** Virtual Key Code */
-    N5('5', '5'),
+    Command(15),
 
-    /** Virtual Key Code */
-    N6('6', '6'),
+    Shift(16),
 
-    /** Virtual Key Code */
-    N7('7', '7'),
+    Control(17),
 
-    /** Virtual Key Code */
-    N8('8', '8'),
+    Alt(18),
 
-    /** Vitual Key Code */
-    N9('9', '9'),
+    Pause(19),
 
-    /** Virtual Key Code */
-    N0('0', '0'),
+    CapsLock(20),
 
-    /** Virtual Key Code */
-    A('a'),
+    IMEかな(21),
 
-    /** Virtual Key Code */
-    B('b'),
+    IMEJunja(23),
 
-    /** Virtual Key Code */
-    C('c'),
+    IMEFinal(24),
 
-    /** Virtual Key Code */
-    D('d'),
+    IME漢字(25),
 
-    /** Virtual Key Code */
-    E('e'),
+    Escape(27),
 
-    /** Virtual Key Code */
-    F('f'),
+    IMEConvert(28),
 
-    /** Virtual Key Code */
-    G('g'),
+    IMENonConvert(29),
 
-    /** Virtual Key Code */
-    H('h'),
+    IMEAccept(30),
 
-    /** Virtual Key Code */
-    I('i'),
+    IMEModeChange(31),
 
-    /** Virtual Key Code */
-    J('j'),
+    Space(32),
 
-    /** Virtual Key Code */
-    K('k'),
+    PageUp(33),
 
-    /** Virtual Key Code */
-    L('l'),
+    PageDown(34),
 
-    /** Virtual Key Code */
-    M('m'),
+    End(35),
 
-    /** Virtual Key Code */
-    N('n'),
+    Home(36),
 
-    /** Virtual Key Code */
-    O('o'),
+    Left(37),
 
-    /** Virtual Key Code */
-    P('p'),
+    Up(38),
 
-    /** Virtual Key Code */
-    Q('q'),
+    Right(39),
 
-    /** Virtual Key Code */
-    R('r'),
+    Down(40),
 
-    /** Virtual Key Code */
-    S('s'),
+    PrintScreen(44),
 
-    /** Virtual Key Code */
-    T('t'),
+    Insert(45),
 
-    /** Virtual Key Code */
-    U('u'),
+    Delete(46),
 
-    /** Virtual Key Code */
-    V('v'),
+    N0(48),
 
-    /** Virtual Key Code */
-    W('w'),
+    N1(49),
 
-    /** Virtual Key Code */
-    X('x'),
+    N2(50),
 
-    /** Virtual Key Code */
-    Y('y'),
+    N3(51),
 
-    /** Virtual Key Code */
-    Z('z'),
+    N4(52),
 
-    /** Virtual Key Code */
-    Up(VC_UP, VK_UP, false, true),
+    N5(53),
 
-    /** Virtual Key Code */
-    Down(VC_DOWN, VK_DOWN, false, true),
+    N6(54),
 
-    /** Virtual Key Code */
-    Right(VC_RIGHT, VK_RIGHT, false, true),
+    N7(55),
 
-    /** Virtual Key Code */
-    Left(VC_LEFT, VK_LEFT, false, true),
+    N8(56),
 
-    /** Virtual Key Code */
-    Space(VC_SPACE, VK_SPACE),
+    N9(57),
 
-    /** Virtual Key Code */
-    Backspace(VC_BACKSPACE, VK_BACK_SPACE),
+    A(65),
 
-    /** Virtual Key Code */
-    Enter(VC_ENTER, VK_ENTER),
+    B(66),
 
-    /** Virtual Key Code */
-    EnterInTenKey(VC_KP_SEPARATOR, VK_SEPARATOR),
+    C(67),
 
-    /** Virtual Key Code */
-    Delete(VC_DELETE, VK_DELETE),
+    D(68),
 
-    /** Virtual Key Code */
-    Escape(VC_ESCAPE, VK_ESCAPE),
+    E(69),
 
-    /** Virtual Key Code */
-    Insert(VC_INSERT, VK_INSERT),
+    F(70),
 
-    /** Virtual Key Code */
-    Tab(VC_TAB, VK_TAB),
+    G(71),
 
-    /** Virtual Key Code */
-    Home(VC_HOME, VK_HOME),
+    H(72),
 
-    /** Virtual Key Code */
-    End(VC_END, VK_END),
+    I(73),
 
-    /** Virtual Key Code */
-    PageUp(VC_PAGE_UP, VK_PAGE_UP),
+    J(74),
 
-    /** Virtual Key Code */
-    PageDown(VC_PAGE_DOWN, VK_PAGE_DOWN),
+    K(75),
 
-    /** Virtual Key Code */
-    ControlRight(VC_CONTROL_R, VK_CONTROL, false, true),
+    L(76),
 
-    /** Virtual Key Code */
-    ControlLeft(VC_CONTROL_L, VK_CONTROL, false, true),
+    M(77),
 
-    /** Virtual Key Code */
-    ShiftRight(VC_SHIFT_R, VK_SHIFT, false, false),
+    N(78),
 
-    /** Virtual Key Code */
-    ShiftLeft(VC_SHIFT_L, VK_SHIFT, false, false),
+    O(79),
 
-    /** Virtual Key Code */
-    AltRight(VC_ALT_R, VK_ALT, true),
+    P(80),
 
-    /** Virtual Key Code */
-    AltLeft(VC_ALT_L, VK_ALT, true),
+    Q(81),
 
-    /** Virtual Key Code */
-    F1(VC_F1, VK_F1, true),
+    R(82),
 
-    /** Virtual Key Code */
-    F2(VC_F2, VK_F2, true),
+    S(83),
 
-    /** Virtual Key Code */
-    F3(VC_F3, VK_F3, true),
+    T(84),
 
-    /** Virtual Key Code */
-    F4(VC_F4, VK_F4, true),
+    U(85),
 
-    /** Virtual Key Code */
-    F5(VC_F5, VK_F5, true),
+    V(86),
 
-    /** Virtual Key Code */
-    F6(VC_F6, VK_F6, true),
+    W(87),
 
-    /** Virtual Key Code */
-    F7(VC_F7, VK_F7, true),
+    X(88),
 
-    /** Virtual Key Code */
-    F8(VC_F8, VK_F8, true),
+    Y(89),
 
-    /** Virtual Key Code */
-    F9(VC_F9, VK_F9, true),
+    Z(90),
 
-    /** Virtual Key Code */
-    F10(VC_F10, VK_F10, true),
+    WinLeft(91),
 
-    /** Virtual Key Code */
-    F11(VC_F11, VK_F11, true),
+    WinRigth(92),
 
-    /** Virtual Key Code */
-    F12(VC_F12, VK_F12, true);
+    Apps(93),
 
-    /** The {@link NativeKeyEvent} code. */
-    public final int code;
+    NumPad0(96),
+
+    NumPad1(97),
+
+    NumPad2(98),
+
+    NumPad3(99),
+
+    NumPad4(100),
+
+    NumPad5(101),
+
+    NumPad6(102),
+
+    NumPad7(103),
+
+    NumPad8(104),
+
+    NumPad9(105),
+
+    Multiply(106),
+
+    Add(107),
+
+    Subtract(109),
+
+    Decimal(110),
+
+    Divide(111),
+
+    F1(112),
+
+    F2(113),
+
+    F3(114),
+
+    F4(115),
+
+    F5(116),
+
+    F6(117),
+
+    F7(118),
+
+    F8(119),
+
+    F9(120),
+
+    F10(121),
+
+    F11(122),
+
+    F12(123),
+
+    F13(124),
+
+    F14(125),
+
+    F15(126),
+
+    F16(127),
+
+    NumLock(144),
+
+    ScrollLock(145),
+
+    ShiftLeft(160),
+
+    ShiftRight(161),
+
+    ControlLeft(162),
+
+    ControlRight(163),
+
+    AltLeft(164),
+
+    AltRight(165),
+
+    VolumeMute(173),
+
+    VolumeDown(174),
+
+    VolumeUp(175),
+
+    MediaNextTrack(176),
+
+    MediaPreviousTrac(177),
+
+    MediaStop(178),
+
+    MediaPlayPause(179),
+
+    LaunchMail(180),
+
+    LaunchMediaSelect(181),
+
+    LaunchApp1(182),
+
+    LaunchApp2(183),
+
+    Colon(186),
+
+    SemiColon(187),
+
+    Comma(188),
+
+    Minus(189),
+
+    Period(190),
+
+    Slash(191),
+
+    AtMark(192),
+
+    LeftBrace(219),
+
+    BackSlash(220),
+
+    RightBrace(221),
+
+    Apostrophe(222),
+
+    BackSlashJP(226),
+
+    CapsLockJP(240),
+
+    カタカナひらがな(242),
+
+    半角全角(244),
+
+    BackTab(245);
 
     /** The native virtual key code. */
-    public final int nativeCode;
+    public final int virtualCode;
 
     /** The native scan code. */
     public final int scanCode;
-
-    /** Is this key is system related? */
-    final boolean system;
-
-    /** Is this key is extended key? */
-    final boolean extended;
 
     /**
      * <p>
@@ -254,59 +302,9 @@ public enum Key {
      * 
      * @param code
      */
-    private Key(int code) {
-        this(code, code - 32, false);
-    }
-
-    /**
-     * <p>
-     * Native key.
-     * </p>
-     * 
-     * @param nativeCode
-     */
-    private Key(int code, int nativeCode) {
-        this(code, nativeCode, false);
-    }
-
-    /**
-     * <p>
-     * Native key.
-     * </p>
-     * 
-     * @param nativeCode
-     */
-    private Key(int code, int nativeCode, boolean system) {
-        this(code, nativeCode, system, false);
-    }
-
-    /**
-     * <p>
-     * Native key.
-     * </p>
-     * 
-     * @param nativeCode
-     */
-    private Key(int code, int nativeCode, boolean system, boolean extended) {
-        this.code = code;
-        this.nativeCode = nativeCode;
-        this.scanCode = WindowsKeyCodeHelper.INSTANCE.MapVirtualKey(nativeCode, 0);
-        this.system = system;
-        this.extended = extended;
-        System.out.println(name() + "   " + code + "  " + nativeCode + "  " + scanCode + "  " + WindowsKeyCodeHelper.INSTANCE
-                .MapVirtualKey(nativeCode, 2));
-    }
-
-    /**
-     * <p>
-     * Test key code.
-     * </p>
-     * 
-     * @param e
-     * @return
-     */
-    public boolean match(NativeKeyEvent e) {
-        return e.getRawCode() == nativeCode;
+    private Key(int virtualCode) {
+        this.virtualCode = virtualCode;
+        this.scanCode = WindowsKeyCodeHelper.INSTANCE.MapVirtualKey(virtualCode, 0);
     }
 
     /**
