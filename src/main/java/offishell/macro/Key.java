@@ -14,6 +14,10 @@ import static org.jnativehook.keyboard.NativeKeyEvent.*;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
+import com.sun.jna.Native;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIOptions;
+
 /**
  * @version 2016/10/02 17:14:34
  */
@@ -229,10 +233,13 @@ public enum Key {
     F12(VC_F12, VK_F12, true);
 
     /** The {@link NativeKeyEvent} code. */
-    public final int cqde;
+    public final int code;
 
     /** The native virtual key code. */
     public final int nativeCode;
+
+    /** The native scan code. */
+    public final int scanCode;
 
     /** Is this key is system related? */
     final boolean system;
@@ -281,10 +288,13 @@ public enum Key {
      * @param nativeCode
      */
     private Key(int code, int nativeCode, boolean system, boolean extended) {
-        this.cqde = code;
+        this.code = code;
         this.nativeCode = nativeCode;
+        this.scanCode = WindowsKeyCodeHelper.INSTANCE.MapVirtualKey(nativeCode, 0);
         this.system = system;
         this.extended = extended;
+        System.out.println(name() + "   " + code + "  " + nativeCode + "  " + scanCode + "  " + WindowsKeyCodeHelper.INSTANCE
+                .MapVirtualKey(nativeCode, 2));
     }
 
     /**
@@ -297,5 +307,27 @@ public enum Key {
      */
     public boolean match(NativeKeyEvent e) {
         return e.getRawCode() == nativeCode;
+    }
+
+    /**
+     * @version 2016/10/03 9:28:46
+     */
+    private interface WindowsKeyCodeHelper extends StdCallLibrary {
+
+        /** Instance of USER32.DLL for use in accessing native functions. */
+        WindowsKeyCodeHelper INSTANCE = (WindowsKeyCodeHelper) Native
+                .loadLibrary("user32", WindowsKeyCodeHelper.class, W32APIOptions.DEFAULT_OPTIONS);
+
+        /**
+         * Translates (maps) a virtual-key code into a scan code or character value, or translates a
+         * scan code into a virtual-key code.
+         *
+         * @param uCode The virtual key code or scan code for a key.
+         * @param uMapType The translation to be performed.
+         * @return The return value is either a scan code, a virtual-key code, or a character value,
+         *         depending on the value of uCode and uMapType. If there is no translation, the
+         *         return value is zero.
+         */
+        int MapVirtualKey(int uCode, int uMapType);
     }
 }

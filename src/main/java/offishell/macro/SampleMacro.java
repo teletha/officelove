@@ -30,7 +30,7 @@ public class SampleMacro extends Macro {
         });
 
         whenPress(Key.W).consume().run(() -> {
-            press(Key.W).delay(100);
+            press(Key.E).delay(2000);
             press(Key.Q);
         });
     }
