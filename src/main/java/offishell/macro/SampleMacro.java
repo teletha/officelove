@@ -21,12 +21,12 @@ public class SampleMacro extends Macro {
         // requireTitle("League of Legends (TM) Client");
 
         whenPress(Key.P).run(() -> {
-            System.out.println("Press P");
+            press(Mouse.Left);
         });
 
         whenPress(Key.O).consume().run(() -> {
             System.out.println("Press O");
-            press(Key.Q);
+            press(Mouse.Right);
         });
 
         whenPress(Key.W).consume().run(() -> {
@@ -34,8 +34,16 @@ public class SampleMacro extends Macro {
             press(Key.Q);
         });
 
-        whenPress(Key.A).run(() -> {
-            press(Key.A);
+        whenPress(Mouse.Left).run(() -> {
+            System.out.println("Clicl Left");
+        });
+
+        whenPress(Mouse.Right).consume().run(() -> {
+            System.out.println("Clicl Right");
+        });
+
+        whenPress(Mouse.Middle).run(() -> {
+            System.out.println("Clicl Middle");
         });
 
         whenPress(Key.Escape).consume().run(() -> {

@@ -106,6 +106,18 @@ public abstract class Macro {
 
     /**
      * <p>
+     * Declare press event hook.
+     * </p>
+     * 
+     * @param mouse
+     * @return
+     */
+    protected final MacroDSL whenPress(Mouse mouseButton) {
+        return new KeyMacro().when(mouse.presses).mouse(mouseButton);
+    }
+
+    /**
+     * <p>
      * Emulate press event.
      * </p>
      * 
@@ -125,6 +137,29 @@ public abstract class Macro {
 
         // release
         ip.input.ki.dwFlags = new DWORD(KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_SCANCODE);
+        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+        return this;
+    }
+
+    /**
+     * <p>
+     * Emulate press event.
+     * </p>
+     * 
+     * @param mouse
+     * @return
+     */
+    protected final Macro press(Mouse mouse) {
+        INPUT ip = new INPUT();
+        ip.type = new DWORD(INPUT.INPUT_MOUSE);
+        ip.input.setType("mi");
+
+        // press
+        ip.input.mi.dwFlags = new DWORD(mouse.startAction);
+        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+
+        // release
+        ip.input.mi.dwFlags = new DWORD(mouse.endAction);
         User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
         return this;
     }
@@ -226,6 +261,20 @@ public abstract class Macro {
         }
 
         /**
+         * <p>
+         * Set mouse type.
+         * </p>
+         * 
+         * @param mouse
+         * @return
+         */
+        private KeyMacro mouse(Mouse mouse) {
+            condition = condition.and(e -> e == mouse.key);
+
+            return this;
+        }
+
+        /**
          * @param presses
          * @return
          */
@@ -278,8 +327,8 @@ public abstract class Macro {
             return thread;
         });
 
-        /** The clean up. */
-        private final Thread cleaner = new Thread(this::uninstall);
+        /** The event listeners. */
+        protected final List<KeyMacro> presses = new ArrayList();
 
         /** The native hook. */
         protected HHOOK hook;
@@ -291,7 +340,7 @@ public abstract class Macro {
          */
         void install() {
             executor.execute(this);
-            Runtime.getRuntime().addShutdownHook(cleaner);
+            Runtime.getRuntime().addShutdownHook(new Thread(this::uninstall));
         }
 
         /**
@@ -301,7 +350,6 @@ public abstract class Macro {
          */
         void uninstall() {
             executor.shutdown();
-            Runtime.getRuntime().removeShutdownHook(cleaner);
             User32.INSTANCE.UnhookWindowsHookEx(hook);
         }
 
@@ -333,6 +381,32 @@ public abstract class Macro {
                 }
             }
         }
+
+        /**
+         * <p>
+         * Handle key event.
+         * </p>
+         * 
+         * @param key
+         */
+        protected final boolean handle(Key key, List<KeyMacro> macros) {
+            boolean consumed = false;
+
+            if (!macros.isEmpty()) {
+                Window now = Window.now();
+
+                for (KeyMacro macro : macros) {
+                    if (macro.window.test(now) && macro.condition.test(key)) {
+                        executor.execute(macro.action);
+
+                        if (macro.consumable) {
+                            consumed = true;
+                        }
+                    }
+                }
+            }
+            return consumed;
+        }
     }
 
     /**
@@ -348,9 +422,6 @@ public abstract class Macro {
                 keys[key.virtualCode] = key;
             }
         }
-
-        /** The event listeners. */
-        private final List<KeyMacro> presses = new ArrayList();
 
         /** The event listeners. */
         private final List<KeyMacro> releases = new ArrayList();
@@ -386,32 +457,6 @@ public abstract class Macro {
             }
             return consumed ? new LRESULT(1)
                     : User32.INSTANCE.CallNextHookEx(hook, nCode, wParam, new LPARAM(Pointer.nativeValue(info.getPointer())));
-        }
-
-        /**
-         * <p>
-         * Handle key event.
-         * </p>
-         * 
-         * @param key
-         */
-        private boolean handle(Key key, List<KeyMacro> macros) {
-            boolean consumed = false;
-
-            if (!macros.isEmpty()) {
-                Window now = Window.now();
-
-                for (KeyMacro macro : macros) {
-                    if (macro.window.test(now) && macro.condition.test(key)) {
-                        executor.execute(macro.action);
-
-                        if (macro.consumable) {
-                            consumed = true;
-                        }
-                    }
-                }
-            }
-            return consumed;
         }
     }
 
@@ -454,7 +499,7 @@ public abstract class Macro {
             if (0 <= nCode) {
                 switch (wParam.intValue()) {
                 case WM_LBUTTONDOWN:
-                    System.out.println("Left click down");
+                    handle(Key.ButtonLeft, presses);
                     break;
 
                 case WM_LBUTTONUP:
@@ -462,7 +507,7 @@ public abstract class Macro {
                     break;
 
                 case WM_RBUTTONDOWN:
-                    System.out.println("Right click down");
+                    handle(Key.ButtonRight, presses);
                     break;
 
                 case WM_RBUTTONUP:
@@ -470,15 +515,12 @@ public abstract class Macro {
                     break;
 
                 case WM_MBUTTONDOWN:
-                    System.out.println("Middle click down");
+                    handle(Key.ButtonMiddle, presses);
                     break;
 
                 case WM_MBUTTONUP:
                     System.out.println("Middle click up");
                     break;
-
-                default:
-                    System.out.println("Other  " + info.dwExtraInfo);
                 }
             }
             return consumed ? new LRESULT(1)

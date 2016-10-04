@@ -17,6 +17,17 @@ import com.sun.jna.win32.W32APIOptions;
  * @version 2016/10/03 17:00:40
  */
 public enum Key {
+
+    ButtonLeft(1),
+
+    ButtonRight(2),
+
+    ButtonMiddle(4),
+
+    ButtonX1(5),
+
+    ButtonX2(6),
+
     BackSpace(8),
 
     Tab(9),
@@ -295,6 +306,9 @@ public enum Key {
     /** The native scan code. */
     public final int scanCode;
 
+    /** The mouse related button. */
+    public final boolean mouse;
+
     /**
      * <p>
      * Native key.
@@ -305,6 +319,7 @@ public enum Key {
     private Key(int virtualCode) {
         this.virtualCode = virtualCode;
         this.scanCode = WindowsKeyCodeHelper.INSTANCE.MapVirtualKey(virtualCode, 0);
+        this.mouse = virtualCode <= 6;
     }
 
     /**
