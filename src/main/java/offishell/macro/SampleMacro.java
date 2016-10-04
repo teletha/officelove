@@ -20,26 +20,20 @@ public class SampleMacro extends Macro {
     private SampleMacro() {
         // requireTitle("League of Legends (TM) Client");
 
-        when(Key.Escape).press().to(e -> {
+        when(Key.F11).press().merge(when(Key.Escape).press()).to(e -> {
             System.exit(0);
         });
 
         when(Key.Q).press().to(e -> {
-            System.out.println("Press Q");
-            press(Mouse.Right);
-        });
-
-        when(Key.Q).release().to(e -> {
-            System.out.println("Release " + e);
+            input(Key.Q);
         });
 
         when(Key.W).press(true).to(e -> {
-            press(Key.E).delay(1000);
-            press(Key.Q);
+            input(Key.MouseLeft);
         });
 
-        when(Mouse.Move).skipUntil(when(Key.MouseLeft).press()).takeUntil(when(Key.MouseLeft).release()).repeat().to(e -> {
-            System.out.println("Drag Left");
+        when(Key.MouseRight).consume().press().to(e -> {
+            System.out.println("Click Left");
         });
     }
 

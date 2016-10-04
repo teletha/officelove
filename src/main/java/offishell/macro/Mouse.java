@@ -14,21 +14,11 @@ package offishell.macro;
  */
 public enum Mouse {
 
-    Left(0x0002, 0x0004, Key.MouseLeft),
-
-    Middle(0x0020, 0x0040, Key.MouseMiddle),
-
-    Right(0x0008, 0x0010, Key.MouseRight),
-
     Move(0x0001, 0x0001, null),
 
     Wheel(0x0800, 0x0800, null),
 
-    WheelTilt(0x01000, 0x01000, null),
-
-    X1(0x0080, 0x0100, Key.MouseX1),
-
-    X2(0x0080, 0x0100, Key.MouseX2);
+    WheelTilt(0x01000, 0x01000, null);
 
     final int startAction;
 

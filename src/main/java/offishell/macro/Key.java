@@ -18,15 +18,15 @@ import com.sun.jna.win32.W32APIOptions;
  */
 public enum Key {
 
-    MouseLeft(1),
+    MouseLeft(1, 0x0002, 0x0004),
 
-    MouseRight(2),
+    MouseRight(2, 0x0008, 0x0010),
 
-    MouseMiddle(4),
+    MouseMiddle(4, 0x0020, 0x0040),
 
-    MouseX1(5),
+    MouseX1(5, 0x0080, 0x0100),
 
-    MouseX2(6),
+    MouseX2(6, 0x0080, 0x0100),
 
     BackSpace(8),
 
@@ -306,8 +306,14 @@ public enum Key {
     /** The native scan code. */
     public final int scanCode;
 
+    /** Mouse related event. */
+    final boolean mouse;
+
     /** The mouse related button. */
-    public final boolean mouse;
+    final int on;
+
+    /** The mouse related button. */
+    final int off;
 
     /**
      * <p>
@@ -317,9 +323,24 @@ public enum Key {
      * @param code
      */
     private Key(int virtualCode) {
+        this(virtualCode, 0, 0);
+    }
+
+    /**
+     * <p>
+     * Native key.
+     * </p>
+     * 
+     * @param virtualCode
+     * @param on
+     * @param off
+     */
+    private Key(int virtualCode, int on, int off) {
         this.virtualCode = virtualCode;
         this.scanCode = WindowsKeyCodeHelper.INSTANCE.MapVirtualKey(virtualCode, 0);
-        this.mouse = virtualCode <= 6;
+        this.on = on;
+        this.off = off;
+        this.mouse = on != 0 && off != 0;
     }
 
     /**

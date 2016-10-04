@@ -22,11 +22,9 @@ import java.util.function.Predicate;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.DWORD;
-import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinDef.LPARAM;
 import com.sun.jna.platform.win32.WinDef.LRESULT;
 import com.sun.jna.platform.win32.WinDef.POINT;
@@ -116,7 +114,7 @@ public abstract class Macro {
      * @return
      */
     protected final Events<Mouse> when(Mouse mouse) {
-        return new KeyMacro().mouse(mouse).register(this.mouse.moves);
+        return new KeyMacro().register(this.mouse.moves);
     }
 
     /**
@@ -128,42 +126,75 @@ public abstract class Macro {
      * @return
      */
     protected final Macro press(Key key) {
-        INPUT ip = new INPUT();
-        ip.type = new DWORD(INPUT.INPUT_KEYBOARD);
-        ip.input.setType("ki");
-        ip.input.ki.wVk = new WORD(key.virtualCode);
-        ip.input.ki.wScan = new WORD(key.scanCode);
-
-        // press
-        ip.input.ki.dwFlags = new DWORD(KEYBDINPUT.KEYEVENTF_SCANCODE);
-        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
-
-        // release
-        ip.input.ki.dwFlags = new DWORD(KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_SCANCODE);
-        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
-        return this;
+        return emulate(key, true, false);
     }
 
     /**
      * <p>
-     * Emulate press event.
+     * Emulate release event.
      * </p>
      * 
-     * @param mouse
+     * @param key
      * @return
      */
-    protected final Macro press(Mouse mouse) {
-        INPUT ip = new INPUT();
-        ip.type = new DWORD(INPUT.INPUT_MOUSE);
-        ip.input.setType("mi");
+    protected final Macro release(Key key) {
+        return emulate(key, false, true);
+    }
 
-        // press
-        ip.input.mi.dwFlags = new DWORD(mouse.startAction);
-        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+    /**
+     * <p>
+     * Emulate press and release event.
+     * </p>
+     * 
+     * @param key
+     * @return
+     */
+    protected final Macro input(Key key) {
+        return emulate(key, true, true);
+    }
 
-        // release
-        ip.input.mi.dwFlags = new DWORD(mouse.endAction);
-        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+    /**
+     * <p>
+     * Emulate input event.
+     * </p>
+     * 
+     * @param key
+     * @param press
+     * @param release
+     * @return
+     */
+    private final Macro emulate(Key key, boolean press, boolean release) {
+        if (key.mouse) {
+            INPUT ip = new INPUT();
+            ip.type = new DWORD(INPUT.INPUT_MOUSE);
+            ip.input.setType("mi");
+
+            if (press) {
+                ip.input.mi.dwFlags = new DWORD(key.on);
+                User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+            }
+
+            if (release) {
+                ip.input.mi.dwFlags = new DWORD(key.off);
+                User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+            }
+        } else {
+            INPUT ip = new INPUT();
+            ip.type = new DWORD(INPUT.INPUT_KEYBOARD);
+            ip.input.setType("ki");
+            ip.input.ki.wVk = new WORD(key.virtualCode);
+            ip.input.ki.wScan = new WORD(key.scanCode);
+
+            if (press) {
+                ip.input.ki.dwFlags = new DWORD(KEYBDINPUT.KEYEVENTF_SCANCODE);
+                User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+            }
+
+            if (release) {
+                ip.input.ki.dwFlags = new DWORD(KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_SCANCODE);
+                User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
+            }
+        }
         return this;
     }
 
@@ -255,7 +286,7 @@ public abstract class Macro {
         private Predicate<Window> window = windowCondition;
 
         /** The acceptable event type. */
-        private Predicate<Key> condition = ANY;
+        private Predicate<V> condition = ANY;
 
         /** The event should be consumed or not. */
         private boolean consumable;
@@ -276,30 +307,6 @@ public abstract class Macro {
         private KeyMacro key(Key key) {
             this.key = key;
             condition = condition.and(e -> e == this.key);
-
-            return this;
-        }
-
-        /**
-         * <p>
-         * Set mouse type.
-         * </p>
-         * 
-         * @param mouse
-         * @return
-         */
-        private KeyMacro mouse(Mouse mouse) {
-            condition = condition.and(e -> e == mouse.key);
-
-            return this;
-        }
-
-        /**
-         * @param presses
-         * @return
-         */
-        public KeyMacro when(List<KeyMacro> type) {
-            type.add(this);
 
             return this;
         }
@@ -352,16 +359,6 @@ public abstract class Macro {
      * @version 2016/10/04 4:20:39
      */
     protected static abstract class NativeHook<T> implements Runnable, HOOKPROC {
-
-        /**
-         * <p>
-         * Specifies whether the event was injected. The value is 1 if that is the case; otherwise,
-         * it is 0. Note that bit 1 is not necessarily set when bit 4 is set. <a href=
-         * "https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms644967(v=vs.85).aspx">REF
-         * </a>
-         * </p>
-         */
-        protected static final int InjectedEvent = 1 << 4;
 
         /** The actual executor. */
         protected final ExecutorService executor = new ThreadPoolExecutor(4, 256, 30, TimeUnit.SECONDS, new SynchronousQueue(), runnable -> {
@@ -437,7 +434,7 @@ public abstract class Macro {
          * 
          * @param key
          */
-        protected final boolean handle(Key key, List<KeyMacro<T>> macros) {
+        protected final boolean handle(T key, List<KeyMacro<T>> macros) {
             boolean consumed = false;
 
             if (!macros.isEmpty()) {
@@ -496,6 +493,16 @@ public abstract class Macro {
      */
     private static class NativeKeyboardHook extends NativeHook implements LowLevelKeyboardProc {
 
+        /**
+         * <p>
+         * Specifies whether the event was injected. The value is 1 if that is the case; otherwise,
+         * it is 0. Note that bit 1 is not necessarily set when bit 4 is set. <a href=
+         * "https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms644967(v=vs.85).aspx">REF
+         * </a>
+         * </p>
+         */
+        private static final int InjectedEvent = 1 << 4;
+
         /** The key mapper. */
         private static final Key[] keys = new Key[250];
 
@@ -546,24 +553,20 @@ public abstract class Macro {
      */
     private static class NativeMouseHook extends NativeHook implements LowLevelMouseProc {
 
-        private static final int WM_MOUSEMOVE = 512;
-
-        private static final int WM_LBUTTONDOWN = 513;
-
-        private static final int WM_LBUTTONUP = 514;
-
-        private static final int WM_RBUTTONDOWN = 516;
-
-        private static final int WM_RBUTTONUP = 517;
-
-        private static final int WM_MBUTTONDOWN = 519;
-
-        private static final int WM_MBUTTONUP = 520;
-
-        private static final int WM_MOUSEWHEEL = 522;
+        /**
+         * <p>
+         * The event-injected flags. An application can use the following values to test the flags.
+         * Testing LLMHF_INJECTED (bit 0) will tell you whether the event was injected. If it was,
+         * then testing LLMHF_LOWER_IL_INJECTED (bit 1) will tell you whether or not the event was
+         * injected from a process running at lower integrity level. <a href=
+         * "https://msdn.microsoft.com/en-us/library/windows/desktop/ms644970(v=vs.85).aspx">REF
+         * </a>
+         * </p>
+         */
+        private static final int InjectedEvent = 1;
 
         /** The event listeners. */
-        protected final List<KeyMacro> moves = new ArrayList();
+        private final List<KeyMacro> moves = new ArrayList();
 
         /**
          * {@inheritDoc}
@@ -577,37 +580,38 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public LRESULT callback(int nCode, WPARAM wParam, MOUSEHOOKSTRUCT info) {
+        public LRESULT callback(int nCode, WPARAM wParam, MSLLHOOKSTRUCT info) {
             boolean consumed = false;
+            boolean userInput = (info.flags & InjectedEvent) == 0;
 
-            if (0 <= nCode) {
+            if (0 <= nCode && userInput) {
                 switch (wParam.intValue()) {
-                case WM_LBUTTONDOWN:
-                    handle(Key.MouseLeft, presses);
+                case 513: // WM_LBUTTONDOWN
+                    consumed = handle(Key.MouseLeft, presses);
                     break;
 
-                case WM_LBUTTONUP:
-                    handle(Key.MouseLeft, releases);
+                case 514: // WM_LBUTTONUP
+                    consumed = handle(Key.MouseLeft, releases);
                     break;
 
-                case WM_RBUTTONDOWN:
-                    handle(Key.MouseRight, presses);
+                case 516: // WM_RBUTTONDOWN
+                    consumed = handle(Key.MouseRight, presses);
                     break;
 
-                case WM_RBUTTONUP:
-                    handle(Key.MouseRight, releases);
+                case 517: // WM_RBUTTONUP
+                    consumed = handle(Key.MouseRight, releases);
                     break;
 
-                case WM_MBUTTONDOWN:
-                    handle(Key.MouseMiddle, presses);
+                case 519: // WM_MBUTTONDOWN
+                    consumed = handle(Key.MouseMiddle, presses);
                     break;
 
-                case WM_MBUTTONUP:
-                    handle(Key.MouseMiddle, releases);
+                case 520: // WM_MBUTTONDOWN
+                    consumed = handle(Key.MouseMiddle, releases);
                     break;
 
-                case WM_MOUSEMOVE:
-                    handle(Mouse.Move, moves);
+                case 512: // WM_MOUSEMOVE
+                    consumed = handle(Mouse.Move, moves);
                     break;
                 }
             }
@@ -621,7 +625,7 @@ public abstract class Macro {
      */
     private static interface LowLevelMouseProc extends HOOKPROC {
 
-        LRESULT callback(int nCode, WPARAM wParam, MOUSEHOOKSTRUCT lParam);
+        LRESULT callback(int nCode, WPARAM wParam, MSLLHOOKSTRUCT lParam);
     }
 
     /**
@@ -643,24 +647,26 @@ public abstract class Macro {
     }
 
     /**
-     * @version 2016/10/04 3:54:39
+     * @version 2016/10/04 14:06:51
      */
-    public static class MOUSEHOOKSTRUCT extends Structure {
+    public static class MSLLHOOKSTRUCT extends Structure {
 
         public POINT pt;
 
-        public HWND hwnd;
+        public int mouseData;
 
-        public int wHitTestCode;
+        public int flags;
 
-        public ULONG_PTR dwExtraInfo;
+        public int time;
+
+        public int dwExtraInfo;
 
         /**
          * {@inheritDoc}
          */
         @Override
         protected List getFieldOrder() {
-            return Arrays.asList(new String[] {"pt", "hwnd", "wHitTestCode", "dwExtraInfo"});
+            return Arrays.asList(new String[] {"pt", "mouseData", "flags", "time", "dwExtraInfo"});
         }
     }
 }
