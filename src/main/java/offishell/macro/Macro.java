@@ -25,6 +25,7 @@ import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.DWORD;
+import com.sun.jna.platform.win32.WinDef.LONG;
 import com.sun.jna.platform.win32.WinDef.LPARAM;
 import com.sun.jna.platform.win32.WinDef.LRESULT;
 import com.sun.jna.platform.win32.WinDef.POINT;
@@ -47,6 +48,12 @@ import kiss.Observer;
  * @version 2016/10/04 3:22:04
  */
 public abstract class Macro {
+
+    /** The display scale. */
+    private static final long ScaleX = 65536 / User32.INSTANCE.GetSystemMetrics(User32.SM_CXSCREEN);
+
+    /** The display scale. */
+    private static final long ScaleY = 65536 / User32.INSTANCE.GetSystemMetrics(User32.SM_CYSCREEN);
 
     /** Acceptable condition. */
     private static final Predicate ANY = new Predicate() {
@@ -80,17 +87,17 @@ public abstract class Macro {
     private Predicate<Window> windowCondition = ANY;
 
     /** The keyboard hook. */
-    private NativeKeyboardHook keyboard = new NativeKeyboardHook();
+    private NativeKeyboardHook keyboardHook = new NativeKeyboardHook();
 
     /** The keyboard hook. */
-    private NativeMouseHook mouse = new NativeMouseHook();
+    private NativeMouseHook mouseHook = new NativeMouseHook();
 
     /**
      * 
      */
     protected Macro() {
-        keyboard.install();
-        mouse.install();
+        keyboardHook.install();
+        mouseHook.install();
     }
 
     /**
@@ -114,7 +121,7 @@ public abstract class Macro {
      * @return
      */
     protected final Events<Mouse> when(Mouse mouse) {
-        return new KeyMacro().register(this.mouse.moves);
+        return new KeyMacro().register(this.mouseHook.moves);
     }
 
     /**
@@ -195,6 +202,18 @@ public abstract class Macro {
                 User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
             }
         }
+        return this;
+    }
+
+    protected final Macro mouseMoveTo(int x, int y) {
+
+        INPUT ip = new INPUT();
+        ip.type = new DWORD(INPUT.INPUT_MOUSE);
+        ip.input.setType("mi");
+        ip.input.mi.dx = new LONG(x * ScaleX);
+        ip.input.mi.dy = new LONG(y * ScaleY);
+        ip.input.mi.dwFlags = new DWORD(0x0001 | 0x8000); // MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE
+        User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
         return this;
     }
 
@@ -398,7 +417,7 @@ public abstract class Macro {
         @Override
         public Events<V> press(boolean consumeEvent) {
             consumable = consumeEvent;
-            return register((key.mouse ? mouse : keyboard).presses);
+            return register((key.mouse ? mouseHook : keyboardHook).presses);
         }
 
         /**
@@ -406,7 +425,7 @@ public abstract class Macro {
          */
         @Override
         public Events<V> release() {
-            return register((key.mouse ? mouse : keyboard).releases);
+            return register((key.mouse ? mouseHook : keyboardHook).releases);
         }
 
         /**
@@ -513,6 +532,14 @@ public abstract class Macro {
             }
         }
 
+        /**
+         * <p>
+         * Helper method to retrieve the key state.
+         * </p>
+         * 
+         * @param key
+         * @return
+         */
         private boolean with(Key key) {
             return (User32.INSTANCE.GetAsyncKeyState(key.virtualCode) & 0x8000) != 0;
         }

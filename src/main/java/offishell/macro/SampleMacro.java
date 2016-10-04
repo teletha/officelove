@@ -24,8 +24,8 @@ public class SampleMacro extends Macro {
             System.exit(0);
         });
 
-        when(Key.Q).press().to(e -> {
-            System.out.println("Q");
+        when(Key.Q).consume().press().to(e -> {
+            mouseMoveTo(100, 100);
         });
 
         when(Key.Q).withCtrl().press().to(e -> {
