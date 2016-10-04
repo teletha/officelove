@@ -12,6 +12,7 @@ package offishell.macro;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -40,7 +41,9 @@ import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import com.sun.jna.platform.win32.WinUser.MSG;
 
+import kiss.Events;
 import kiss.I;
+import kiss.Observer;
 
 /**
  * @version 2016/10/04 3:22:04
@@ -90,6 +93,30 @@ public abstract class Macro {
     protected Macro() {
         keyboard.install();
         mouse.install();
+    }
+
+    /**
+     * <p>
+     * Declare key related event.
+     * </p>
+     * 
+     * @param key
+     * @return
+     */
+    protected final MacroDSL when(Key key) {
+        return new KeyMacro().key(key);
+    }
+
+    /**
+     * <p>
+     * Declare mouse related event.
+     * </p>
+     * 
+     * @param mouse
+     * @return
+     */
+    protected final Events<Mouse> when(Mouse mouse) {
+        return new KeyMacro().mouse(mouse).register(this.mouse.moves);
     }
 
     /**
@@ -207,7 +234,7 @@ public abstract class Macro {
     /**
      * @version 2016/10/02 18:01:25
      */
-    public interface MacroDSL {
+    public interface MacroDSL<V> {
 
         /**
          * <p>
@@ -226,12 +253,30 @@ public abstract class Macro {
          * @return
          */
         MacroDSL consume();
+
+        /**
+         * <p>
+         * Declare press event.
+         * </p>
+         * 
+         * @return
+         */
+        Events<V> isPressed();
+
+        /**
+         * <p>
+         * Declare release event.
+         * </p>
+         * 
+         * @return
+         */
+        Events<V> isReleased();
     }
 
     /**
      * @version 2016/10/02 17:30:48
      */
-    private class KeyMacro implements MacroDSL {
+    private class KeyMacro<V> implements MacroDSL<V> {
 
         /** The window condition. */
         private Predicate<Window> window = windowCondition;
@@ -242,9 +287,10 @@ public abstract class Macro {
         /** The event should be consumed or not. */
         private boolean consumable;
 
-        /** The actual action. */
-        private Runnable action = () -> {
-        };
+        /** The associated key. */
+        private Key key;
+
+        private final List<Observer<? super V>> observers = new CopyOnWriteArrayList();
 
         /**
          * <p>
@@ -255,7 +301,8 @@ public abstract class Macro {
          * @return
          */
         private KeyMacro key(Key key) {
-            condition = condition.and(e -> e == key);
+            this.key = key;
+            condition = condition.and(e -> e == this.key);
 
             return this;
         }
@@ -289,9 +336,6 @@ public abstract class Macro {
          */
         @Override
         public void run(Runnable action) {
-            if (action != null) {
-                this.action = action;
-            }
         }
 
         /**
@@ -302,18 +346,44 @@ public abstract class Macro {
             consumable = true;
             return this;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Events<V> isPressed() {
+            return register((key.mouse ? mouse : keyboard).presses);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Events<V> isReleased() {
+            return register((key.mouse ? mouse : keyboard).releases);
+        }
+
+        private Events<V> register(List<KeyMacro<V>> macros) {
+            macros.add(this);
+
+            return new Events<V>(observer -> {
+                observers.add(observer);
+                return () -> observers.remove(observer);
+            });
+        }
     }
 
     /**
      * @version 2016/10/04 4:20:39
      */
-    protected static abstract class NativeHook implements Runnable, HOOKPROC {
+    protected static abstract class NativeHook<T> implements Runnable, HOOKPROC {
 
         /**
          * <p>
          * Specifies whether the event was injected. The value is 1 if that is the case; otherwise,
          * it is 0. Note that bit 1 is not necessarily set when bit 4 is set. <a href=
-         * "https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms644967(v=vs.85).aspx">REF</a>
+         * "https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms644967(v=vs.85).aspx">REF
+         * </a>
          * </p>
          */
         protected static final int InjectedEvent = 1 << 4;
@@ -328,7 +398,10 @@ public abstract class Macro {
         });
 
         /** The event listeners. */
-        protected final List<KeyMacro> presses = new ArrayList();
+        protected final List<KeyMacro<T>> presses = new ArrayList();
+
+        /** The event listeners. */
+        protected final List<KeyMacro<T>> releases = new ArrayList();
 
         /** The native hook. */
         protected HHOOK hook;
@@ -389,15 +462,49 @@ public abstract class Macro {
          * 
          * @param key
          */
-        protected final boolean handle(Key key, List<KeyMacro> macros) {
+        protected final boolean handle(Key key, List<KeyMacro<T>> macros) {
             boolean consumed = false;
 
             if (!macros.isEmpty()) {
                 Window now = Window.now();
 
-                for (KeyMacro macro : macros) {
+                for (KeyMacro<T> macro : macros) {
                     if (macro.window.test(now) && macro.condition.test(key)) {
-                        executor.execute(macro.action);
+                        executor.execute(() -> {
+                            for (Observer observer : macro.observers) {
+                                observer.accept(key);
+                            }
+                        });
+
+                        if (macro.consumable) {
+                            consumed = true;
+                        }
+                    }
+                }
+            }
+            return consumed;
+        }
+
+        /**
+         * <p>
+         * Handle key event.
+         * </p>
+         * 
+         * @param key
+         */
+        protected final boolean handle(Mouse key, List<KeyMacro<T>> macros) {
+            boolean consumed = false;
+
+            if (!macros.isEmpty()) {
+                Window now = Window.now();
+
+                for (KeyMacro<T> macro : macros) {
+                    if (macro.window.test(now)) {
+                        executor.execute(() -> {
+                            for (Observer observer : macro.observers) {
+                                observer.accept(key);
+                            }
+                        });
 
                         if (macro.consumable) {
                             consumed = true;
@@ -423,9 +530,6 @@ public abstract class Macro {
             }
         }
 
-        /** The event listeners. */
-        private final List<KeyMacro> releases = new ArrayList();
-
         /**
          * {@inheritDoc}
          */
@@ -443,15 +547,17 @@ public abstract class Macro {
             boolean userInput = (info.flags & InjectedEvent) == 0;
 
             if (0 <= nCode && userInput) {
+                Key key = keys[info.vkCode];
+
                 switch (wParam.intValue()) {
                 case WinUser.WM_KEYDOWN:
                 case WinUser.WM_SYSKEYDOWN:
-                    consumed = handle(keys[info.vkCode], presses);
+                    consumed = handle(key, presses);
                     break;
 
                 case WinUser.WM_KEYUP:
                 case WinUser.WM_SYSKEYUP:
-                    consumed = handle(keys[info.vkCode], releases);
+                    consumed = handle(key, releases);
                     break;
                 }
             }
@@ -481,6 +587,9 @@ public abstract class Macro {
 
         private static final int WM_MOUSEWHEEL = 522;
 
+        /** The event listeners. */
+        protected final List<KeyMacro> moves = new ArrayList();
+
         /**
          * {@inheritDoc}
          */
@@ -499,27 +608,31 @@ public abstract class Macro {
             if (0 <= nCode) {
                 switch (wParam.intValue()) {
                 case WM_LBUTTONDOWN:
-                    handle(Key.ButtonLeft, presses);
+                    handle(Key.MouseLeft, presses);
                     break;
 
                 case WM_LBUTTONUP:
-                    System.out.println("Left click up");
+                    handle(Key.MouseLeft, releases);
                     break;
 
                 case WM_RBUTTONDOWN:
-                    handle(Key.ButtonRight, presses);
+                    handle(Key.MouseRight, presses);
                     break;
 
                 case WM_RBUTTONUP:
-                    System.out.println("Right click up");
+                    handle(Key.MouseRight, releases);
                     break;
 
                 case WM_MBUTTONDOWN:
-                    handle(Key.ButtonMiddle, presses);
+                    handle(Key.MouseMiddle, presses);
                     break;
 
                 case WM_MBUTTONUP:
-                    System.out.println("Middle click up");
+                    handle(Key.MouseMiddle, releases);
+                    break;
+
+                case WM_MOUSEMOVE:
+                    handle(Mouse.Move, moves);
                     break;
                 }
             }

@@ -18,15 +18,15 @@ import com.sun.jna.win32.W32APIOptions;
  */
 public enum Key {
 
-    ButtonLeft(1),
+    MouseLeft(1),
 
-    ButtonRight(2),
+    MouseRight(2),
 
-    ButtonMiddle(4),
+    MouseMiddle(4),
 
-    ButtonX1(5),
+    MouseX1(5),
 
-    ButtonX2(6),
+    MouseX2(6),
 
     BackSpace(8),
 
