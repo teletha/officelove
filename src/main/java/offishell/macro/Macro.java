@@ -170,12 +170,12 @@ public abstract class Macro {
             ip.input.setType("mi");
 
             if (press) {
-                ip.input.mi.dwFlags = new DWORD(key.on);
+                ip.input.mi.dwFlags = new DWORD(key.on | 0x8000); // MOUSEEVENTF_ABSOLUTE
                 User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
             }
 
             if (release) {
-                ip.input.mi.dwFlags = new DWORD(key.off);
+                ip.input.mi.dwFlags = new DWORD(key.off | 0x8000); // MOUSEEVENTF_ABSOLUTE
                 User32.INSTANCE.SendInput(new DWORD(1), new INPUT[] {ip}, ip.size());
             }
         } else {
@@ -250,7 +250,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        MacroDSL consume();
+        MacroDSL<V> consume();
 
         /**
          * <p>
@@ -275,10 +275,37 @@ public abstract class Macro {
          * @return
          */
         Events<V> release();
+
+        /**
+         * <p>
+         * Declare key modifier.
+         * </p>
+         * 
+         * @return Chainable DSL.
+         */
+        MacroDSL<V> withAlt();
+
+        /**
+         * <p>
+         * Declare key modifier.
+         * </p>
+         * 
+         * @return Chainable DSL.
+         */
+        MacroDSL<V> withCtrl();
+
+        /**
+         * <p>
+         * Declare key modifier.
+         * </p>
+         * 
+         * @return Chainable DSL.
+         */
+        MacroDSL<V> withShift();
     }
 
     /**
-     * @version 2016/10/02 17:30:48
+     * @version 2016/10/04 15:57:53
      */
     private class KeyMacro<V> implements MacroDSL<V> {
 
@@ -294,6 +321,16 @@ public abstract class Macro {
         /** The associated key. */
         private Key key;
 
+        /** The modifier state. */
+        private boolean alt;
+
+        /** The modifier state. */
+        private boolean ctrl;
+
+        /** The modifier state. */
+        private boolean shift;
+
+        /** The observers. */
         private final List<Observer<? super V>> observers = new CopyOnWriteArrayList();
 
         /**
@@ -315,8 +352,35 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public MacroDSL consume() {
+        public MacroDSL<V> consume() {
             consumable = true;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public MacroDSL<V> withAlt() {
+            alt = true;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public MacroDSL<V> withCtrl() {
+            ctrl = true;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public MacroDSL<V> withShift() {
+            shift = true;
             return this;
         }
 
@@ -345,6 +409,14 @@ public abstract class Macro {
             return register((key.mouse ? mouse : keyboard).releases);
         }
 
+        /**
+         * <p>
+         * Register this macro.
+         * </p>
+         * 
+         * @param macros
+         * @return
+         */
         private Events<V> register(List<KeyMacro<V>> macros) {
             macros.add(this);
 
@@ -352,6 +424,20 @@ public abstract class Macro {
                 observers.add(observer);
                 return () -> observers.remove(observer);
             });
+        }
+
+        /**
+         * <p>
+         * Test modifier state.
+         * </p>
+         * 
+         * @param alt The modifier state.
+         * @param ctrl The modifier state.
+         * @param shift The modifier state.
+         * @return
+         */
+        private boolean modifier(boolean alt, boolean ctrl, boolean shift) {
+            return this.alt == alt && this.ctrl == ctrl && this.shift == shift;
         }
     }
 
@@ -361,7 +447,7 @@ public abstract class Macro {
     protected static abstract class NativeHook<T> implements Runnable, HOOKPROC {
 
         /** The actual executor. */
-        protected final ExecutorService executor = new ThreadPoolExecutor(4, 256, 30, TimeUnit.SECONDS, new SynchronousQueue(), runnable -> {
+        private static final ExecutorService executor = new ThreadPoolExecutor(4, 256, 30, TimeUnit.SECONDS, new SynchronousQueue(), runnable -> {
             Thread thread = new Thread(runnable);
             thread.setName(NativeKeyboardHook.class.getSimpleName());
             thread.setPriority(Thread.MAX_PRIORITY);
@@ -411,7 +497,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public void run() {
+        public final void run() {
             hook = User32.INSTANCE.SetWindowsHookEx(hookType(), this, Kernel32.INSTANCE.GetModuleHandle(null), 0);
 
             int result;
@@ -427,6 +513,10 @@ public abstract class Macro {
             }
         }
 
+        private boolean with(Key key) {
+            return (User32.INSTANCE.GetAsyncKeyState(key.virtualCode) & 0x8000) != 0;
+        }
+
         /**
          * <p>
          * Handle key event.
@@ -439,9 +529,12 @@ public abstract class Macro {
 
             if (!macros.isEmpty()) {
                 Window now = Window.now();
+                boolean alt = with(Key.Alt);
+                boolean ctrl = with(Key.Control);
+                boolean shift = with(Key.Shift);
 
                 for (KeyMacro<T> macro : macros) {
-                    if (macro.window.test(now) && macro.condition.test(key)) {
+                    if (macro.window.test(now) && macro.modifier(alt, ctrl, shift) && macro.condition.test(key)) {
                         executor.execute(() -> {
                             for (Observer observer : macro.observers) {
                                 observer.accept(key);
@@ -504,7 +597,7 @@ public abstract class Macro {
         private static final int InjectedEvent = 1 << 4;
 
         /** The key mapper. */
-        private static final Key[] keys = new Key[250];
+        private static final Key[] keys = new Key[256];
 
         static {
             for (Key key : Key.values()) {

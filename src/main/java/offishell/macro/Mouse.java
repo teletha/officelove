@@ -20,12 +20,6 @@ public enum Mouse {
 
     WheelTilt(0x01000, 0x01000, null);
 
-    final int startAction;
-
-    final int endAction;
-
-    public final Key key;
-
     /**
      * <p>
      * Define mouse action.
@@ -35,9 +29,5 @@ public enum Mouse {
      * @param endAction
      */
     private Mouse(int startAction, int endAction, Key key) {
-        this.startAction = startAction;
-        this.endAction = endAction;
-        this.key = key;
     }
-
 }

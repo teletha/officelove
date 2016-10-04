@@ -25,15 +25,15 @@ public class SampleMacro extends Macro {
         });
 
         when(Key.Q).press().to(e -> {
-            input(Key.Q);
+            System.out.println("Q");
         });
 
-        when(Key.W).press(true).to(e -> {
-            input(Key.MouseLeft);
+        when(Key.Q).withCtrl().press().to(e -> {
+            System.out.println("Ctrl + Q");
         });
 
-        when(Key.MouseRight).consume().press().to(e -> {
-            System.out.println("Click Left");
+        when(Key.MouseLeft).withCtrl().press().to(e -> {
+            System.out.println("Ctrl + click");
         });
     }
 
