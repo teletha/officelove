@@ -20,45 +20,25 @@ public class SampleMacro extends Macro {
     private SampleMacro() {
         // requireTitle("League of Legends (TM) Client");
 
-        // whenPress(Key.P).run(() -> {
-        // press(Mouse.Left);
-        // });
-        //
-        // whenPress(Key.O).consume().run(() -> {
-        // System.out.println("Press O");
-        // press(Mouse.Right);
-        // });
-        //
-        // whenPress(Key.W).consume().run(() -> {
-        // press(Key.E).delay(2000);
-        // press(Key.Q);
-        // });
-        //
-        // whenPress(Mouse.Left).run(() -> {
-        // System.out.println("Clicl Left");
-        // });
-        //
-        // whenPress(Mouse.Right).consume().run(() -> {
-        // System.out.println("Clicl Right");
-        // });
-        //
-        // whenPress(Mouse.Middle).run(() -> {
-        // System.out.println("Clicl Middle");
-        // });
-        //
-        // whenPress(Key.Escape).consume().run(() -> {
-        // System.exit(0);
-        // });
-
-        when(Key.Q).isPressed().to(e -> {
-            System.out.println("Press " + e);
+        when(Key.Escape).press().to(e -> {
+            System.exit(0);
         });
 
-        when(Key.Q).isReleased().to(e -> {
+        when(Key.Q).press().to(e -> {
+            System.out.println("Press Q");
+            press(Mouse.Right);
+        });
+
+        when(Key.Q).release().to(e -> {
             System.out.println("Release " + e);
         });
 
-        when(Mouse.Move).skipUntil(when(Key.MouseLeft).isPressed()).takeUntil(when(Key.MouseLeft).isReleased()).repeat().to(e -> {
+        when(Key.W).press(true).to(e -> {
+            press(Key.E).delay(1000);
+            press(Key.Q);
+        });
+
+        when(Mouse.Move).skipUntil(when(Key.MouseLeft).press()).takeUntil(when(Key.MouseLeft).release()).repeat().to(e -> {
             System.out.println("Drag Left");
         });
     }

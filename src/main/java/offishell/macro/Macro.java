@@ -103,7 +103,7 @@ public abstract class Macro {
      * @param key
      * @return
      */
-    protected final MacroDSL when(Key key) {
+    protected final MacroDSL<Key> when(Key key) {
         return new KeyMacro().key(key);
     }
 
@@ -117,30 +117,6 @@ public abstract class Macro {
      */
     protected final Events<Mouse> when(Mouse mouse) {
         return new KeyMacro().mouse(mouse).register(this.mouse.moves);
-    }
-
-    /**
-     * <p>
-     * Declare press event hook.
-     * </p>
-     * 
-     * @param key
-     * @return
-     */
-    protected final MacroDSL whenPress(Key key) {
-        return new KeyMacro().when(keyboard.presses).key(key);
-    }
-
-    /**
-     * <p>
-     * Declare press event hook.
-     * </p>
-     * 
-     * @param mouse
-     * @return
-     */
-    protected final MacroDSL whenPress(Mouse mouseButton) {
-        return new KeyMacro().when(mouse.presses).mouse(mouseButton);
     }
 
     /**
@@ -238,15 +214,6 @@ public abstract class Macro {
 
         /**
          * <p>
-         * Declare actual action.
-         * </p>
-         * 
-         * @param action
-         */
-        void run(Runnable action);
-
-        /**
-         * <p>
          * Consume the native event.
          * </p>
          * 
@@ -261,7 +228,13 @@ public abstract class Macro {
          * 
          * @return
          */
-        Events<V> isPressed();
+        Events<V> press();
+
+        /**
+         * @param consumeEvent
+         * @return
+         */
+        Events<V> press(boolean consumeEvent);
 
         /**
          * <p>
@@ -270,7 +243,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        Events<V> isReleased();
+        Events<V> release();
     }
 
     /**
@@ -335,13 +308,6 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public void run(Runnable action) {
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
         public MacroDSL consume() {
             consumable = true;
             return this;
@@ -351,7 +317,16 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public Events<V> isPressed() {
+        public Events<V> press() {
+            return press(false);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Events<V> press(boolean consumeEvent) {
+            consumable = consumeEvent;
             return register((key.mouse ? mouse : keyboard).presses);
         }
 
@@ -359,7 +334,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public Events<V> isReleased() {
+        public Events<V> release() {
             return register((key.mouse ? mouse : keyboard).releases);
         }
 
