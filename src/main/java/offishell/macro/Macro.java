@@ -281,12 +281,6 @@ public abstract class Macro {
         Events<V> press();
 
         /**
-         * @param consumeEvent
-         * @return
-         */
-        Events<V> press(boolean consumeEvent);
-
-        /**
          * <p>
          * Declare release event.
          * </p>
@@ -408,15 +402,6 @@ public abstract class Macro {
          */
         @Override
         public Events<V> press() {
-            return press(false);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Events<V> press(boolean consumeEvent) {
-            consumable = consumeEvent;
             return register((key.mouse ? mouseHook : keyboardHook).presses);
         }
 
@@ -663,6 +648,7 @@ public abstract class Macro {
                     break;
                 }
             }
+
             return consumed ? new LRESULT(1)
                     : User32.INSTANCE.CallNextHookEx(hook, nCode, wParam, new LPARAM(Pointer.nativeValue(info.getPointer())));
         }
