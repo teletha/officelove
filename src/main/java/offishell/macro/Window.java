@@ -9,48 +9,28 @@
  */
 package offishell.macro;
 
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.image.BufferedImage;
 import java.nio.file.Path;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef.HWND;
-import com.sun.jna.platform.win32.WinDef.RECT;
-import com.sun.jna.platform.win32.WinUser;
 
 import kiss.Disposable;
 import kiss.Events;
-import kiss.I;
 import offishell.UI;
+import offishell.platform.Color;
+import offishell.platform.Location;
+import offishell.platform.Native;
 
 /**
  * @version 2016/08/01 13:59:45
  */
 public class Window {
 
-    /** Robot. */
-    private final Robot robot;
-
     /** ID */
-    private final HWND id;
+    private final Object windowID;
 
     /**
-     * @param id
+     * @param windowID
      */
-    private Window(HWND id) {
-        try {
-            this.id = id;
-            this.robot = new Robot();
-        } catch (AWTException e) {
-            throw I.quiet(e);
-        }
+    private Window(Object windowID) {
+        this.windowID = windowID;
     }
 
     /**
@@ -61,7 +41,7 @@ public class Window {
      * @return
      */
     public String title() {
-        return text(id, User32.INSTANCE::GetWindowText);
+        return Native.API.getWindowTitle(windowID);
     }
 
     /**
@@ -70,37 +50,38 @@ public class Window {
      * </p>
      */
     public void close() {
-        User32.INSTANCE.PostMessage(id, WinUser.WM_CLOSE, null, null);
-
-        while (User32.INSTANCE.IsWindowVisible(id)) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                throw I.quiet(e);
-            }
-        }
+        Native.API.closeWindow(windowID);
     }
 
     public void input(Key key) {
-        robot.keyPress(key.virtualCode);
-        robot.keyRelease(key.virtualCode);
     }
 
     /**
-     * 
+     * @param mouse
      */
-    public void color(int x, int y) {
-        Rectangle window = position();
-        Rectangle rect = new Rectangle(window.x + x, window.y + y, 1, 1);
-        BufferedImage image = robot.createScreenCapture(rect);
-        Color color = new Color(image.getRGB(0, 0));
-        System.out.println(color);
-        Icon icon = new ImageIcon(image);
+    public Color color(int locationX, int locationY) {
+        Location window = windowPosition();
+        return color(window.slide(locationX, locationY));
+    }
 
-        JOptionPane.showMessageDialog(null, "←イメージ", // メッセージ
-                "イメージ確認", // タイトル
-                JOptionPane.PLAIN_MESSAGE, icon // 画像のアイコン
-        );
+    /**
+     * @param mouse
+     */
+    public Color color(Location location) {
+        return Native.API.getColor(location);
+    }
+
+    /**
+     * <p>
+     * Locate the window related position.
+     * </p>
+     * 
+     * @param locationX
+     * @param locationY
+     * @return
+     */
+    public Location locate(int locationX, int locationY) {
+        return windowPosition().slide(locationX, locationY);
     }
 
     /**
@@ -108,10 +89,19 @@ public class Window {
      * ウインドウの位置及びサイズと取得。
      * </p>
      */
-    public Rectangle position() {
-        RECT rect = new RECT();
-        User32.INSTANCE.GetWindowRect(id, rect);
-        return rect.toRectangle();
+    public Location windowPosition() {
+        return Native.API.getWindowPosition(windowID);
+    }
+
+    /**
+     * <p>
+     * Retrieve the current mouse relative position form this window.
+     * </p>
+     * 
+     * @return
+     */
+    public Location mousePosition() {
+        return windowPosition().relative(Native.API.getCursorPosition());
     }
 
     /**
@@ -155,7 +145,7 @@ public class Window {
      * @return
      */
     public static Window now() {
-        return new Window(User32.INSTANCE.GetForegroundWindow());
+        return new Window(Native.API.activeWindow());
     }
 
     /**
@@ -167,10 +157,9 @@ public class Window {
      */
     public static Events<Window> find() {
         return new Events<Window>(observer -> {
-            User32.INSTANCE.EnumWindows((hWnd, ponter) -> {
-                observer.accept(new Window(hWnd));
-                return true;
-            }, null);
+            Native.API.enumWindows(id -> {
+                observer.accept(new Window(id));
+            });
             return Disposable.Φ;
         });
     }
@@ -199,26 +188,4 @@ public class Window {
         return findByTitle(title.getFileName().toString());
     }
 
-    /**
-     * <p>
-     * Helper method to read text from the specified handle.
-     * </p>
-     * 
-     * @param id
-     * @param consumer
-     * @return
-     */
-    private static String text(HWND id, TriFunction<HWND, char[], Integer, Integer> consumer) {
-        char[] text = new char[512];
-        int size = consumer.apply(id, text, text.length);
-        return new String(text, 0, size);
-    }
-
-    /**
-     * @version 2016/08/01 14:43:30
-     */
-    private static interface TriFunction<Param1, Param2, Param3, Return> {
-
-        Return apply(Param1 param1, Param2 param2, Param3 param3);
-    }
 }

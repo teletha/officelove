@@ -9,32 +9,18 @@
  */
 package offishell.macro;
 
+import offishell.macro.lol.LoLMacro;
+
 /**
  * @version 2016/10/02 17:12:41
  */
-public class SampleMacro extends Macro {
+public class SampleMacro extends LoLMacro {
 
     /**
      * 
      */
     private SampleMacro() {
         // requireTitle("League of Legends (TM) Client");
-
-        when(Key.F11).press().merge(when(Key.Escape).press()).to(e -> {
-            System.exit(0);
-        });
-
-        when(Key.Q).consume().press().to(e -> {
-            mouseMoveTo(100, 100);
-        });
-
-        when(Key.Q).withCtrl().press().to(e -> {
-            System.out.println("Ctrl + Q");
-        });
-
-        when(Key.MouseLeft).withCtrl().press().to(e -> {
-            System.out.println("Ctrl + click");
-        });
     }
 
     /**

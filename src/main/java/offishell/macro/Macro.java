@@ -98,6 +98,10 @@ public abstract class Macro {
     protected Macro() {
         keyboardHook.install();
         mouseHook.install();
+
+        when(Key.F11).press().merge(when(Key.Escape).press()).to(e -> {
+            System.exit(0);
+        });
     }
 
     /**
@@ -158,6 +162,17 @@ public abstract class Macro {
      */
     protected final Macro input(Key key) {
         return emulate(key, true, true);
+    }
+
+    /**
+     * <p>
+     * Retrieve the active window.
+     * </p>
+     * 
+     * @return
+     */
+    protected final Window window() {
+        return Window.now();
     }
 
     /**
