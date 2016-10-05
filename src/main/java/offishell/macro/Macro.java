@@ -232,7 +232,7 @@ public abstract class Macro {
         return this;
     }
 
-    protected final Macro delay(int ms) {
+    public final Macro delay(int ms) {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {

@@ -9,26 +9,39 @@
  */
 package offishell.macro.lol;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+
 import javafx.beans.property.BooleanProperty;
 
+import kiss.I;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
 import offishell.platform.Location;
+import offishell.platform.Native;
 
 /**
  * @version 2016/10/05 17:03:59
  */
 public abstract class LoLMacro extends Macro {
 
-    private boolean debug = true;
+    /** The clipboard. */
+    private static final Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 
+    /** The debug mode. */
+    private static final boolean debug = true;
+
+    /** The shown skill. */
     private Skill skillForShowRange;
 
     /**
      * 
      */
     protected LoLMacro() {
+        requireTitle("League of Legends (TM) Client");
+
         when(Key.F12).consume().press().to(e -> {
             debugSkillColor();
         });
@@ -80,8 +93,7 @@ public abstract class LoLMacro extends Macro {
     /**
      * Declare combo action.
      */
-    protected void combo() {
-    }
+    protected abstract void combo();
 
     /**
      * <p>
@@ -91,7 +103,7 @@ public abstract class LoLMacro extends Macro {
      * @param skill
      * @return
      */
-    protected boolean canCast(Skill skill) {
+    protected final boolean canCast(Skill skill) {
         if (skill.castableColor == 0) {
             return true;
         }
@@ -105,7 +117,7 @@ public abstract class LoLMacro extends Macro {
      * 
      * @param skill
      */
-    protected void cast(Skill skill) {
+    protected final void cast(Skill skill) {
         cast(skill, 10);
     }
 
@@ -116,12 +128,16 @@ public abstract class LoLMacro extends Macro {
      * 
      * @param skill
      */
-    protected void cast(Skill skill, int delay) {
-        if (canCast(skill)) {
-            input(skill.key);
+    protected final void cast(Skill skill, int delay) {
+        if (skill == Skill.AM) {
+            attackMove(99);
+        } else {
+            if (canCast(skill)) {
+                input(skill.key);
 
-            if (0 < delay) {
-                delay(delay);
+                if (0 < delay) {
+                    delay(delay);
+                }
             }
         }
     }
@@ -146,6 +162,69 @@ public abstract class LoLMacro extends Macro {
         for (Skill skill : Skill.values()) {
             Location location = window().locate(skill.locationX, skill.locationY);
             System.out.println(skill + "\t\t" + location + "\t\t" + window().color(skill.locationX, skill.locationY));
+        }
+    }
+
+    /** The attack move state. */
+    private long moveLatest;
+
+    /** The attack move state. */
+    private long attackLatest;
+
+    /**
+     * <p>
+     * Attack move gracefully.
+     * </p>
+     * 
+     * @param attackInterval
+     */
+    private void attackMove(int attackInterval) {
+        int moveInterval = 75;
+        long now = System.currentTimeMillis();
+
+        if (moveLatest + moveInterval < now) {
+            int attackMotion = computeAttackMotion();
+
+            if (attackLatest + attackMotion < now) {
+                input(Skill.AM.key).delay(attackMotion);
+                attackLatest = System.currentTimeMillis();
+            }
+            input(Skill.Move.key);
+            moveLatest = System.currentTimeMillis();
+        }
+    }
+
+    /**
+     * <p>
+     * Compute the current attack speed.
+     * </p>
+     * 
+     * @return
+     */
+    private int computeAttackMotion() {
+        int attackSpeed = Float.valueOf(Float.valueOf(capture(593, 1091, 631, 1106)) * 100).intValue();
+
+        return Math.max(50000 / attackSpeed, 125);
+    }
+
+    /**
+     * <p>
+     * Capture the specified area.
+     * </p>
+     * 
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    private String capture(int x1, int y1, int x2, int y2) {
+        try {
+            Native.API.execute("Capture2Text.exe", "/wait " + x1 + " " + y1 + " " + x2 + " " + y2);
+
+            return (String) clip.getData(DataFlavor.stringFlavor);
+        } catch (Exception e) {
+            throw I.quiet(e);
         }
     }
 
@@ -188,35 +267,39 @@ public abstract class LoLMacro extends Macro {
      * @version 2016/10/05 13:58:25
      */
     public static enum Skill {
-        Move(Key.MouseRight, Key.MouseRight, 0, 0, 0),
+        Move(Key.MouseRight, Key.O, Key.MouseRight, 0, 0, 0),
 
-        AA(Key.P, Key.I, 0, 0, 0),
+        AA(Key.MouseRight, Key.P, Key.I, 0, 0, 0),
 
-        Q(Key.Q, Key.H, SkillBaseX, SkillBaseY, 8111079),
+        AM(Key.MouseRight, Key.P, Key.I, 0, 0, 0),
 
-        W(Key.W, Key.J, SkillBaseX + SkillGapX * 1, SkillBaseY, SkillColor),
+        Q(Key.Q, Key.Q, Key.H, SkillBaseX, SkillBaseY, 8111079),
 
-        E(Key.E, Key.K, SkillBaseX + SkillGapX * 2, SkillBaseY, SkillColor),
+        W(Key.W, Key.W, Key.J, SkillBaseX + SkillGapX * 1, SkillBaseY, SkillColor),
 
-        R(Key.R, Key.L, SkillBaseX + SkillGapX * 3, SkillBaseY, SkillColor),
+        E(Key.E, Key.E, Key.K, SkillBaseX + SkillGapX * 2, SkillBaseY, SkillColor),
 
-        SS1(Key.D, Key.H, SkillBaseX + SkillGapX * 4, SkillBaseY, SkillColor),
+        R(Key.Q, Key.R, Key.L, SkillBaseX + SkillGapX * 3, SkillBaseY, SkillColor),
 
-        SS2(Key.F, Key.H, SkillBaseX + SkillGapX * 5, SkillBaseY, 7583454),
+        SS1(Key.D, Key.D, Key.H, SkillBaseX + SkillGapX * 4, SkillBaseY, SkillColor),
 
-        Item1(Key.N1, Key.H, ItemBaseX + ItemGapX * 0, ItemBaseY, ItemColor),
+        SS2(Key.F, Key.F, Key.H, SkillBaseX + SkillGapX * 5, SkillBaseY, 7583454),
 
-        Item2(Key.N2, Key.H, ItemBaseX + ItemGapX * 1, ItemBaseY, ItemColor),
+        Item1(Key.N1, Key.N1, Key.H, ItemBaseX + ItemGapX * 0, ItemBaseY, ItemColor),
 
-        Item3(Key.N3, Key.H, ItemBaseX + ItemGapX * 2, ItemBaseY, ItemColor),
+        Item2(Key.N2, Key.N2, Key.H, ItemBaseX + ItemGapX * 1, ItemBaseY, ItemColor),
 
-        Item4(Key.N5, Key.H, ItemBaseX + ItemGapX * 0, ItemBaseY + ItemGapY, ItemColor),
+        Item3(Key.N3, Key.N3, Key.H, ItemBaseX + ItemGapX * 2, ItemBaseY, ItemColor),
 
-        Item5(Key.N6, Key.H, ItemBaseX + ItemGapX * 1, ItemBaseY + ItemGapY, ItemColor),
+        Item4(Key.N5, Key.N5, Key.H, ItemBaseX + ItemGapX * 0, ItemBaseY + ItemGapY, ItemColor),
 
-        Item6(Key.N7, Key.H, ItemBaseX + ItemGapX * 2, ItemBaseY + ItemGapY, ItemColor),
+        Item5(Key.N6, Key.N6, Key.H, ItemBaseX + ItemGapX * 1, ItemBaseY + ItemGapY, ItemColor),
 
-        Trinket(Key.N4, Key.H, 0, 0, 0);
+        Item6(Key.N7, Key.N7, Key.H, ItemBaseX + ItemGapX * 2, ItemBaseY + ItemGapY, ItemColor),
+
+        Trinket(Key.N4, Key.N4, Key.H, 0, 0, 0);
+
+        private final Key mainKey;
 
         private final Key key;
 
@@ -233,7 +316,8 @@ public abstract class LoLMacro extends Macro {
          * Skill infomation.
          * </p>
          */
-        private Skill(Key key, Key rangeKey, int locationX, int locationY, int castableColor) {
+        private Skill(Key mainKey, Key key, Key rangeKey, int locationX, int locationY, int castableColor) {
+            this.mainKey = mainKey;
             this.key = key;
             this.rangeKey = rangeKey;
             this.locationX = locationX;

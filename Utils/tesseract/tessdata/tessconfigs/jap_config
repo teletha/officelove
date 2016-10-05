@@ -1,0 +1,7 @@
+tessedit_enable_dict_correction  1
+textord_really_old_xheight       1
+tosp_threshold_bias2             1
+classify_norm_adj_midpoint       96
+tessedit_class_miss_scale        0.002
+textord_initialx_ile             1.0
+textord_min_linesize             2.5

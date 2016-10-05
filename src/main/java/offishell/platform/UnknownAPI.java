@@ -89,6 +89,14 @@ class UnknownAPI implements Native {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute(String command, String params) {
+        throw error();
+    }
+
+    /**
      * <p>
      * Throw error.
      * </p>

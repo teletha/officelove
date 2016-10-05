@@ -12,7 +12,9 @@ package offishell.platform;
 import java.util.function.Consumer;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.GDI32;
+import com.sun.jna.platform.win32.Shell32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HDC;
 import com.sun.jna.platform.win32.WinDef.HWND;
@@ -31,6 +33,9 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
 
     /** Instance of USER32.DLL for use in accessing native functions. */
     private static final GDI GDI = (GDI) Native.loadLibrary("gdi32", GDI.class, W32APIOptions.DEFAULT_OPTIONS);
+
+    /** Instance of USER32.DLL for use in accessing native functions. */
+    private static final Shell32 Shell = (Shell32) Native.loadLibrary("shell32", Shell32.class, W32APIOptions.DEFAULT_OPTIONS);
 
     /** Instance of USER32.DLL for use in accessing native functions. */
     private static final User User = (User) Native.loadLibrary("user32", User.class, W32APIOptions.DEFAULT_OPTIONS);
@@ -118,10 +123,18 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
      */
     @Override
     public void enumWindows(Consumer<HWND> process) {
-        User32.INSTANCE.EnumWindows((hwnd, pointer) -> {
+        User.EnumWindows((hwnd, pointer) -> {
             process.accept(hwnd);
             return true;
         }, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute(String command, String params) {
+        Shell.ShellExecute(null, "open", command, params, null, User32.SW_HIDE);
     }
 
     /**
@@ -152,6 +165,10 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
      */
     private static interface User extends StdCallLibrary, User32 {
 
+        static public final int CF_TEXT = 1;
+
+        static public final int CF_UNICODETEXT = 13;
+
         /**
          * Retrieves the position of the mouse cursor, in screen coordinates.
          *
@@ -179,6 +196,8 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          *         return value is zero.
          */
         boolean GetClientRect(HWND hWnd, RECT rect);
+
+        Pointer GetClipboardData(int format);
     }
 
     /**

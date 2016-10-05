@@ -9,19 +9,12 @@
  */
 package offishell.macro;
 
-import offishell.macro.lol.LoLMacro;
+import offishell.macro.lol.Kayle;
 
 /**
  * @version 2016/10/02 17:12:41
  */
-public class SampleMacro extends LoLMacro {
-
-    /**
-     * 
-     */
-    private SampleMacro() {
-        // requireTitle("League of Legends (TM) Client");
-    }
+public class SampleMacro extends Macro {
 
     /**
      * Entry point.
@@ -29,6 +22,6 @@ public class SampleMacro extends LoLMacro {
      * @param args
      */
     public static void main(String[] args) {
-        Macro.use(SampleMacro.class);
+        Macro.use(Kayle.class);
     }
 }

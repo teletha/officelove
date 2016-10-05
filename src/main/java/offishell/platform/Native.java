@@ -97,5 +97,22 @@ public interface Native<ID> {
      */
     ID activeWindow();
 
+    /**
+     * <p>
+     * List up all windows.
+     * </p>
+     * 
+     * @param process
+     */
     void enumWindows(Consumer<ID> process);
+
+    /**
+     * <p>
+     * Execute the command.
+     * </p>
+     * 
+     * @param command
+     * @param params TODO
+     */
+    void execute(String command, String params);
 }
