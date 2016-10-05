@@ -9,6 +9,7 @@
  */
 package offishell.platform;
 
+import java.util.StringJoiner;
 import java.util.function.Consumer;
 
 import com.sun.jna.Native;
@@ -133,8 +134,15 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
      * {@inheritDoc}
      */
     @Override
-    public void execute(String command, String params) {
-        Shell.ShellExecute(null, "open", command, params, null, User32.SW_HIDE);
+    public void execute(Object... command) {
+        if (0 < command.length) {
+            StringJoiner joiner = new StringJoiner(" ");
+
+            for (int i = 1; i < command.length; i++) {
+                joiner.add(String.valueOf(command[i]));
+            }
+            Shell.ShellExecute(null, "open", String.valueOf(command[0]), joiner.toString(), null, User32.SW_HIDE);
+        }
     }
 
     /**

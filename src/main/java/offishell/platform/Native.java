@@ -112,7 +112,6 @@ public interface Native<ID> {
      * </p>
      * 
      * @param command
-     * @param params TODO
      */
-    void execute(String command, String params);
+    void execute(Object... command);
 }

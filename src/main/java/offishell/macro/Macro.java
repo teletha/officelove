@@ -166,6 +166,18 @@ public abstract class Macro {
 
     /**
      * <p>
+     * Emulate press and release event.
+     * </p>
+     * 
+     * @param key
+     * @return
+     */
+    protected final Macro input(Key key, Key... modifiers) {
+        return emulate(key, true, true);
+    }
+
+    /**
+     * <p>
      * Retrieve the active window.
      * </p>
      * 

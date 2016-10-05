@@ -92,7 +92,7 @@ class UnknownAPI implements Native {
      * {@inheritDoc}
      */
     @Override
-    public void execute(String command, String params) {
+    public void execute(Object... command) {
         throw error();
     }
 

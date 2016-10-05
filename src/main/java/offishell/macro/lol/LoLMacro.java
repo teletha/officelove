@@ -144,6 +144,34 @@ public abstract class LoLMacro extends Macro {
 
     /**
      * <p>
+     * Cast the specified skill.
+     * </p>
+     * 
+     * @param skill
+     */
+    protected final void selfCast(Skill skill) {
+        cast(skill, 10);
+    }
+
+    /**
+     * <p>
+     * Cast the specified skill.
+     * </p>
+     * 
+     * @param skill
+     */
+    protected final void selfCast(Skill skill, int delay) {
+        if (canCast(skill)) {
+            input(skill.key);
+
+            if (0 < delay) {
+                delay(delay);
+            }
+        }
+    }
+
+    /**
+     * <p>
      * Declare skill action.
      * </p>
      * 
@@ -220,7 +248,7 @@ public abstract class LoLMacro extends Macro {
      */
     private String capture(int x1, int y1, int x2, int y2) {
         try {
-            Native.API.execute("Capture2Text.exe", "/wait " + x1 + " " + y1 + " " + x2 + " " + y2);
+            Native.API.execute("Capture2Text.exe", "/wait", x1, y1, x2, y2);
 
             return (String) clip.getData(DataFlavor.stringFlavor);
         } catch (Exception e) {
