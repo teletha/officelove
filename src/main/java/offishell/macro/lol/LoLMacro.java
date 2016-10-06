@@ -9,10 +9,6 @@
  */
 package offishell.macro.lol;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-
 import javafx.beans.property.BooleanProperty;
 
 import offishell.macro.Key;
@@ -25,9 +21,6 @@ import offishell.platform.Native;
  * @version 2016/10/05 17:03:59
  */
 public abstract class LoLMacro extends Macro {
-
-    /** The clipboard. */
-    private static final Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 
     /** The debug mode. */
     private static final boolean debug = true;
@@ -229,33 +222,12 @@ public abstract class LoLMacro extends Macro {
      * @return
      */
     private int computeAttackMotion() {
-        String captured = capture(593, 1091, 631, 1106);
-
-        // if (captured.startsWith("0")) {
-        // captured = captured.substring(1);
-        // }
-        // System.out.println(captured.trim());
-        int attackSpeed = (int) (Float.valueOf(captured) * 100);
-        return Math.max(50000 / attackSpeed, 125);
-    }
-
-    /**
-     * <p>
-     * Capture the specified area.
-     * </p>
-     * 
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return
-     */
-    private String capture(int x1, int y1, int x2, int y2) {
         try {
-            Native.API.execute("Capture2Text.exe", x1, y1, x2, y2);
-            return (String) clip.getData(DataFlavor.stringFlavor);
+            int attackSpeed = (int) (Float.valueOf(Native.API.ocr(593, 1091, 38, 15)) * 100);
+            return Math.max(50000 / attackSpeed, 125);
         } catch (Throwable e) {
-            return "1";
+            e.printStackTrace();
+            return 500;
         }
     }
 

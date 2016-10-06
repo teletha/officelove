@@ -114,4 +114,17 @@ public interface Native<ID> {
      * @param command
      */
     void execute(Object... command);
+
+    /**
+     * <p>
+     * Execute OCR.
+     * </p>
+     * 
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @return
+     */
+    String ocr(int x, int y, int width, int height);
 }

@@ -9,11 +9,13 @@
  */
 package offishell.platform;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.GDI32;
 import com.sun.jna.platform.win32.Shell32;
 import com.sun.jna.platform.win32.User32;
@@ -31,6 +33,9 @@ import kiss.I;
  * @version 2016/10/04 20:51:38
  */
 class WindowsAPI implements offishell.platform.Native<HWND> {
+
+    /** The clipboard. */
+    private static final Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 
     /** Instance of USER32.DLL for use in accessing native functions. */
     private static final GDI GDI = (GDI) Native.loadLibrary("gdi32", GDI.class, W32APIOptions.DEFAULT_OPTIONS);
@@ -146,6 +151,19 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String ocr(int x, int y, int width, int height) {
+        try {
+            execute("Capture2Text.exe", x, y, x + width, y + height);
+            return (String) clip.getData(DataFlavor.stringFlavor);
+        } catch (Throwable e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
      * <p>
      * Helper method to read text from the specified handle.
      * </p>
@@ -172,10 +190,6 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
      * @version 2016/10/04 21:28:46
      */
     private static interface User extends StdCallLibrary, User32 {
-
-        static public final int CF_TEXT = 1;
-
-        static public final int CF_UNICODETEXT = 13;
 
         /**
          * Retrieves the position of the mouse cursor, in screen coordinates.
@@ -204,8 +218,6 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          *         return value is zero.
          */
         boolean GetClientRect(HWND hWnd, RECT rect);
-
-        Pointer GetClipboardData(int format);
     }
 
     /**

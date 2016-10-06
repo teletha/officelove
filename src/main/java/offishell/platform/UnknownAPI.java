@@ -97,6 +97,14 @@ class UnknownAPI implements Native {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String ocr(int x, int y, int width, int height) {
+        throw error();
+    }
+
+    /**
      * <p>
      * Throw error.
      * </p>
