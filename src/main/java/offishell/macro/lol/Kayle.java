@@ -28,5 +28,6 @@ public class Kayle extends LoLMacro {
         cast(Skill.Q);
         cast(Skill.E);
         cast(Skill.AM);
+        selfCast(Skill.W);
     }
 }

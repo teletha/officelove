@@ -154,26 +154,36 @@ public abstract class Macro {
 
     /**
      * <p>
-     * Emulate press and release event.
+     * Emulate press and release event in series.
      * </p>
      * 
-     * @param key
+     * @param keys
      * @return
      */
-    protected final Macro input(Key key) {
-        return emulate(key, true, true);
+    protected final Macro input(Key... keys) {
+        for (Key key : keys) {
+            emulate(key, true, true);
+        }
+        return this;
     }
 
     /**
      * <p>
-     * Emulate press and release event.
+     * Emulate press and release event in parallel.
      * </p>
      * 
-     * @param key
+     * @param keys
      * @return
      */
-    protected final Macro input(Key key, Key... modifiers) {
-        return emulate(key, true, true);
+    protected final Macro inputParallel(Key... keys) {
+        for (int i = 0; i < keys.length; i++) {
+            emulate(keys[i], true, false);
+        }
+
+        for (int i = keys.length - 1; 0 <= i; i--) {
+            emulate(keys[i], false, true);
+        }
+        return this;
     }
 
     /**

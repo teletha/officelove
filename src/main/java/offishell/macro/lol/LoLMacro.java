@@ -142,7 +142,7 @@ public abstract class LoLMacro extends Macro {
      * @param skill
      */
     protected final void selfCast(Skill skill) {
-        cast(skill, 10);
+        selfCast(skill, 10);
     }
 
     /**
@@ -154,7 +154,7 @@ public abstract class LoLMacro extends Macro {
      */
     protected final void selfCast(Skill skill, int delay) {
         if (canCast(skill)) {
-            input(skill.key);
+            inputParallel(Key.Shift, skill.key);
 
             if (0 < delay) {
                 delay(delay);
