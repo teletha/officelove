@@ -15,7 +15,6 @@ import java.awt.datatransfer.DataFlavor;
 
 import javafx.beans.property.BooleanProperty;
 
-import kiss.I;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
@@ -230,8 +229,13 @@ public abstract class LoLMacro extends Macro {
      * @return
      */
     private int computeAttackMotion() {
-        int attackSpeed = Float.valueOf(Float.valueOf(capture(593, 1091, 631, 1106)) * 100).intValue();
+        String captured = capture(593, 1091, 631, 1106);
 
+        // if (captured.startsWith("0")) {
+        // captured = captured.substring(1);
+        // }
+        // System.out.println(captured.trim());
+        int attackSpeed = (int) (Float.valueOf(captured) * 100);
         return Math.max(50000 / attackSpeed, 125);
     }
 
@@ -248,11 +252,10 @@ public abstract class LoLMacro extends Macro {
      */
     private String capture(int x1, int y1, int x2, int y2) {
         try {
-            Native.API.execute("Capture2Text.exe", "/wait", x1, y1, x2, y2);
-
+            Native.API.execute("Capture2Text.exe", x1, y1, x2, y2);
             return (String) clip.getData(DataFlavor.stringFlavor);
-        } catch (Exception e) {
-            throw I.quiet(e);
+        } catch (Throwable e) {
+            return "1";
         }
     }
 
