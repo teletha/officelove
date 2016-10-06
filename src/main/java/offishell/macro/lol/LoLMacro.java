@@ -11,6 +11,7 @@ package offishell.macro.lol;
 
 import javafx.beans.property.BooleanProperty;
 
+import kiss.I;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
@@ -31,54 +32,76 @@ public abstract class LoLMacro extends Macro {
     /**
      * 
      */
-    protected LoLMacro() {
-        requireTitle("League of Legends (TM) Client");
+    protected static void active() {
+        try {
+            Class<Macro> caller = (Class<Macro>) Class.forName(new Error().getStackTrace()[1].getClassName());
+            Macro.use(caller);
+        } catch (ClassNotFoundException e) {
+            throw I.quiet(e);
+        }
+    }
 
-        when(Key.F12).consume().press().to(e -> {
-            debugSkillColor();
+    /**
+     * 
+     */
+    protected LoLMacro() {
+        require(this::isReloadable, () -> {
+            when(Key.S).withCtrl().press().to(e -> {
+                input(Key.F11);
+                System.exit(0);
+            });
+        });
+        when(Key.Escape).press().to(e -> {
+            System.exit(0);
         });
 
-        // configure skill range mode
-        for (Skill skill : new Skill[] {Skill.AA, Skill.Q, Skill.W, Skill.E, Skill.R}) {
-            when(skill.key).withAlt().press().to(e -> {
-                skillForShowRange = skillForShowRange == skill ? null : skill;
-
-                log("Show range [" + skillForShowRange + "]");
+        requireTitle("League of Legends (TM) Client", () -> {
+            when(Key.F12).consume().press().to(e -> {
+                debugSkillColor();
             });
-        }
 
-        for (Skill skill : new Skill[] {Skill.Move, Skill.Q, Skill.W, Skill.E, Skill.R}) {
-            when(skill.key).press().to(e -> {
-                if (skillForShowRange != null) {
-                    if (canCast(skillForShowRange)) {
-                        if (skill == Skill.Move) {
-                            input(Key.O);
+            // configure skill range mode
+            for (Skill skill : new Skill[] {Skill.AA, Skill.Q, Skill.W, Skill.E, Skill.R}) {
+                when(skill.key).withAlt().press().to(e -> {
+                    skillForShowRange = skillForShowRange == skill ? null : skill;
+
+                    log("Show range [" + skillForShowRange + "]");
+                });
+            }
+
+            for (Skill skill : new Skill[] {Skill.Move, Skill.Q, Skill.W, Skill.E, Skill.R}) {
+                when(skill.key).press().to(e -> {
+                    if (skillForShowRange != null) {
+                        if (canCast(skillForShowRange)) {
+                            if (skill == Skill.Move) {
+                                input(Key.O);
+                            }
+                            delay(10);
+                            input(skillForShowRange.rangeKey);
                         }
-                        delay(10);
-                        input(skillForShowRange.rangeKey);
                     }
+                });
+            }
+
+            // configure combo
+            when(Key.MouseLeft).press().to(e -> {
+                BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();
+
+                while (!released.get()) {
+                    combo();
                 }
             });
-        }
 
-        // configure combo
-        when(Key.MouseLeft).press().to(e -> {
-            BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();
+            // debug
+            when(Key.Pause).consume().press().to(e -> {
+                Window window = window();
+                Location mouse = window.mousePosition();
 
-            while (!released.get()) {
-                combo();
-            }
-        });
-
-        // debug
-        when(Key.Pause).consume().press().to(e -> {
-            Window window = window();
-            Location mouse = window.mousePosition();
-
-            for (int i = -4; i < 4; i++) {
-                Location moved = mouse.slideY(i);
-                System.out.println(moved + "   " + window.color(moved));
-            }
+                for (int i = -4; i < 4; i++) {
+                    Location moved = mouse.slideY(i);
+                    log(moved + "   " + window.color(moved));
+                }
+            });
         });
     }
 
@@ -245,6 +268,25 @@ public abstract class LoLMacro extends Macro {
             }
             System.out.println(builder);
         }
+    }
+
+    /**
+     * Try to reload this macro in development environment.
+     */
+    private boolean isReloadable(Window window) {
+        String title = window.title();
+
+        if (title.contains("Eclipse")) {
+            Class clazz = getClass();
+
+            while (clazz != Object.class) {
+                if (title.contains(clazz.getName().replaceAll("\\.", "/") + ".java")) {
+                    return true;
+                }
+                clazz = clazz.getSuperclass();
+            }
+        }
+        return false;
     }
 
     /** The skill location constants. */

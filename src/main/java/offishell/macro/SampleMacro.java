@@ -9,7 +9,7 @@
  */
 package offishell.macro;
 
-import offishell.macro.lol.Kayle;
+import offishell.macro.lol.Talon;
 
 /**
  * @version 2016/10/02 17:12:41
@@ -22,6 +22,6 @@ public class SampleMacro extends Macro {
      * @param args
      */
     public static void main(String[] args) {
-        Macro.use(Kayle.class);
+        Macro.use(Talon.class);
     }
 }

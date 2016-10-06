@@ -9,26 +9,35 @@
  */
 package offishell.macro.lol;
 
+import offishell.macro.Macro;
+
 /**
- * @version 2016/10/05 17:05:25
+ * @version 2016/10/06 17:42:19
  */
-public class Kayle extends LoLMacro {
+public class Talon extends LoLMacro {
 
     /**
-     * p {@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     protected void combo() {
         cast(Skill.Q);
         cast(Skill.E);
-        cast(Skill.AM);
-        selfCast(Skill.W);
+        cast(Skill.Item6);
+        cast(Skill.AA);
+
+        if (!canCast(Skill.E)) {
+            cast(Skill.W, 150);
+            cast(Skill.Item2, 50);
+            cast(Skill.SS2);
+            cast(Skill.R, 1000);
+        }
     }
 
     /**
      * 
      */
     public static void main(String[] args) {
-        LoLMacro.active();
+        Macro.use(Talon.class);
     }
 }

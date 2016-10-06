@@ -270,8 +270,13 @@ public abstract class Macro {
      * 
      * @param condition
      */
-    protected final void require(Predicate<Window> condition) {
+    protected final void require(Predicate<Window> condition, Runnable definitions) {
+        Predicate<Window> stored = windowCondition;
+
         windowCondition = windowCondition.and(condition);
+        definitions.run();
+
+        windowCondition = stored;
     }
 
     /**
@@ -281,8 +286,8 @@ public abstract class Macro {
      * 
      * @param condition
      */
-    protected final void requireTitle(String title) {
-        require(window -> window.title().contains(title));
+    protected final void requireTitle(String title, Runnable definitions) {
+        require(window -> window.title().contains(title), definitions);
     }
 
     /**
