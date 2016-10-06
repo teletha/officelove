@@ -1,1 +1,0 @@
-﻿Just ﬁnd the appropriate lang from_text = to_text  Example (adding 3 substituti  English: IVI = M >< = X some%space%tex1  To create a substitution regal Special tokens and escape c  °/ospace% Space char. °/otab°/o Tab charact  °/oeq°/o Equals (=) °/operc% Percent sig °/olf% Linefeed ch.  %r‘r% Cnrrianp mt
