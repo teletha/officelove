@@ -1350,7 +1350,9 @@ public class Word {
                     }
                 }
 
-                paragraph.getRuns().get(0).setText(I.transform(value, String.class), 0);
+                if (!paragraph.getIRuns().isEmpty()) {
+                    paragraph.getRuns().get(0).setText(I.transform(value, String.class), 0);
+                }
             }
         }
 
