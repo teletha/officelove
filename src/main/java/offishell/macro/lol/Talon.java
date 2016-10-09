@@ -21,6 +21,14 @@ public class Talon extends LoLMacro {
      */
     @Override
     protected void combo() {
+        power();
+    }
+
+    /**
+     * スピードスパイク
+     */
+    @SuppressWarnings("unused")
+    private void speed() {
         cast(Skill.Q);
         cast(Skill.E);
         cast(Skill.Item6);
@@ -28,6 +36,24 @@ public class Talon extends LoLMacro {
 
         if (!canCast(Skill.E)) {
             cast(Skill.W, 150);
+            cast(Skill.Item2, 50);
+            cast(Skill.SS2);
+            cast(Skill.R, 1000);
+        }
+    }
+
+    /**
+     * パワースパイク
+     */
+    @SuppressWarnings("unused")
+    private void power() {
+        cast(Skill.E);
+        if (!canCast(Skill.E)) {
+            cast(Skill.W, 150);
+            cast(Skill.Item6);
+            cast(Skill.AA, 250);
+            cast(Skill.Q, 50);
+            cast(Skill.AA, 250);
             cast(Skill.Item2, 50);
             cast(Skill.SS2);
             cast(Skill.R, 1000);

@@ -243,7 +243,6 @@ public abstract class Macro {
     }
 
     protected final Macro mouseMoveTo(int x, int y) {
-
         INPUT ip = new INPUT();
         ip.type = new DWORD(INPUT.INPUT_MOUSE);
         ip.input.setType("mi");

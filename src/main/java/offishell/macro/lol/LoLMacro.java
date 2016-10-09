@@ -87,6 +87,20 @@ public abstract class LoLMacro extends Macro {
             when(Key.MouseLeft).press().to(e -> {
                 BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();
 
+                Location position = window().mousePosition();
+                int x = position.x();
+                int y = position.y();
+
+                // exclude mini map
+                if (1410 < x && 800 < y) {
+                    return;
+                }
+
+                // exclude status and item view
+                if (453 <= x && x <= 1076 && 986 <= y) {
+                    return;
+                }
+
                 while (!released.get()) {
                     combo();
                 }

@@ -72,6 +72,28 @@ public class Location {
     }
 
     /**
+     * <p>
+     * Compute x position.
+     * </p>
+     * 
+     * @return
+     */
+    public int x() {
+        return x - baseX;
+    }
+
+    /**
+     * <p>
+     * Compute y position.
+     * </p>
+     * 
+     * @return
+     */
+    public int y() {
+        return y - baseY;
+    }
+
+    /**
      * @param locationX
      * @param locationY
      * @return
