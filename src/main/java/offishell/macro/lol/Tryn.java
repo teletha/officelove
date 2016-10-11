@@ -9,37 +9,21 @@
  */
 package offishell.macro.lol;
 
-import offishell.macro.Key;
-
 /**
  * @version 2016/10/05 17:05:25
  */
-public class Kayle extends LoLMacro {
-
-    /**
-     * 
-     */
-    private Kayle() {
-        when(Key.W).consume().press().to(e -> {
-            cast(Skill.W);
-            selfCast(Skill.W);
-        });
-
-        when(Key.R).consume().press().to(e -> {
-            cast(Skill.R);
-            selfCast(Skill.R);
-        });
-    }
+public class Tryn extends LoLMacro {
 
     /**
      * p {@inheritDoc}
      */
     @Override
     protected void combo() {
-        // cast(Skill.Q);
-        // cast(Skill.E);
         cast(Skill.AM);
-        // selfCast(Skill.W);
+        cast(Skill.Item6);
+        cast(Skill.W);
+        cast(Skill.Item2);
+        cast(Skill.SS2);
     }
 
     /**

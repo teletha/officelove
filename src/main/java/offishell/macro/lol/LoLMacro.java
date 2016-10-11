@@ -29,6 +29,9 @@ public abstract class LoLMacro extends Macro {
     /** The shown skill. */
     private Skill skillForShowRange;
 
+    /** option */
+    private boolean centering;
+
     /**
      * 
      */
@@ -101,8 +104,18 @@ public abstract class LoLMacro extends Macro {
                     return;
                 }
 
-                while (!released.get()) {
-                    combo();
+                try {
+                    if (centering) {
+                        press(Key.K.Space);
+                    }
+
+                    while (!released.get()) {
+                        combo();
+                    }
+                } finally {
+                    if (centering) {
+                        release(Key.Space);
+                    }
                 }
             });
 
@@ -123,6 +136,17 @@ public abstract class LoLMacro extends Macro {
      * Declare combo action.
      */
     protected abstract void combo();
+
+    /**
+     * <p>
+     * Set centering mode.
+     * </p>
+     * 
+     * @param mode
+     */
+    protected final void setAutoCenter(boolean mode) {
+        this.centering = mode;
+    }
 
     /**
      * <p>
@@ -162,7 +186,9 @@ public abstract class LoLMacro extends Macro {
             attackMove(99);
         } else {
             if (canCast(skill)) {
+                press(Key.BackSlash);
                 input(skill.key);
+                release(Key.BackSlash);
 
                 if (0 < delay) {
                     delay(delay);
@@ -228,6 +254,10 @@ public abstract class LoLMacro extends Macro {
     /** The attack move state. */
     private long attackLatest;
 
+    private long attackMotionCalcurationLatest;
+
+    private int latestAttackMotion = 400;
+
     /**
      * <p>
      * Attack move gracefully.
@@ -240,16 +270,21 @@ public abstract class LoLMacro extends Macro {
         long now = System.currentTimeMillis();
 
         if (moveLatest + moveInterval < now) {
-            int attackMotion = computeAttackMotion();
-
-            if (attackLatest + attackMotion < now) {
-                input(Skill.AM.key).delay(attackMotion);
+            if (attackLatest + latestAttackMotion < now) {
+                latestAttackMotion = computeAttackMotion();
+                float tio = 0.6F;
+                // System.out
+                // .println(attackMotion + " " + ((int) (attackMotion * tio)) + " " + ((int)
+                // (attackMotion * 0.8)) + " " + (now - attackLatest));
+                input(Skill.AM.key).delay((int) (latestAttackMotion * tio));
                 attackLatest = System.currentTimeMillis();
             }
             input(Skill.Move.key);
             moveLatest = System.currentTimeMillis();
         }
     }
+
+    private long last;
 
     /**
      * <p>
@@ -261,6 +296,9 @@ public abstract class LoLMacro extends Macro {
     private int computeAttackMotion() {
         try {
             int attackSpeed = (int) (Float.valueOf(Native.API.ocr(593, 1091, 38, 15)) * 100);
+            long now = System.currentTimeMillis();
+            System.out.println(attackSpeed + "      " + (now - last));
+            last = now;
             return Math.max(50000 / attackSpeed, 125);
         } catch (Throwable e) {
             e.printStackTrace();

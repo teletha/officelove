@@ -45,7 +45,6 @@ public class Talon extends LoLMacro {
     /**
      * パワースパイク
      */
-    @SuppressWarnings("unused")
     private void power() {
         cast(Skill.E);
         if (!canCast(Skill.E)) {

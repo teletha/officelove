@@ -11,12 +11,16 @@ package offishell.platform;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.util.StringJoiner;
+import java.util.concurrent.CyclicBarrier;
 import java.util.function.Consumer;
 
 import com.sun.jna.Native;
+import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
+import com.sun.jna.WString;
 import com.sun.jna.platform.win32.GDI32;
+import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Shell32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HDC;
@@ -24,6 +28,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinDef.POINT;
 import com.sun.jna.platform.win32.WinDef.RECT;
 import com.sun.jna.platform.win32.WinUser;
+import com.sun.jna.platform.win32.WinUser.MSG;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 
@@ -45,6 +50,9 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
 
     /** Instance of USER32.DLL for use in accessing native functions. */
     private static final User User = (User) Native.loadLibrary("user32", User.class, W32APIOptions.DEFAULT_OPTIONS);
+
+    /** Instance of USER32.DLL for use in accessing native functions. */
+    private static final Kernel Kernel = (Kernel) Native.loadLibrary("kernel32", Kernel.class, W32APIOptions.DEFAULT_OPTIONS);
 
     /**
      * {@inheritDoc}
@@ -157,10 +165,18 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     public String ocr(int x, int y, int width, int height) {
         try {
             execute("Capture2Text.exe", x, y, x + width, y + height);
-            return (String) clip.getData(DataFlavor.stringFlavor);
+            // return (String) clip.getData(DataFlavor.stringFlavor);
+            return null;
         } catch (Throwable e) {
             throw I.quiet(e);
         }
+    }
+
+    private void read() {
+        User.OpenClipboard(null);
+        // Pointer data = User.GetClipboardData(1); // CF_TEXT
+        // Kernel.GlobalAlloc()
+        User.CloseClipboard(null);
     }
 
     /**
@@ -184,6 +200,20 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     private static interface TriFunction<Param1, Param2, Param3, Return> {
 
         Return apply(Param1 param1, Param2 param2, Param3 param3);
+    }
+
+    /**
+     * @version 2016/10/04 21:28:46
+     */
+    private static interface Kernel extends StdCallLibrary, Kernel32 {
+
+        int GMEM_MOVEABLE = 0x2;
+
+        Pointer GlobalAlloc(int uFlags, int dwBytes);
+
+        Pointer GlobalLock(Pointer hMem);
+
+        boolean GlobalUnlock(Pointer hMem);
     }
 
     /**
@@ -218,6 +248,26 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          *         return value is zero.
          */
         boolean GetClientRect(HWND hWnd, RECT rect);
+
+        boolean OpenClipboard(Pointer hWnd);
+
+        boolean CloseClipboard(Pointer hWnd);
+
+        boolean EmptyClipboard();
+
+        Pointer GetClipboardData(int format);
+
+        Pointer CreateWindowEx(int dwExStyle, WString lpClassName, WString lpWindowName, int dwStyle, int x, int y, int nWidth, int nHeight, int hWndParent, int hMenu, int hInstance, int lpParam);
+
+        boolean AddClipboardFormatListener(Pointer hWnd);
+
+        boolean GetMessage(MSG lpMsg, Pointer hWnd, int wMsgFilterMin, int wMsgFilterMax);
+
+        boolean IsClipboardFormatAvailable(int format);
+
+        Pointer GetClipboardOwner();
+
+        Pointer SetClipboardData(int format, Pointer hMem);
     }
 
     /**
@@ -236,5 +286,256 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          *         return value is zero.
          */
         int GetPixel(HDC hdc, int x, int y);
+    }
+
+    public static void main(String[] args) {
+        new Clipboards(1000);
+    }
+
+    public static class Clipboards {
+
+        static public final int MOD_ALT = 0x1;
+
+        static public final int MOD_CONTROL = 0x2;
+
+        static public final int MOD_SHIFT = 0x4;
+
+        static public final int MOD_WIN = 0x8;
+
+        static public final int MOD_NOREPEAT = 0x4000;
+
+        static public final byte VK_SHIFT = 0x10;
+
+        static public final byte VK_CONTROL = 0x11;
+
+        static public final byte VK_MENU = 0x12;
+
+        static public final byte VK_LWIN = 0x5b;
+
+        static public final byte VK_RWIN = 0x5c;
+
+        static public final int KEYEVENTF_KEYUP = 2;
+
+        static public final int GWL_WNDPROC = -4;
+
+        static public final int WM_HOTKEY = 0x312;
+
+        static public final int WM_CLIPBOARDUPDATE = 0x31D;
+
+        static public final int WM_USER = 0x400;
+
+        static public final int WM_LBUTTONDOWN = 0x201;
+
+        static public final int WM_LBUTTONUP = 0x202;
+
+        static public final int WM_RBUTTONDOWN = 0x204;
+
+        static public final int WM_RBUTTONUP = 0x205;
+
+        static public final int CF_TEXT = 1;
+
+        static public final int CF_UNICODETEXT = 13;
+
+        static public final int CF_HDROP = 15;
+
+        static public final int IMAGE_ICON = 1;
+
+        static public final int LR_LOADFROMFILE = 0x10;
+
+        static public final int MONITOR_DEFAULTTONEAREST = 2;
+
+        Pointer hwnd;
+
+        final char[] chars = new char[2048];
+
+        final int maxTextLength;
+
+        public Clipboards(int maxTextLength) {
+            this.maxTextLength = maxTextLength;
+
+            final CyclicBarrier barrier = new CyclicBarrier(2);
+
+            new Thread("Clipboard") {
+
+                @Override
+                public void run() {
+                    hwnd = User.CreateWindowEx(0, new WString("STATIC"), new WString(""), 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                    if (hwnd == null) {
+                        System.exit(0);
+                    }
+
+                    if (!User.AddClipboardFormatListener(hwnd)) {
+                        System.exit(0);
+                    }
+
+                    try {
+                        barrier.await();
+                    } catch (Exception ignored) {
+                    }
+
+                    MSG msg = new MSG();
+                    while (User.GetMessage(msg, (Pointer) null, WM_CLIPBOARDUPDATE, WM_CLIPBOARDUPDATE)) {
+                        if (msg.message != WM_CLIPBOARDUPDATE) continue;
+                        if (hwnd.equals(User.GetClipboardOwner())) {
+                            continue;
+                        }
+                        changed();
+                    }
+                }
+            }.start();
+
+            try {
+                barrier.await();
+            } catch (Exception ignored) {
+            }
+        }
+
+        protected void changed() {
+            System.out.println("Changed  " + getContents());
+        }
+
+        private boolean open(int millis) {
+            int i = 0;
+            while (!User.OpenClipboard(hwnd)) {
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException ex) {
+                }
+                i += 5;
+                if (i > millis) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /** @return May be null. */
+        public String getContents() {
+            if (!open(500)) return null;
+            try {
+                int format;
+                if (User.IsClipboardFormatAvailable(CF_UNICODETEXT)) {
+                    format = CF_UNICODETEXT;
+                } else if (User.IsClipboardFormatAvailable(CF_TEXT)) {
+                    format = CF_TEXT;
+                } else if (User.IsClipboardFormatAvailable(CF_HDROP)) {
+                    format = CF_HDROP;
+                } else {
+                    return null;
+                }
+
+                Pointer globalData = User.GetClipboardData(format);
+                if (globalData == null) {
+                    return null;
+                }
+
+                Pointer data = Kernel.GlobalLock(globalData);
+                if (data == null) {
+                    return null;
+                }
+
+                String text = null;
+                switch (format) {
+                case CF_UNICODETEXT:
+                    if (CLibrary.wcslen(data) <= maxTextLength)
+                        text = data.getWideString(0);
+                    else
+                        text = new String(data.getCharArray(0, maxTextLength));
+                    break;
+
+                case CF_TEXT:
+                    if (CLibrary.strlen(data) <= maxTextLength)
+                        text = data.getString(0);
+                    else
+                        text = new String(data.getCharArray(0, maxTextLength));
+                    break;
+                //
+                // case CF_HDROP:
+                // int fileCount = DragQueryFile(data, -1, null, 0);
+                // if (fileCount == 0) {
+                // if (WARN) warn("Unable to query file count.");
+                // return null;
+                // }
+                // StringBuilder buffer = new StringBuilder(512);
+                // for (int i = 0; i < fileCount; i++) {
+                // int charCount = DragQueryFile(data, i, chars, chars.length);
+                // if (charCount == 0) {
+                // if (WARN) warn("Unable to query file name.");
+                // return null;
+                // }
+                // buffer.append(chars, 0, charCount);
+                // buffer.append('\n');
+                // }
+                // buffer.setLength(buffer.length() - 1);
+                // text = buffer.toString();
+                // break;
+                }
+
+                Kernel.GlobalUnlock(globalData);
+
+                return text;
+            } finally {
+                if (!User.CloseClipboard(hwnd)) {
+                    return null;
+                }
+            }
+        }
+
+        public DataType getDataType() {
+            if (User.IsClipboardFormatAvailable(CF_UNICODETEXT)) return DataType.text;
+            if (User.IsClipboardFormatAvailable(CF_TEXT)) return DataType.text;
+            if (User.IsClipboardFormatAvailable(CF_HDROP)) return DataType.files;
+            return DataType.unknown;
+        }
+
+        public boolean setContents(String text) {
+            if (!open(150)) return false;
+
+            try {
+                if (!User.EmptyClipboard()) {
+                    return false;
+                }
+
+                Pointer data = Kernel.GlobalAlloc(Kernel.GMEM_MOVEABLE, (text.length() + 1) * 2); // 2
+                                                                                                  // is
+                // sizeof(WCHAR)
+                if (data == null) {
+                    return false;
+                }
+
+                Pointer buffer = Kernel.GlobalLock(data);
+                if (buffer == null) {
+                    return false;
+                }
+                buffer.setWideString(0, text);
+                Kernel.GlobalUnlock(data);
+
+                if (User.SetClipboardData(CF_UNICODETEXT, buffer) == null) {
+                    return false;
+                }
+                return true;
+            } finally {
+                if (!User.CloseClipboard(hwnd)) {
+                }
+            }
+        }
+
+        static public enum DataType {
+            unknown, text, files
+        }
+    }
+
+    /**
+     * @version 2016/10/12 2:55:40
+     */
+    static class CLibrary {
+
+        public static native int strlen(Pointer p);
+
+        public static native int wcslen(Pointer p);
+
+        static {
+            Native.register(Platform.C_LIBRARY_NAME);
+        }
     }
 }
