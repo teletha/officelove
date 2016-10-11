@@ -165,18 +165,25 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     public String ocr(int x, int y, int width, int height) {
         try {
             execute("Capture2Text.exe", x, y, x + width, y + height);
-            // return (String) clip.getData(DataFlavor.stringFlavor);
-            return null;
+            return read();
         } catch (Throwable e) {
             throw I.quiet(e);
         }
     }
 
-    private void read() {
+    private String read() {
         User.OpenClipboard(null);
-        // Pointer data = User.GetClipboardData(1); // CF_TEXT
-        // Kernel.GlobalAlloc()
+        Pointer globalData = User.GetClipboardData(1);
+        Pointer data = Kernel.GlobalLock(globalData);
+
+        // if (CLibrary.strlen(data) <= maxTextLength)
+        String text = data.getString(0);
+        // else
+        // text = new String(data.getCharArray(0, maxTextLength));
+        System.out.println(text);
         User.CloseClipboard(null);
+
+        return text;
     }
 
     /**
@@ -351,6 +358,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
         final int maxTextLength;
 
         public Clipboards(int maxTextLength) {
+            System.out.println("create");
             this.maxTextLength = maxTextLength;
 
             final CyclicBarrier barrier = new CyclicBarrier(2);
@@ -391,7 +399,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
         }
 
         protected void changed() {
-            System.out.println("Changed  " + getContents());
+            System.out.println("Changed ");
         }
 
         private boolean open(int millis) {
