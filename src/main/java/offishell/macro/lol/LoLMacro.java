@@ -273,9 +273,8 @@ public abstract class LoLMacro extends Macro {
             if (attackLatest + latestAttackMotion < now) {
                 latestAttackMotion = computeAttackMotion();
                 float tio = 0.6F;
-                // System.out
-                // .println(attackMotion + " " + ((int) (attackMotion * tio)) + " " + ((int)
-                // (attackMotion * 0.8)) + " " + (now - attackLatest));
+                System.out
+                        .println(latestAttackMotion + " " + ((int) (latestAttackMotion * tio)) + " " + ((int) (latestAttackMotion * 0.8)) + " " + (now - attackLatest));
                 input(Skill.AM.key).delay((int) (latestAttackMotion * tio));
                 attackLatest = System.currentTimeMillis();
             }
@@ -283,8 +282,6 @@ public abstract class LoLMacro extends Macro {
             moveLatest = System.currentTimeMillis();
         }
     }
-
-    private long last;
 
     /**
      * <p>
@@ -296,9 +293,6 @@ public abstract class LoLMacro extends Macro {
     private int computeAttackMotion() {
         try {
             int attackSpeed = (int) (Float.valueOf(Native.API.ocr(593, 1091, 38, 15)) * 100);
-            long now = System.currentTimeMillis();
-            System.out.println(attackSpeed + "      " + (now - last));
-            last = now;
             return Math.max(50000 / attackSpeed, 125);
         } catch (Throwable e) {
             e.printStackTrace();
