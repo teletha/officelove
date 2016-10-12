@@ -11,6 +11,8 @@ package offishell.platform;
 
 import java.util.function.Consumer;
 
+import kiss.Events;
+
 /**
  * @version 2016/10/04 21:11:29
  */
@@ -101,6 +103,14 @@ class UnknownAPI implements Native {
      */
     @Override
     public String ocr(int x, int y, int width, int height) {
+        throw error();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Events clipboard() {
         throw error();
     }
 

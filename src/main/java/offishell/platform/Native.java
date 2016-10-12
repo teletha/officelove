@@ -13,6 +13,8 @@ import static com.sun.jna.Platform.*;
 
 import java.util.function.Consumer;
 
+import kiss.Events;
+
 /**
  * @version 2016/10/04 21:02:26
  */
@@ -127,4 +129,13 @@ public interface Native<ID> {
      * @return
      */
     String ocr(int x, int y, int width, int height);
+
+    /**
+     * <p>
+     * Listen the change of clipboard.
+     * </p>
+     * 
+     * @return
+     */
+    Events<String> clipboard();
 }
