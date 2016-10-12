@@ -67,6 +67,8 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     /** The native clipboard manager. */
     private static final Clipboard clipboard = new Clipboard();
 
+    private final Property<String> ocr = clipboard().startWith("0.8").to();
+
     /**
      * {@inheritDoc}
      */
@@ -174,11 +176,9 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
             info.lpParameters = joiner.toString();
             info.nShow = User32.SW_HIDE;
             Shell.ShellExecuteEx(info);
-            Kernel32.INSTANCE.WaitForSingleObject(info.hProcess, 25);
+            Kernel32.INSTANCE.WaitForSingleObject(info.hProcess, 0);
         }
     }
-
-    private Property<String> ocr = clipboard().startWith("0.8").to();
 
     /**
      * {@inheritDoc}

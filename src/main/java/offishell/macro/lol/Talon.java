@@ -9,8 +9,6 @@
  */
 package offishell.macro.lol;
 
-import offishell.macro.Macro;
-
 /**
  * @version 2016/10/06 17:42:19
  */
@@ -32,7 +30,7 @@ public class Talon extends LoLMacro {
         cast(Skill.Q);
         cast(Skill.E);
         cast(Skill.Item6);
-        cast(Skill.AA);
+        cast(Skill.AM);
 
         if (!canCast(Skill.E)) {
             cast(Skill.W, 150);
@@ -63,6 +61,6 @@ public class Talon extends LoLMacro {
      * 
      */
     public static void main(String[] args) {
-        Macro.use(Talon.class);
+        LoLMacro.active();
     }
 }

@@ -32,6 +32,9 @@ public abstract class LoLMacro extends Macro {
     /** option */
     private boolean centering;
 
+    /** option */
+    protected double attackMotionRatio = 0.8;
+
     /**
      * 
      */
@@ -254,9 +257,8 @@ public abstract class LoLMacro extends Macro {
     /** The attack move state. */
     private long attackLatest;
 
-    private long attackMotionCalcurationLatest;
-
-    private int latestAttackMotion = 400;
+    /** The last attack motion. */
+    private int attackMotion = 400;
 
     /**
      * <p>
@@ -270,12 +272,9 @@ public abstract class LoLMacro extends Macro {
         long now = System.currentTimeMillis();
 
         if (moveLatest + moveInterval < now) {
-            if (attackLatest + latestAttackMotion < now) {
-                latestAttackMotion = computeAttackMotion();
-                float tio = 0.6F;
-                System.out
-                        .println(latestAttackMotion + " " + ((int) (latestAttackMotion * tio)) + " " + ((int) (latestAttackMotion * 0.8)) + " " + (now - attackLatest));
-                input(Skill.AM.key).delay((int) (latestAttackMotion * tio));
+            if (attackLatest + attackMotion < now) {
+                attackMotion = computeAttackMotion();
+                input(Skill.AM.key).delay(attackMotion);
                 attackLatest = System.currentTimeMillis();
             }
             input(Skill.Move.key);
@@ -293,7 +292,7 @@ public abstract class LoLMacro extends Macro {
     private int computeAttackMotion() {
         try {
             int attackSpeed = (int) (Float.valueOf(Native.API.ocr(593, 1091, 38, 15)) * 100);
-            return Math.max(50000 / attackSpeed, 125);
+            return (int) Math.max(50000 * attackMotionRatio / attackSpeed, 125);
         } catch (Throwable e) {
             e.printStackTrace();
             return 500;
