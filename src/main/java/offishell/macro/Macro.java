@@ -9,6 +9,14 @@
  */
 package offishell.macro;
 
+import java.awt.Font;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +26,8 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
+
+import javax.imageio.ImageIO;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -48,6 +58,9 @@ import kiss.Observer;
  * @version 2016/10/04 3:22:04
  */
 public abstract class Macro {
+
+    /** The application font. */
+    private static final Font font = new Font("MeiryoKe_UIGothic", Font.PLAIN, 12);
 
     /** The display scale. */
     private static final long ScaleX = 65536 / User32.INSTANCE.GetSystemMetrics(User32.SM_CXSCREEN);
@@ -83,6 +96,9 @@ public abstract class Macro {
         }
     };
 
+    /** The macro name. */
+    protected final String name;
+
     /** The window condition. */
     private Predicate<Window> windowCondition = ANY;
 
@@ -92,12 +108,56 @@ public abstract class Macro {
     /** The keyboard hook. */
     private NativeMouseHook mouseHook = new NativeMouseHook();
 
+    /** The tray icon. */
+    private final TrayIcon tray;
+
     /**
      * 
      */
     protected Macro() {
         keyboardHook.install();
         mouseHook.install();
+
+        try {
+            name = getClass().getSimpleName();
+            tray = new TrayIcon(ImageIO.read(I.locate("icon.png").toFile()));
+            tray.setImageAutoSize(true);
+            tray.setToolTip(name);
+            tray.setPopupMenu(menu());
+            SystemTray.getSystemTray().add(tray);
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * <p>
+     * Create popup menu.
+     * </p>
+     */
+    private PopupMenu menu() {
+        PopupMenu popup = new PopupMenu();
+        popup.add(item("Reload", this::restart));
+        popup.add(item("Quit", this::suspend));
+        popup.setFont(font);
+
+        return popup;
+    }
+
+    /**
+     * <p>
+     * Create menu item.
+     * </p>
+     * 
+     * @param name
+     * @param action
+     * @return
+     */
+    private MenuItem item(String name, Runnable action) {
+        MenuItem item = new MenuItem(name);
+        item.addActionListener(e -> action.run());
+
+        return item;
     }
 
     /**
@@ -114,6 +174,33 @@ public abstract class Macro {
 
     /**
      * <p>
+     * Restart this macro with JVM.
+     * </p>
+     */
+    protected final void restart() {
+        ArrayList<String> commands = new ArrayList();
+
+        // Java
+        commands.add(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java");
+        commands.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
+
+        // classpath
+        commands.add("-cp");
+        commands.add(ManagementFactory.getRuntimeMXBean().getClassPath());
+
+        // Class to be executed
+        commands.add(getClass().getName());
+
+        try {
+            new ProcessBuilder(commands).start();
+            suspend();
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * <p>
      * Suspend this macro.
      * </p>
      */
@@ -121,7 +208,7 @@ public abstract class Macro {
         keyboardHook.uninstall();
         mouseHook.uninstall();
 
-        delay(1000);
+        delay(300);
         System.exit(0);
     }
 
@@ -262,7 +349,15 @@ public abstract class Macro {
         return this;
     }
 
-    public final Macro delay(int ms) {
+    /**
+     * <p>
+     * Stop macro temporary.
+     * </p>
+     * 
+     * @param ms A time to stop.
+     * @return
+     */
+    protected final Macro delay(int ms) {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {

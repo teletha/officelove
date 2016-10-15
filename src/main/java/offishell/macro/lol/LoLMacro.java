@@ -304,7 +304,8 @@ public abstract class LoLMacro extends Macro {
         if (moveLatest + moveInterval < now) {
             if (attackLatest + attackMotion < now) {
                 attackMotion = computeAttackMotion();
-                input(Skill.AM.key).delay(attackMotion);
+                input(Skill.AM.key);
+                delay(attackMotion);
                 attackLatest = System.currentTimeMillis();
             }
             input(Skill.Move.key);
