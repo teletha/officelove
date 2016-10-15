@@ -63,4 +63,11 @@ public class Color {
     static Color of(int color) {
         return new Color(color);
     }
+
+    /**
+     * Test color code.
+     */
+    public boolean is(int code) {
+        return this.code == code;
+    }
 }

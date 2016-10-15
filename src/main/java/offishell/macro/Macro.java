@@ -98,10 +98,6 @@ public abstract class Macro {
     protected Macro() {
         keyboardHook.install();
         mouseHook.install();
-
-        when(Key.F11).press().merge(when(Key.Escape).press()).to(e -> {
-            System.exit(0);
-        });
     }
 
     /**
@@ -114,6 +110,19 @@ public abstract class Macro {
      */
     protected final MacroDSL<Key> when(Key key) {
         return new KeyMacro().key(key);
+    }
+
+    /**
+     * <p>
+     * Suspend this macro.
+     * </p>
+     */
+    protected final void suspend() {
+        keyboardHook.uninstall();
+        mouseHook.uninstall();
+
+        delay(1000);
+        System.exit(0);
     }
 
     /**
@@ -658,6 +667,9 @@ public abstract class Macro {
             }
         }
 
+        /** The record for the last downed key to decimate a flood of key down events. */
+        private Key downLatest;
+
         /**
          * {@inheritDoc}
          */
@@ -680,16 +692,19 @@ public abstract class Macro {
                 switch (wParam.intValue()) {
                 case WinUser.WM_KEYDOWN:
                 case WinUser.WM_SYSKEYDOWN:
-                    consumed = handle(key, presses);
+                    if (downLatest != key) {
+                        downLatest = key;
+                        consumed = handle(key, presses);
+                    }
                     break;
 
                 case WinUser.WM_KEYUP:
                 case WinUser.WM_SYSKEYUP:
+                    downLatest = null;
                     consumed = handle(key, releases);
                     break;
                 }
             }
-
             return consumed ? new LRESULT(1)
                     : User32.INSTANCE.CallNextHookEx(hook, nCode, wParam, new LPARAM(Pointer.nativeValue(info.getPointer())));
         }
@@ -755,10 +770,6 @@ public abstract class Macro {
 
                 case 520: // WM_MBUTTONDOWN
                     consumed = handle(Key.MouseMiddle, releases);
-                    break;
-
-                case 512: // WM_MOUSEMOVE
-                    consumed = handle(Mouse.Move, moves);
                     break;
                 }
             }

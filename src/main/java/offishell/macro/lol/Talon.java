@@ -15,6 +15,12 @@ package offishell.macro.lol;
 public class Talon extends LoLMacro {
 
     /**
+     * 
+     */
+    protected Talon() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -23,37 +29,53 @@ public class Talon extends LoLMacro {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int computeCastTime(Skill skill) {
+        switch (skill) {
+        case W:
+            return 280;
+        case AA:
+            return 310;
+        case R:
+            return 1000;
+        }
+        return super.computeCastTime(skill);
+    }
+
+    /**
      * スピードスパイク
      */
-    @SuppressWarnings("unused")
-    private void speed() {
-        cast(Skill.Q);
-        cast(Skill.E);
+    void speed() {
+        cast(Skill.Move);
         cast(Skill.Item6);
-        cast(Skill.AM);
 
-        if (!canCast(Skill.E)) {
-            cast(Skill.W, 150);
-            cast(Skill.Item2, 50);
+        if (cast(Skill.E)) {
+            cast(Skill.W);
+            cast(Skill.Q);
+            cast(Skill.AA);
+            cast(Skill.Item2);
             cast(Skill.SS2);
-            cast(Skill.R, 1000);
+            cast(Skill.R);
         }
     }
 
     /**
      * パワースパイク
      */
-    private void power() {
-        cast(Skill.E);
-        if (!canCast(Skill.E)) {
-            cast(Skill.W, 150);
-            cast(Skill.Item6);
-            cast(Skill.AA, 250);
-            cast(Skill.Q, 50);
-            cast(Skill.AA, 250);
-            cast(Skill.Item2, 50);
+    void power() {
+        cast(Skill.Move);
+        cast(Skill.Item6);
+
+        if (cast(Skill.E)) {
+            cast(Skill.W);
+            cast(Skill.AA);
+            cast(Skill.Q);
+            cast(Skill.AA);
+            cast(Skill.Item2);
             cast(Skill.SS2);
-            cast(Skill.R, 1000);
+            cast(Skill.R);
         }
     }
 

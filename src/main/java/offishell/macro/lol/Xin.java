@@ -21,10 +21,8 @@ public class Xin extends LoLMacro {
     protected void combo() {
         cast(Skill.SS2);
         cast(Skill.W);
-        cast(Skill.AA, 200);
+        cast(Skill.AA); // 200?
         cast(Skill.Q);
-        cast(Skill.Item2);
-        cast(Skill.Item6);
 
         if (!canCast(Skill.E)) {
             cast(Skill.R);

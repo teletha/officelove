@@ -94,6 +94,50 @@ public class Location {
     }
 
     /**
+     * <p>
+     * Compute x position.
+     * </p>
+     * 
+     * @return
+     */
+    public int X() {
+        return x;
+    }
+
+    /**
+     * <p>
+     * Compute y position.
+     * </p>
+     * 
+     * @return
+     */
+    public int Y() {
+        return y;
+    }
+
+    /**
+     * <p>
+     * Compute x position.
+     * </p>
+     * 
+     * @return
+     */
+    public int width() {
+        return maxX;
+    }
+
+    /**
+     * <p>
+     * Compute y position.
+     * </p>
+     * 
+     * @return
+     */
+    public int height() {
+        return maxY;
+    }
+
+    /**
      * @param locationX
      * @param locationY
      * @return

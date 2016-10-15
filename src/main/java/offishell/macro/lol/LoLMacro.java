@@ -9,9 +9,14 @@
  */
 package offishell.macro.lol;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javafx.beans.property.BooleanProperty;
 
+import kiss.Events;
 import kiss.I;
+import kiss.Interceptor;
+import kiss.model.Model;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
@@ -23,6 +28,10 @@ import offishell.platform.Native;
  */
 public abstract class LoLMacro extends Macro {
 
+    static {
+        I.load(LoLMacro.class, true);
+    }
+
     /** The debug mode. */
     private static final boolean debug = true;
 
@@ -30,10 +39,10 @@ public abstract class LoLMacro extends Macro {
     private Skill skillForShowRange;
 
     /** option */
-    private boolean centering;
+    protected double attackMotionRatio = 0.8;
 
     /** option */
-    protected double attackMotionRatio = 0.8;
+    protected boolean championOnly = true;
 
     /**
      * 
@@ -54,12 +63,12 @@ public abstract class LoLMacro extends Macro {
         require(this::isReloadable, () -> {
             when(Key.S).withCtrl().press().to(e -> {
                 input(Key.F11);
-                System.exit(0);
+                suspend();
             });
+
+            when(Key.F11).press().to(this::suspend);
         });
-        when(Key.Escape).press().to(e -> {
-            System.exit(0);
-        });
+        when(Key.Escape).press().to(this::suspend);
 
         requireTitle("League of Legends (TM) Client", () -> {
             when(Key.F12).consume().press().to(e -> {
@@ -89,8 +98,15 @@ public abstract class LoLMacro extends Macro {
                 });
             }
 
+            // control centering
+            when(Key.Space).press().to(e -> center(true)); // emulation
+            when(Key.Space).release().to(e -> center(false)); // emulation
+
             // configure combo
-            when(Key.MouseLeft).press().to(e -> {
+            Events<Boolean> shopOpen = when(Key.X).press().toggle();
+            Events<Boolean> scoreOpen = when(Key.Tab).press().map(true).merge(when(Key.Tab).release().map(false));
+
+            when(Key.MouseLeft).press().skipWhile(shopOpen).skipWhile(scoreOpen).to(e -> {
                 BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();
 
                 Location position = window().mousePosition();
@@ -107,18 +123,8 @@ public abstract class LoLMacro extends Macro {
                     return;
                 }
 
-                try {
-                    if (centering) {
-                        press(Key.K.Space);
-                    }
-
-                    while (!released.get()) {
-                        combo();
-                    }
-                } finally {
-                    if (centering) {
-                        release(Key.Space);
-                    }
+                while (!released.get()) {
+                    combo();
                 }
             });
 
@@ -140,15 +146,24 @@ public abstract class LoLMacro extends Macro {
      */
     protected abstract void combo();
 
+    /** The current centering mode. */
+    private AtomicBoolean center = new AtomicBoolean();
+
     /**
      * <p>
-     * Set centering mode.
+     * Change centering mode.
      * </p>
      * 
-     * @param mode
+     * @param on
      */
-    protected final void setAutoCenter(boolean mode) {
-        this.centering = mode;
+    protected final void center(boolean on) {
+        if (center.compareAndSet(!on, on)) {
+            if (on) {
+                press(Key.Space);
+            } else {
+                release(Key.Space);
+            }
+        }
     }
 
     /**
@@ -172,9 +187,10 @@ public abstract class LoLMacro extends Macro {
      * </p>
      * 
      * @param skill
+     * @return The cast state.
      */
-    protected final void cast(Skill skill) {
-        cast(skill, 10);
+    protected final boolean cast(Skill skill) {
+        return cast(skill, computeCastTime(skill));
     }
 
     /**
@@ -183,20 +199,24 @@ public abstract class LoLMacro extends Macro {
      * </p>
      * 
      * @param skill
+     * @return The cast state.
      */
-    protected final void cast(Skill skill, int delay) {
+    protected final boolean cast(Skill skill, int delay) {
         if (skill == Skill.AM) {
             attackMove(99);
+            return true;
         } else {
             if (canCast(skill)) {
-                press(Key.BackSlash);
+                if (championOnly) press(Key.BackSlash);
                 input(skill.key);
-                release(Key.BackSlash);
+                if (championOnly) release(Key.BackSlash);
 
                 if (0 < delay) {
                     delay(delay);
+                    log("Cast ", skill, " with ", delay, "ms delay.");
                 }
             }
+            return !canCast(skill);
         }
     }
 
@@ -208,7 +228,7 @@ public abstract class LoLMacro extends Macro {
      * @param skill
      */
     protected final void selfCast(Skill skill) {
-        selfCast(skill, 10);
+        selfCast(skill, computeCastTime(skill));
     }
 
     /**
@@ -221,7 +241,6 @@ public abstract class LoLMacro extends Macro {
     protected final void selfCast(Skill skill, int delay) {
         if (canCast(skill)) {
             inputParallel(Key.Shift, skill.key);
-
             if (0 < delay) {
                 delay(delay);
             }
@@ -241,6 +260,17 @@ public abstract class LoLMacro extends Macro {
     }
 
     /**
+     * <p>
+     * Active the specified signal.
+     * </p>
+     * 
+     * @param ping
+     */
+    protected final void signal(Ping ping) {
+        inputParallel(Key.Control, ping.key);
+    }
+
+    /**
      * Debug command.
      */
     protected final void debugSkillColor() {
@@ -254,7 +284,7 @@ public abstract class LoLMacro extends Macro {
     /** The attack move state. */
     private long moveLatest;
 
-    /** The attack move state. */
+    /** The attack state. */
     private long attackLatest;
 
     /** The last attack motion. */
@@ -284,34 +314,33 @@ public abstract class LoLMacro extends Macro {
 
     /**
      * <p>
+     * Compute the cast time of the specified skill.
+     * </p>
+     * 
+     * @param skill
+     * @return
+     */
+    protected int computeCastTime(Skill skill) {
+        if (skill == Skill.AA) {
+            return computeAttackMotion();
+        }
+        return 0;
+    }
+
+    /**
+     * <p>
      * Compute the current attack speed.
      * </p>
      * 
      * @return
      */
-    private int computeAttackMotion() {
+    protected int computeAttackMotion() {
         try {
             int attackSpeed = (int) (Float.valueOf(Native.API.ocr(593, 1091, 38, 15)) * 100);
             return (int) Math.max(50000 * attackMotionRatio / attackSpeed, 125);
         } catch (Throwable e) {
             e.printStackTrace();
             return 500;
-        }
-    }
-
-    /**
-     * Log writer.
-     * 
-     * @param texts
-     */
-    private void log(Object... texts) {
-        if (debug) {
-            StringBuilder builder = new StringBuilder();
-
-            for (Object text : texts) {
-                builder.append(text);
-            }
-            System.out.println(builder);
         }
     }
 
@@ -332,6 +361,33 @@ public abstract class LoLMacro extends Macro {
             }
         }
         return false;
+    }
+
+    /**
+     * Log writer.
+     * 
+     * @param texts
+     */
+    private static void log(Object... texts) {
+        if (debug) {
+            StringBuilder builder = new StringBuilder();
+
+            for (Object text : texts) {
+                builder.append(text);
+            }
+            System.out.println(builder);
+        }
+    }
+
+    /**
+     * <p>
+     * Current time.
+     * </p>
+     * 
+     * @return
+     */
+    private static long now() {
+        return System.currentTimeMillis();
     }
 
     /** The skill location constants. */
@@ -413,6 +469,43 @@ public abstract class LoLMacro extends Macro {
             this.locationX = locationX;
             this.locationY = locationY;
             this.castableColor = castableColor;
+        }
+    }
+
+    /**
+     * @version 2016/10/15 12:09:53
+     */
+    public enum Ping {
+        Alert(Key.NumPad1);
+
+        private final Key key;
+
+        /**
+         * @param key
+         */
+        private Ping(Key key) {
+            this.key = key;
+        }
+    }
+
+    /**
+     * @version 2016/10/15 13:34:21
+     */
+    @SuppressWarnings("unused")
+    private static class TraceInterceptor extends Interceptor<Trace> {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Object invoke(Object... params) {
+            long start = now();
+            Object result = super.invoke(params);
+            long end = now();
+
+            log(Model.of(that).name, "#", name, " : ", end - start);
+
+            return result;
         }
     }
 }
