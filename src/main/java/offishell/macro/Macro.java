@@ -156,6 +156,7 @@ public abstract class Macro {
     private MenuItem item(String name, Runnable action) {
         MenuItem item = new MenuItem(name);
         item.addActionListener(e -> action.run());
+        item.setFont(font);
 
         return item;
     }

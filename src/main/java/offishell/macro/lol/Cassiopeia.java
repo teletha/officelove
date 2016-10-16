@@ -12,12 +12,13 @@ package offishell.macro.lol;
 /**
  * @version 2016/10/05 16:59:32
  */
-public class Xin extends LoLMacro {
+public class Cassiopeia extends LoLMacro {
 
     /**
      * 
      */
-    private Xin() {
+    private Cassiopeia() {
+        championOnly = false;
     }
 
     /**
@@ -26,8 +27,12 @@ public class Xin extends LoLMacro {
     @Override
     protected int computeCastTime(Skill skill) {
         switch (skill) {
-        case AA:
-            return 310;
+        case Q:
+            return 170;
+        case W:
+            return 180;
+        case E:
+            return 90;
         }
         return super.computeCastTime(skill);
     }
@@ -37,18 +42,10 @@ public class Xin extends LoLMacro {
      */
     @Override
     protected void combo() {
-        cast(Skill.Move);
-        cast(Skill.Item6);
-
-        if (cast(Skill.E)) {
-            cast(Skill.R);
-            cast(Skill.SS2);
-            cast(Skill.W);
-            cast(Skill.AA);
-            cast(Skill.Q);
-            cast(Skill.AA);
-            cast(Skill.Item2);
-        }
+        cast(Skill.R);
+        cast(Skill.W);
+        cast(Skill.Q);
+        cast(Skill.E);
     }
 
     /**
