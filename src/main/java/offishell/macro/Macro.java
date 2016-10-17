@@ -38,7 +38,6 @@ import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.LONG;
 import com.sun.jna.platform.win32.WinDef.LPARAM;
 import com.sun.jna.platform.win32.WinDef.LRESULT;
-import com.sun.jna.platform.win32.WinDef.POINT;
 import com.sun.jna.platform.win32.WinDef.WORD;
 import com.sun.jna.platform.win32.WinDef.WPARAM;
 import com.sun.jna.platform.win32.WinUser;
@@ -169,7 +168,7 @@ public abstract class Macro {
      * @param key
      * @return
      */
-    protected final MacroDSL<Key> when(Key key) {
+    protected final MacroDSL when(Key key) {
         return new KeyMacro().key(key);
     }
 
@@ -221,7 +220,7 @@ public abstract class Macro {
      * @param mouse
      * @return
      */
-    protected final Events<Mouse> when(Mouse mouse) {
+    protected final Events<KeyEvent> when(Mouse mouse) {
         return new KeyMacro().register(this.mouseHook.moves);
     }
 
@@ -406,7 +405,7 @@ public abstract class Macro {
     /**
      * @version 2016/10/02 18:01:25
      */
-    public interface MacroDSL<V> {
+    public interface MacroDSL {
 
         /**
          * <p>
@@ -415,7 +414,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        MacroDSL<V> consume();
+        MacroDSL consume();
 
         /**
          * <p>
@@ -424,7 +423,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        Events<V> press();
+        Events<KeyEvent> press();
 
         /**
          * <p>
@@ -433,7 +432,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        Events<V> release();
+        Events<KeyEvent> release();
 
         /**
          * <p>
@@ -442,7 +441,7 @@ public abstract class Macro {
          * 
          * @return Chainable DSL.
          */
-        MacroDSL<V> withAlt();
+        MacroDSL withAlt();
 
         /**
          * <p>
@@ -451,7 +450,7 @@ public abstract class Macro {
          * 
          * @return Chainable DSL.
          */
-        MacroDSL<V> withCtrl();
+        MacroDSL withCtrl();
 
         /**
          * <p>
@@ -460,19 +459,19 @@ public abstract class Macro {
          * 
          * @return Chainable DSL.
          */
-        MacroDSL<V> withShift();
+        MacroDSL withShift();
     }
 
     /**
      * @version 2016/10/04 15:57:53
      */
-    private class KeyMacro<V> implements MacroDSL<V> {
+    private class KeyMacro implements MacroDSL {
 
         /** The window condition. */
         private Predicate<Window> window = windowCondition;
 
         /** The acceptable event type. */
-        private Predicate<V> condition = ANY;
+        private Predicate condition = ANY;
 
         /** The event should be consumed or not. */
         private boolean consumable;
@@ -490,7 +489,7 @@ public abstract class Macro {
         private boolean shift;
 
         /** The observers. */
-        private final List<Observer<? super V>> observers = new CopyOnWriteArrayList();
+        private final List<Observer<? super KeyEvent>> observers = new CopyOnWriteArrayList();
 
         /**
          * <p>
@@ -511,7 +510,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public MacroDSL<V> consume() {
+        public MacroDSL consume() {
             consumable = true;
             return this;
         }
@@ -520,7 +519,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public MacroDSL<V> withAlt() {
+        public MacroDSL withAlt() {
             alt = true;
             return this;
         }
@@ -529,7 +528,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public MacroDSL<V> withCtrl() {
+        public MacroDSL withCtrl() {
             ctrl = true;
             return this;
         }
@@ -538,7 +537,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public MacroDSL<V> withShift() {
+        public MacroDSL withShift() {
             shift = true;
             return this;
         }
@@ -547,7 +546,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public Events<V> press() {
+        public Events<KeyEvent> press() {
             return register((key.mouse ? mouseHook : keyboardHook).presses);
         }
 
@@ -555,7 +554,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public Events<V> release() {
+        public Events<KeyEvent> release() {
             return register((key.mouse ? mouseHook : keyboardHook).releases);
         }
 
@@ -567,10 +566,10 @@ public abstract class Macro {
          * @param macros
          * @return
          */
-        private Events<V> register(List<KeyMacro<V>> macros) {
+        private Events<KeyEvent> register(List<KeyMacro> macros) {
             macros.add(this);
 
-            return new Events<V>(observer -> {
+            return new Events<KeyEvent>(observer -> {
                 observers.add(observer);
                 return () -> observers.remove(observer);
             });
@@ -606,10 +605,10 @@ public abstract class Macro {
         });
 
         /** The event listeners. */
-        protected final List<KeyMacro<T>> presses = new ArrayList();
+        protected final List<KeyMacro> presses = new ArrayList();
 
         /** The event listeners. */
-        protected final List<KeyMacro<T>> releases = new ArrayList();
+        protected final List<KeyMacro> releases = new ArrayList();
 
         /** The native hook. */
         protected HHOOK hook;
@@ -682,7 +681,7 @@ public abstract class Macro {
          * 
          * @param key
          */
-        protected final boolean handle(T key, List<KeyMacro<T>> macros) {
+        protected final boolean handle(T key, List<KeyMacro> macros, KeyEvent event) {
             boolean consumed = false;
 
             if (!macros.isEmpty()) {
@@ -691,41 +690,11 @@ public abstract class Macro {
                 boolean ctrl = with(Key.Control);
                 boolean shift = with(Key.Shift);
 
-                for (KeyMacro<T> macro : macros) {
+                for (KeyMacro macro : macros) {
                     if (macro.window.test(now) && macro.modifier(alt, ctrl, shift) && macro.condition.test(key)) {
                         executor.execute(() -> {
-                            for (Observer observer : macro.observers) {
-                                observer.accept(key);
-                            }
-                        });
-
-                        if (macro.consumable) {
-                            consumed = true;
-                        }
-                    }
-                }
-            }
-            return consumed;
-        }
-
-        /**
-         * <p>
-         * Handle key event.
-         * </p>
-         * 
-         * @param key
-         */
-        protected final boolean handle(Mouse key, List<KeyMacro<T>> macros) {
-            boolean consumed = false;
-
-            if (!macros.isEmpty()) {
-                Window now = Window.now();
-
-                for (KeyMacro<T> macro : macros) {
-                    if (macro.window.test(now)) {
-                        executor.execute(() -> {
-                            for (Observer observer : macro.observers) {
-                                observer.accept(key);
+                            for (Observer<? super KeyEvent> observer : macro.observers) {
+                                observer.accept(event);
                             }
                         });
 
@@ -790,18 +759,18 @@ public abstract class Macro {
                 case WinUser.WM_SYSKEYDOWN:
                     if (downLatest != key) {
                         downLatest = key;
-                        consumed = handle(key, presses);
+                        consumed = handle(key, presses, KeyEvent.of(key));
                     }
                     break;
 
                 case WinUser.WM_KEYUP:
                 case WinUser.WM_SYSKEYUP:
                     downLatest = null;
-                    consumed = handle(key, releases);
+                    consumed = handle(key, releases, KeyEvent.of(key));
                     break;
                 }
             }
-            return consumed ? new LRESULT(1)
+            return consumed ? new LRESULT(-1)
                     : User32.INSTANCE.CallNextHookEx(hook, nCode, wParam, new LPARAM(Pointer.nativeValue(info.getPointer())));
         }
     }
@@ -843,33 +812,35 @@ public abstract class Macro {
             boolean userInput = (info.flags & InjectedEvent) == 0;
 
             if (0 <= nCode && userInput) {
+                info.pt.time = info.time;
+
                 switch (wParam.intValue()) {
                 case 513: // WM_LBUTTONDOWN
-                    consumed = handle(Key.MouseLeft, presses);
+                    consumed = handle(Key.MouseLeft, presses, info.pt);
                     break;
 
                 case 514: // WM_LBUTTONUP
-                    consumed = handle(Key.MouseLeft, releases);
+                    consumed = handle(Key.MouseLeft, releases, info.pt);
                     break;
 
                 case 516: // WM_RBUTTONDOWN
-                    consumed = handle(Key.MouseRight, presses);
+                    consumed = handle(Key.MouseRight, presses, info.pt);
                     break;
 
                 case 517: // WM_RBUTTONUP
-                    consumed = handle(Key.MouseRight, releases);
+                    consumed = handle(Key.MouseRight, releases, info.pt);
                     break;
 
                 case 519: // WM_MBUTTONDOWN
-                    consumed = handle(Key.MouseMiddle, presses);
+                    consumed = handle(Key.MouseMiddle, presses, info.pt);
                     break;
 
                 case 520: // WM_MBUTTONDOWN
-                    consumed = handle(Key.MouseMiddle, releases);
+                    consumed = handle(Key.MouseMiddle, releases, info.pt);
                     break;
                 }
             }
-            return consumed ? new LRESULT(1)
+            return consumed ? new LRESULT(-1)
                     : User32.INSTANCE.CallNextHookEx(hook, nCode, wParam, new LPARAM(Pointer.nativeValue(info.getPointer())));
         }
     }
@@ -883,13 +854,15 @@ public abstract class Macro {
     }
 
     /**
-     * @version 2016/10/04 3:53:27
+     * @version 2016/10/16 10:34:57
      */
-    public static class Point extends Structure {
+    public static class Point extends Structure implements KeyEvent {
 
         public NativeLong x;
 
         public NativeLong y;
+
+        private long time;
 
         /**
          * {@inheritDoc}
@@ -898,6 +871,62 @@ public abstract class Macro {
         protected List getFieldOrder() {
             return Arrays.asList(new String[] {"x", "y"});
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int x() {
+            return x.intValue();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int y() {
+            return y.intValue();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public long time() {
+            return time;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + ((x == null) ? 0 : x.hashCode());
+            result = prime * result + ((y == null) ? 0 : y.hashCode());
+            return result;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Point) {
+                Point other = (Point) obj;
+                return x() == other.x() && y() == other.y();
+            }
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return "Point [x=" + x + ", y=" + y + ", time=" + time + "]";
+        }
     }
 
     /**
@@ -905,7 +934,7 @@ public abstract class Macro {
      */
     public static class MSLLHOOKSTRUCT extends Structure {
 
-        public POINT pt;
+        public Point pt;
 
         public int mouseData;
 
