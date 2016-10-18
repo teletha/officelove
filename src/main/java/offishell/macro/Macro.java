@@ -119,7 +119,7 @@ public abstract class Macro {
 
         try {
             name = getClass().getSimpleName();
-            tray = new TrayIcon(ImageIO.read(I.locate("icon.png").toFile()));
+            tray = new TrayIcon(ImageIO.read(I.locate(Macro.class, "icon.png").toFile()));
             tray.setImageAutoSize(true);
             tray.setToolTip(name);
             tray.setPopupMenu(menu());
