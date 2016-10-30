@@ -60,6 +60,9 @@ public abstract class LoLMacro extends Macro {
      * 
      */
     protected LoLMacro() {
+        // load eager
+        computeAttackMotion();
+
         require(this::isReloadable, () -> {
             when(Key.S).withCtrl().press().to(e -> {
                 input(Key.F11);
@@ -139,6 +142,7 @@ public abstract class LoLMacro extends Macro {
                 }
             });
         });
+
     }
 
     /**
@@ -268,6 +272,17 @@ public abstract class LoLMacro extends Macro {
      */
     protected final void signal(Ping ping) {
         inputParallel(Key.Control, ping.key);
+    }
+
+    /**
+     * <p>
+     * Check health state.
+     * </p>
+     * 
+     * @return
+     */
+    protected final boolean isLowHealth() {
+        return false;
     }
 
     /**

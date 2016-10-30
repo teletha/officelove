@@ -20,6 +20,7 @@ public class Kayle extends LoLMacro {
      * 
      */
     private Kayle() {
+        championOnly = false;
         attackMotionRatio = 0.95;
 
         when(Key.W).consume().press().to(e -> {
@@ -38,9 +39,10 @@ public class Kayle extends LoLMacro {
      */
     @Override
     protected void combo() {
-        cast(Skill.Q);
+        cast(Skill.SS2);
         cast(Skill.E);
         cast(Skill.AM);
+        cast(Skill.Q);
         selfCast(Skill.W);
     }
 

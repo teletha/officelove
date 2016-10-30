@@ -31,10 +31,14 @@ public class Yi extends LoLMacro {
      */
     @Override
     protected void combo() {
+        cast(Skill.R);
+        cast(Skill.Item6);
+        cast(Skill.SS1);
         cast(Skill.SS2);
         cast(Skill.AA);
-        cast(Skill.Q, 200);
-        cast(Skill.E);
+        if (cast(Skill.Q)) {
+            cast(Skill.E);
+        }
     }
 
     /**

@@ -69,12 +69,12 @@ public class Talon extends LoLMacro {
         cast(Skill.Item6);
 
         if (cast(Skill.E)) {
+            cast(Skill.SS2);
             cast(Skill.W);
             cast(Skill.AA);
             cast(Skill.Q);
             cast(Skill.AA);
             cast(Skill.Item2);
-            cast(Skill.SS2);
             cast(Skill.R);
         }
     }
