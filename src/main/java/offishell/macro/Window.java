@@ -112,7 +112,7 @@ public class Window {
      * @param string
      */
     public static boolean existByTitle(String title) {
-        return findByTitle(title).to().getValue() != null;
+        return findByTitle(title).to().v != null;
     }
 
     /**
@@ -126,7 +126,7 @@ public class Window {
      * @param path
      */
     public static void close(Path path) {
-        Window.findByTitle(path).to().getValue().close();
+        Window.findByTitle(path).to().v.close();
     }
 
     /**

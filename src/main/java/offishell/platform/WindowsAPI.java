@@ -18,8 +18,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
-import javafx.beans.property.Property;
-
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
@@ -45,6 +43,7 @@ import com.sun.jna.win32.W32APITypeMapper;
 import kiss.Events;
 import kiss.I;
 import kiss.Observer;
+import kiss.Variable;
 import offishell.platform.WindowsAPI.ShellAPI.SHELLEXECUTEINFO;
 
 /**
@@ -67,7 +66,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     /** The native clipboard manager. */
     private static final Clipboard clipboard = new Clipboard();
 
-    private final Property<String> ocr = clipboard().startWith("0.8").to();
+    private final Variable<String> ocr = clipboard().startWith("0.8").to();
 
     /**
      * {@inheritDoc}
@@ -155,7 +154,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
         User.EnumWindows((hwnd, pointer) -> {
             process.accept(hwnd);
             return true;
-        }, null);
+        } , null);
     }
 
     /**
@@ -187,7 +186,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
     public String ocr(int x, int y, int width, int height) {
         try {
             execute("Capture2Text.exe", x, y, x + width, y + height);
-            return ocr.getValue();
+            return ocr.v;
         } catch (Throwable e) {
             throw I.quiet(e);
         }

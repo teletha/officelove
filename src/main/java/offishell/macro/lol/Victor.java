@@ -9,9 +9,8 @@
  */
 package offishell.macro.lol;
 
-import javafx.beans.property.Property;
-
 import kiss.Events;
+import kiss.Variable;
 import offishell.macro.Key;
 import offishell.macro.KeyEvent;
 import offishell.platform.Location;
@@ -29,7 +28,7 @@ public class Victor extends LoLMacro {
         Events<KeyEvent> press = when(Key.MouseRight).press().skipUntil(startCastE).take(1).repeat();
         Events<KeyEvent> release = when(Key.MouseRight).release().skipUntil(startCastE).take(1).repeat();
 
-        Property<Location> location = press.map(KeyEvent::location).to();
+        Variable<Location> location = press.map(KeyEvent::location).to();
 
         press.combine(release).to(e -> {
             int diffX = Math.abs(e.ⅰ.x() - e.ⅱ.x());
