@@ -152,6 +152,15 @@ public abstract class LoLMacro extends Macro {
 
     /** The current centering mode. */
     private AtomicBoolean center = new AtomicBoolean();
+    
+    /**
+     * <p>Check the centering state.</p>
+     * 
+     * @return
+     */
+    protected final boolean isCenter() {
+        return center.get();
+    }
 
     /**
      * <p>
@@ -281,8 +290,19 @@ public abstract class LoLMacro extends Macro {
      * 
      * @return
      */
+    protected final boolean isHighHealth() {
+        return window().color(872, 1045).is(462081);
+    }
+
+    /**
+     * <p>
+     * Check health state.
+     * </p>
+     * 
+     * @return
+     */
     protected final boolean isLowHealth() {
-        return false;
+        return window().color(745, 1045).is(462081);
     }
 
     /**
@@ -319,6 +339,7 @@ public abstract class LoLMacro extends Macro {
         if (moveLatest + moveInterval < now) {
             if (attackLatest + attackMotion < now) {
                 attackMotion = computeAttackMotion();
+                System.out.println(attackMotion);
                 input(Skill.AM.key);
                 delay(attackMotion);
                 attackLatest = System.currentTimeMillis();

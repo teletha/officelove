@@ -9,10 +9,13 @@
  */
 package offishell.macro.lol;
 
+import static java.util.concurrent.TimeUnit.*;
+
+import kiss.Events;
 import offishell.macro.Key;
 
 /**
- * @version 2016/10/05 17:05:25
+ * @version 2016/10/30 14:08:15
  */
 public class Kayle extends LoLMacro {
 
@@ -20,7 +23,6 @@ public class Kayle extends LoLMacro {
      * 
      */
     private Kayle() {
-        championOnly = false;
         attackMotionRatio = 0.95;
 
         when(Key.W).consume().press().to(e -> {
@@ -28,9 +30,15 @@ public class Kayle extends LoLMacro {
             selfCast(Skill.W);
         });
 
-        when(Key.R).consume().press().to(e -> {
+        when(Key.R).consume().press().interval(3, SECONDS).to(e -> {
             cast(Skill.R);
-            selfCast(Skill.R);
+
+            if (isCenter() || isLowHealth()) {
+                Events.infinite(1, 100, MILLISECONDS).take(30).scan(0, (p, n) -> p + 1).to(skill -> {
+                    selfCast(Skill.R);
+                    System.out.println("TryCast " + skill);
+                });
+            }
         });
     }
 
@@ -44,6 +52,10 @@ public class Kayle extends LoLMacro {
         cast(Skill.AM);
         cast(Skill.Q);
         selfCast(Skill.W);
+
+        if (isLowHealth()) {
+            selfCast(Skill.R);
+        }
     }
 
     /**
