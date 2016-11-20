@@ -127,7 +127,7 @@ public interface Task extends Extensible {
      * @return
      */
     default Path directoryFor(Date date) {
-        return directory().resolve(String.valueOf(date.period()));
+        return directory().resolve(String.valueOf(date.period()) + "年度");
     }
 
     /**
