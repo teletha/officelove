@@ -9,6 +9,8 @@
  */
 package offishell.macro.lol;
 
+import offishell.macro.Key;
+
 /**
  * @version 2016/10/06 17:42:19
  */
@@ -18,6 +20,15 @@ public class Talon extends LoLMacro {
      * 
      */
     protected Talon() {
+        championOnly = false;
+
+        when(Skill.E, () -> {
+            if (cast(Skill.E)) {
+                press(Key.Space);
+                delay(1000);
+                release(Key.Space);
+            }
+        });
     }
 
     /**
@@ -34,10 +45,10 @@ public class Talon extends LoLMacro {
     @Override
     protected int computeCastTime(Skill skill) {
         switch (skill) {
+        case Q:
+            return 120;
         case W:
-            return 280;
-        case AA:
-            return 310;
+            return 80;
         case R:
             return 1000;
         }
@@ -45,18 +56,16 @@ public class Talon extends LoLMacro {
     }
 
     /**
-     * スピードスパイク
+     * パワースパイク
      */
-    void speed() {
-        cast(Skill.Move);
+    void power() {
         cast(Skill.Item6);
+        cast(Skill.W);
 
-        if (cast(Skill.E)) {
-            cast(Skill.W);
-            cast(Skill.Q);
+        if (cast(Skill.Q)) {
+            cast(Skill.SS2);
             cast(Skill.AA);
             cast(Skill.Item2);
-            cast(Skill.SS2);
             cast(Skill.R);
         }
     }
@@ -64,18 +73,13 @@ public class Talon extends LoLMacro {
     /**
      * パワースパイク
      */
-    void power() {
-        cast(Skill.Move);
+    void noULT() {
         cast(Skill.Item6);
 
-        if (cast(Skill.E)) {
+        if (cast(Skill.Q)) {
             cast(Skill.SS2);
-            cast(Skill.W);
-            cast(Skill.AA);
-            cast(Skill.Q);
             cast(Skill.AA);
             cast(Skill.Item2);
-            cast(Skill.R);
         }
     }
 

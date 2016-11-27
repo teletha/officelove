@@ -152,9 +152,11 @@ public abstract class LoLMacro extends Macro {
 
     /** The current centering mode. */
     private AtomicBoolean center = new AtomicBoolean();
-    
+
     /**
-     * <p>Check the centering state.</p>
+     * <p>
+     * Check the centering state.
+     * </p>
      * 
      * @return
      */
@@ -339,7 +341,6 @@ public abstract class LoLMacro extends Macro {
         if (moveLatest + moveInterval < now) {
             if (attackLatest + attackMotion < now) {
                 attackMotion = computeAttackMotion();
-                System.out.println(attackMotion);
                 input(Skill.AM.key);
                 delay(attackMotion);
                 attackLatest = System.currentTimeMillis();
