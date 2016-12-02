@@ -72,7 +72,7 @@ public class Word {
     private final Path path;
 
     /** The culculated document. */
-    private XWPFDocument calculated;
+    XWPFDocument calculated;
 
     /**
      * <p>
@@ -750,7 +750,21 @@ public class Word {
      * @return
      */
     public static Word blank() {
-        return new Word();
+        return new Word() {
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public Word merge(Word after) {
+                if (calculated.getParagraphs().isEmpty()) {
+                    calculated = after.calculated;
+                } else {
+                    super.merge(after);
+                }
+                return this;
+            }
+        };
     }
 
     /**
