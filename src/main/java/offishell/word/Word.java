@@ -1417,8 +1417,12 @@ public class Word {
                         }
                     }
                 } else {
-                    for (XWPFRun run : paragraph.getRuns()) {
-                        WordHeleper.write(run, variable.apply(run.getText(0)));
+                    XWPFDocument doc = paragraph.getDocument();
+
+                    for (XWPFParagraph para : copy(doc.getParagraphs(), start, end)) {
+                        for (XWPFRun run : para.getRuns()) {
+                            WordHeleper.write(run, variable.apply(run.getText(0)));
+                        }
                     }
                 }
             }
