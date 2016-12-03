@@ -43,9 +43,23 @@ public interface Task extends Extensible {
      * 
      * @return
      */
-    default String category() {
-        String name = getClass().getPackage().getName();
-        return name.substring(name.lastIndexOf(".") + 1);
+    static String category() {
+        try {
+            for (StackTraceElement element : new Error().getStackTrace()) {
+                Class c = Class.forName(element.getClassName());
+
+                if (Task.class != c && Task.class.isAssignableFrom(c)) {
+                    String name = c.getPackage().getName();
+                    return name.substring(name.lastIndexOf(".") + 1);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            throw I.quiet(e);
+        }
+
+        // If this exception will be thrown, it is bug of this program. So we must rethrow the
+        // wrapped error in here.
+        throw new Error();
     }
 
     /**
