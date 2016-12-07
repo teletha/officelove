@@ -43,19 +43,9 @@ public interface Task extends Extensible {
      * 
      * @return
      */
-    static String category() {
-        for (StackTraceElement element : new Error().getStackTrace()) {
-            Class c = I.type(element.getClassName());
-
-            if (Task.class != c && Task.class.isAssignableFrom(c)) {
-                String name = c.getPackage().getName();
-                return name.substring(name.lastIndexOf(".") + 1);
-            }
-        }
-
-        // If this exception will be thrown, it is bug of this program. So we must rethrow the
-        // wrapped error in here.
-        throw new Error();
+    default String category() {
+        String name = getClass().getPackage().getName();
+        return name.substring(name.lastIndexOf(".") + 1);
     }
 
     /**

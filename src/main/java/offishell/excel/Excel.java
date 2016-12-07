@@ -133,8 +133,6 @@ public class Excel {
 
                     if (cell != null) {
                         observer.accept(new Row(row));
-                    } else {
-                        break;
                     }
                 }
             }
