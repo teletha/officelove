@@ -488,6 +488,28 @@ public class Date {
 
     /**
      * <p>
+     * 今日と比較して過去かどうか
+     * </p>
+     * 
+     * @return
+     */
+    public boolean isPast() {
+        return date.isBefore(LocalDate.now());
+    }
+
+    /**
+     * <p>
+     * 今日と比較して未来かどうか
+     * </p>
+     * 
+     * @return
+     */
+    public boolean isFuture() {
+        return date.isAfter(LocalDate.now());
+    }
+
+    /**
+     * <p>
      * Helper method to retrive japanese era.
      * </p>
      * 
