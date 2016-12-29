@@ -107,7 +107,7 @@ public abstract class LoLMacro extends Macro {
 
             // configure combo
             Events<Boolean> shopOpen = when(Key.X).press().toggle();
-            Events<Boolean> scoreOpen = when(Key.Tab).press().map(true).merge(when(Key.Tab).release().map(false));
+            Events<Boolean> scoreOpen = when(Key.Tab).press().mapTo(true).merge(when(Key.Tab).release().mapTo(false));
 
             when(Key.MouseLeft).press().skipWhile(shopOpen).skipWhile(scoreOpen).to(e -> {
                 BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();
