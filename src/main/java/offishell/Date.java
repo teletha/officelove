@@ -362,6 +362,17 @@ public class Date {
      * 整形した和年度を返します。
      * </p>
      * 
+     * @return
+     */
+    public String 短縮年度() {
+        return 年度(padding).replace("年度", "").replace("平成", "H").replace("昭和", "S");
+    }
+
+    /**
+     * <p>
+     * 整形した和年度を返します。
+     * </p>
+     * 
      * @param fill
      * @return
      */
