@@ -176,6 +176,17 @@ public class Date {
 
     /**
      * <p>
+     * 来年の西暦の数値を返します。
+     * </p>
+     * 
+     * @return
+     */
+    public int yearNext() {
+        return date.plusYears(1).get(ChronoField.YEAR_OF_ERA);
+    }
+
+    /**
+     * <p>
      * 整形した西暦を返します。
      * </p>
      * 
