@@ -10,15 +10,15 @@
 public class Project extends bee.api.Project {
 
     {
-        product("offishell", "offishell", "1.0");
+        product("com.github.teletha", "offishell", "1.0");
         repository("https://oss.sonatype.org/content/repositories/snapshots");
 
-        require("npc", "sinobu", "1.0");
+        require("com.github.teletha", "sinobu", "1.0");
+        require("com.github.teletha", "antibug", "0.3").atTest();
         require("net.java.dev.jna", "jna", "4.2.2");
         require("net.java.dev.jna", "jna-platform", "4.2.2");
         require("org.apache.poi", "poi-ooxml", "3.15-beta1");
         require("org.apache.poi", "ooxml-schemas", "1.3");
-        require("npc", "antibug", "0.3").atTest();
         require("edu.cmu.sphinx", "sphinx4-core", "5prealpha-SNAPSHOT");
         require("edu.cmu.sphinx", "sphinx4-data", "5prealpha-SNAPSHOT");
         requireLombok();
