@@ -1148,8 +1148,8 @@ public class Word {
          * @return
          */
         private Problem errorInVariableResolve(Object model, String[] expressions, String expression) {
-            return Problem.of("文書 [" + path + "] の変数 [" + String.join(".", expressions) + "] で使われている [" + expression + "] は" + model
-                    .getClass().getSimpleName() + "クラスでは解決できません。");
+            return Problem.of("文書 [" + path + "] の変数 [" + String
+                    .join(".", expressions) + "] で使われている [" + expression + "] は" + model.getClass().getSimpleName() + "クラスでは解決できません。");
         }
 
         /**

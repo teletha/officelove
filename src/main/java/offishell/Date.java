@@ -176,6 +176,17 @@ public class Date {
 
     /**
      * <p>
+     * 来年の西暦の数値を返します。
+     * </p>
+     * 
+     * @return
+     */
+    public int yearNext() {
+        return date.plusYears(1).get(ChronoField.YEAR_OF_ERA);
+    }
+
+    /**
+     * <p>
      * 整形した西暦を返します。
      * </p>
      * 
@@ -355,6 +366,17 @@ public class Date {
      */
     public String 年度() {
         return 年度(padding);
+    }
+
+    /**
+     * <p>
+     * 整形した和年度を返します。
+     * </p>
+     * 
+     * @return
+     */
+    public String 短縮年度() {
+        return 年度(padding).replace("年度", "").replace("平成", "H").replace("昭和", "S");
     }
 
     /**

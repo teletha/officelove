@@ -9,19 +9,30 @@
  */
 package offishell.word;
 
+import java.io.ByteArrayInputStream;
+import java.math.BigInteger;
 import java.util.function.UnaryOperator;
+
+import javax.xml.namespace.QName;
 
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFPicture;
+import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.xmlbeans.SchemaType;
+import org.apache.xmlbeans.XmlObject;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTBlip;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
@@ -31,6 +42,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTrPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum;
+
+import kiss.I;
+import kiss.Variable;
 
 /**
  * @version 2016/06/04 18:15:54
@@ -213,6 +228,8 @@ public class WordHeleper {
         // copy context
         ppr(out).set(in.getCTP().getPPr());
 
+        // copy(doc, out.getDocument(), doc.getStyles().getStyle(in.getStyleID()));
+
         // copy children
         for (XWPFRun inRun : in.getRuns()) {
             copy(inRun, out.createRun(), converter);
@@ -279,8 +296,46 @@ public class WordHeleper {
         outCTR.setSymArray(inCTR.getSymArray());
         outCTR.setTabArray(inCTR.getTabArray());
 
+        // copy image
+        for (XWPFPicture inPicture : in.getEmbeddedPictures()) {
+            try {
+                XWPFPictureData inData = inPicture.getPictureData();
+                String outId = out.getDocument().addPictureData(new ByteArrayInputStream(inData.getData()), inData.getPictureType());
+
+                select(CTBlip.class, outCTR).to(blip -> blip.setEmbed(outId));
+            } catch (Exception e) {
+                throw I.quiet(e);
+            }
+        }
+
         // copy text
         write(out, converter.apply(in.text()));
+    }
+
+    /**
+     * <p>
+     * Select node by XPath.
+     * </p>
+     * 
+     * @param type
+     * @param node
+     * @return
+     */
+    private static <T extends XmlObject> Variable<T> select(Class<T> type, XmlObject node) {
+        try {
+            SchemaType schema = (SchemaType) type.getField("type").get(null);
+            QName qName = schema.getName();
+            String name = qName.getLocalPart().replace("CT_", "").toLowerCase();
+            XmlObject[] nodes = node.selectPath("declare namespace ns='" + qName.getNamespaceURI() + "' .//ns:" + name);
+
+            if (nodes.length == 0) {
+                return Variable.empty();
+            } else {
+                return Variable.of((T) nodes[0]);
+            }
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -328,5 +383,41 @@ public class WordHeleper {
         CTBody body = document.getDocument().getBody();
 
         return body.isSetSectPr() ? body.getSectPr() : body.addNewSectPr();
+    }
+
+    public static void copyLayout(XWPFDocument srcDoc, XWPFDocument destDoc) {
+        CTPageMar pgMar = srcDoc.getDocument().getBody().getSectPr().getPgMar();
+
+        BigInteger bottom = pgMar.getBottom();
+        BigInteger footer = pgMar.getFooter();
+        BigInteger gutter = pgMar.getGutter();
+        BigInteger header = pgMar.getHeader();
+        BigInteger left = pgMar.getLeft();
+        BigInteger right = pgMar.getRight();
+        BigInteger top = pgMar.getTop();
+
+        CTPageMar addNewPgMar = destDoc.getDocument().getBody().addNewSectPr().addNewPgMar();
+
+        addNewPgMar.setBottom(bottom);
+        addNewPgMar.setFooter(footer);
+        addNewPgMar.setGutter(gutter);
+        addNewPgMar.setHeader(header);
+        addNewPgMar.setLeft(left);
+        addNewPgMar.setRight(right);
+        addNewPgMar.setTop(top);
+
+        CTPageSz pgSzSrc = srcDoc.getDocument().getBody().getSectPr().getPgSz();
+
+        BigInteger code = pgSzSrc.getCode();
+        BigInteger h = pgSzSrc.getH();
+        Enum orient = pgSzSrc.getOrient();
+        BigInteger w = pgSzSrc.getW();
+
+        CTPageSz addNewPgSz = destDoc.getDocument().getBody().addNewSectPr().addNewPgSz();
+
+        addNewPgSz.setCode(code);
+        addNewPgSz.setH(h);
+        addNewPgSz.setOrient(orient);
+        addNewPgSz.setW(w);
     }
 }
