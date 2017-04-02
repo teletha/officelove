@@ -14,13 +14,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.beans.property.BooleanProperty;
 
 import kiss.I;
-import kiss.Interceptor;
 import kiss.Signal;
-import kiss.model.Model;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
-import offishell.macro.lol.LoLMacro.Skill;
 import offishell.platform.Location;
 import offishell.platform.Native;
 
@@ -524,27 +521,6 @@ public abstract class LoLMacro extends Macro {
          */
         private Ping(Key key) {
             this.key = key;
-        }
-    }
-
-    /**
-     * @version 2016/10/15 13:34:21
-     */
-    @SuppressWarnings("unused")
-    private static class TraceInterceptor extends Interceptor<Trace> {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected Object invoke(Object... params) {
-            long start = now();
-            Object result = super.invoke(params);
-            long end = now();
-
-            log(Model.of(that).name, "#", name, " : ", end - start);
-
-            return result;
         }
     }
 }
