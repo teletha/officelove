@@ -21,8 +21,6 @@ import java.util.function.Predicate;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import kiss.I;
-import kiss.Manageable;
-import kiss.Preference;
 import offishell.UI;
 
 /**
@@ -214,7 +212,6 @@ public class Directory {
         return I.make(MemorizedDirectory.class).computeIfAbsent(category, key -> UI.selectDirectory(category));
     }
 
-    @Manageable(lifestyle = Preference.class)
     private static class MemorizedDirectory extends HashMap<String, Path> {
     }
 }

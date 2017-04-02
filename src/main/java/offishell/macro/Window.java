@@ -12,7 +12,7 @@ package offishell.macro;
 import java.nio.file.Path;
 
 import kiss.Disposable;
-import kiss.Events;
+import kiss.Signal;
 import offishell.UI;
 import offishell.platform.Color;
 import offishell.platform.Location;
@@ -155,12 +155,12 @@ public class Window {
      * 
      * @return
      */
-    public static Events<Window> find() {
-        return new Events<Window>(observer -> {
+    public static Signal<Window> find() {
+        return new Signal<Window>((observer, disposer) -> {
             Native.API.enumWindows(id -> {
                 observer.accept(new Window(id));
             });
-            return Disposable.Φ;
+            return Disposable.empty();
         });
     }
 
@@ -172,7 +172,7 @@ public class Window {
      * @param title A part of title.
      * @return
      */
-    public static Events<Window> findByTitle(String title) {
+    public static Signal<Window> findByTitle(String title) {
         return find().take(window -> window.title().contains(title));
     }
 
@@ -184,7 +184,7 @@ public class Window {
      * @param title A part of title.
      * @return
      */
-    public static Events<Window> findByTitle(Path title) {
+    public static Signal<Window> findByTitle(Path title) {
         return findByTitle(title.getFileName().toString());
     }
 

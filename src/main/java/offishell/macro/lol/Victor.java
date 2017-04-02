@@ -9,7 +9,7 @@
  */
 package offishell.macro.lol;
 
-import kiss.Events;
+import kiss.Signal;
 import kiss.Variable;
 import offishell.macro.Key;
 import offishell.macro.KeyEvent;
@@ -24,9 +24,9 @@ public class Victor extends LoLMacro {
      * 
      */
     private Victor() {
-        Events<KeyEvent> startCastE = when(Key.E).consume().press();
-        Events<KeyEvent> press = when(Key.MouseRight).press().skipUntil(startCastE).take(1).repeat();
-        Events<KeyEvent> release = when(Key.MouseRight).release().skipUntil(startCastE).take(1).repeat();
+        Signal<KeyEvent> startCastE = when(Key.E).consume().press();
+        Signal<KeyEvent> press = when(Key.MouseRight).press().skipUntil(startCastE).take(1).repeat();
+        Signal<KeyEvent> release = when(Key.MouseRight).release().skipUntil(startCastE).take(1).repeat();
 
         Variable<Location> location = press.map(KeyEvent::location).to();
 

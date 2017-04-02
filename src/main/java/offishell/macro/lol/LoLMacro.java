@@ -13,13 +13,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.beans.property.BooleanProperty;
 
-import kiss.Events;
 import kiss.I;
 import kiss.Interceptor;
+import kiss.Signal;
 import kiss.model.Model;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
+import offishell.macro.lol.LoLMacro.Skill;
 import offishell.platform.Location;
 import offishell.platform.Native;
 
@@ -106,8 +107,8 @@ public abstract class LoLMacro extends Macro {
             when(Key.Space).release().to(e -> center(false)); // emulation
 
             // configure combo
-            Events<Boolean> shopOpen = when(Key.X).press().toggle();
-            Events<Boolean> scoreOpen = when(Key.Tab).press().mapTo(true).merge(when(Key.Tab).release().mapTo(false));
+            Signal<Boolean> shopOpen = when(Key.X).press().toggle();
+            Signal<Boolean> scoreOpen = when(Key.Tab).press().mapTo(true).merge(when(Key.Tab).release().mapTo(false));
 
             when(Key.MouseLeft).press().skipWhile(shopOpen).skipWhile(scoreOpen).to(e -> {
                 BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();

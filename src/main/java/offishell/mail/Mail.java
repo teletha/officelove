@@ -16,10 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import kiss.Events;
 import kiss.I;
-import kiss.Manageable;
-import kiss.Preference;
+import kiss.Signal;
 import offishell.UI;
 import offishell.excel.Excel;
 import offishell.file.FileName;
@@ -110,7 +108,7 @@ public class Mail {
      * @param files
      * @return
      */
-    public Mail attachment(Events<Path> files) {
+    public Mail attachment(Signal<Path> files) {
         return attachment(files.toList());
     }
 
@@ -237,7 +235,6 @@ public class Mail {
     /**
      * @version 2016/07/11 16:09:19
      */
-    @Manageable(lifestyle = Preference.class)
     private static class Mailer {
 
         /** The thunderbird.exe. */

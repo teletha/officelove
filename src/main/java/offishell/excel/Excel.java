@@ -38,8 +38,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTPhoneticRun;
 
 import kiss.Disposable;
-import kiss.Events;
 import kiss.I;
+import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
 import offishell.Date;
@@ -121,10 +121,10 @@ public class Excel {
      * @param cellName 列名
      * @return
      */
-    public Events<Row> takeBy(String cellName) {
+    public Signal<Row> takeBy(String cellName) {
         int index = indexOfHeader(cellName);
 
-        return new Events<Row>(observer -> {
+        return new Signal<Row>((observer, disposer) -> {
             for (int i = 1; i < sheet.getLastRowNum(); i++) {
                 XSSFRow row = sheet.getRow(i);
 
@@ -136,7 +136,7 @@ public class Excel {
                     }
                 }
             }
-            return Disposable.Φ;
+            return Disposable.empty();
         });
     }
 
@@ -147,7 +147,7 @@ public class Excel {
      * 
      * @return
      */
-    public Events<XSSFRow> rowsWithCellBy(String name) {
+    public Signal<XSSFRow> rowsWithCellBy(String name) {
         return rowsWithCellAt(indexOfHeader(name));
     }
 
@@ -159,8 +159,8 @@ public class Excel {
      * @param columnIndex zero-based index.
      * @return
      */
-    public Events<XSSFRow> rowsWithCellAt(int columnIndex) {
-        return new Events<XSSFRow>(observer -> {
+    public Signal<XSSFRow> rowsWithCellAt(int columnIndex) {
+        return new Signal<XSSFRow>((observer, disposer) -> {
             for (int i = 1; i < sheet.getLastRowNum(); i++) {
                 XSSFRow row = sheet.getRow(i);
 
@@ -176,7 +176,7 @@ public class Excel {
                     break;
                 }
             }
-            return Disposable.Φ;
+            return Disposable.empty();
         });
     }
 
@@ -224,7 +224,7 @@ public class Excel {
      * @param operation
      * @return
      */
-    public <M> Excel write(Events<M> models, BiConsumer<M, Row> operation) {
+    public <M> Excel write(Signal<M> models, BiConsumer<M, Row> operation) {
         update(models, items -> {
             items.to(model -> {
                 operation.accept(model, Row.rows.computeIfAbsent(model, key -> {
@@ -244,7 +244,7 @@ public class Excel {
      * @param operation
      * @return
      */
-    public Excel update(Events models) {
+    public Excel update(Signal models) {
         return update(models.toList());
     }
 

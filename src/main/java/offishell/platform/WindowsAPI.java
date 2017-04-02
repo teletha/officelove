@@ -40,9 +40,9 @@ import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 import com.sun.jna.win32.W32APITypeMapper;
 
-import kiss.Events;
 import kiss.I;
 import kiss.Observer;
+import kiss.Signal;
 import kiss.Variable;
 import offishell.platform.WindowsAPI.ShellAPI.SHELLEXECUTEINFO;
 
@@ -154,7 +154,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
         User.EnumWindows((hwnd, pointer) -> {
             process.accept(hwnd);
             return true;
-        } , null);
+        }, null);
     }
 
     /**
@@ -196,7 +196,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
      * {@inheritDoc}
      */
     @Override
-    public Events<String> clipboard() {
+    public Signal<String> clipboard() {
         return clipboard.read().skip(e -> e == null).diff();
     }
 
@@ -445,14 +445,14 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          * 
          * @return
          */
-        private Events<String> read() {
-            return new Events<String>(observer -> {
+        private Signal<String> read() {
+            return new Signal<String>((observer, disposer) -> {
                 if (observers.add(observer) && observers.size() == 1) {
                     switcher = executor.submit(this);
                 }
 
                 return () -> {
-                    if (observers.remove(observers) && observers.isEmpty()) {
+                    if (observers.remove(observer) && observers.isEmpty()) {
                         switcher.cancel(false);
                     }
                 };
@@ -507,7 +507,8 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          * <strong xmlns="http://www.w3.org/1999/xhtml">ShellExecuteEx</strong></a>.
          * </p>
          * <pre>
-         * <span style="color:Blue;">typedef</span> <span style="color:Blue;">struct</span> _SHELLEXECUTEINFO {
+         * <span style="color:Blue;">typedef</span> <span style=
+        "color:Blue;">struct</span> _SHELLEXECUTEINFO {
          *   DWORD &nbsp;&nbsp;&nbsp;&nbsp;cbSize;
          *   ULONG &nbsp;&nbsp;&nbsp;&nbsp;fMask;
          *   HWND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwnd;
@@ -566,12 +567,13 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          * To include double quotation marks in <strong>lpParameters</strong>, enclose each mark in
          * a pair of quotation marks, as in the following example.
          * </p>
-         * <div id="code-snippet-2" class="codeSnippetContainer" xmlns=""> <div class=
-         * "codeSnippetContainerTabs"> </div>
-         * <div class="codeSnippetContainerCodeContainer"> <div class= "codeSnippetToolBar"> <div
-         * class="codeSnippetToolBarText"> <a name= "CodeSnippetCopyLink" style=
-         * "display: none;" title= "Copy to clipboard." href=
-         * "javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_3de148bb-edf3-4344-8ecf-c211304bfa9e');"
+         * <div id="code-snippet-2" class="codeSnippetContainer" xmlns="">
+         * <div class= "codeSnippetContainerTabs"> </div>
+         * <div class="codeSnippetContainerCodeContainer"> <div class= "codeSnippetToolBar">
+         * <div class="codeSnippetToolBarText">
+         * <a name= "CodeSnippetCopyLink" style= "display: none;" title= "Copy to clipboard." href=
+         * "javascript:if
+         * (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_3de148bb-edf3-4344-8ecf-c211304bfa9e');"
          * >Copy</a> </div> </div>
          * <div id="CodeSnippetContainerCode_3de148bb-edf3-4344-8ecf-c211304bfa9e" class=
          * "codeSnippetContainerCode" dir="ltr"> <div style="color:Black;"> <pre>

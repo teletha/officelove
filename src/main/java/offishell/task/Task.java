@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFStyles;
 
-import kiss.Events;
 import kiss.Extensible;
 import kiss.I;
+import kiss.Signal;
 import offishell.Date;
 import offishell.excel.Excel;
 import offishell.file.Directory;
@@ -68,7 +68,7 @@ public interface Task extends Extensible {
      */
     default Date month() {
         List<XWPFParagraph> paras = mainWord().paragraphs.toList();
-        List<String> methods = Events.from(new Error().getStackTrace())
+        List<String> methods = Signal.from(new Error().getStackTrace())
                 .take(e -> e.getClassName().equals(getClass().getName()))
                 .map(e -> e.getMethodName())
                 .toList();
@@ -206,7 +206,7 @@ public interface Task extends Extensible {
      * 
      * @return
      */
-    default <T extends FiniteForm, M> Word word(Class<T> type, Events<M> models, BiConsumer<T, M> setting) {
+    default <T extends FiniteForm, M> Word word(Class<T> type, Signal<M> models, BiConsumer<T, M> setting) {
         return word(type, models.toList(), setting);
     }
 

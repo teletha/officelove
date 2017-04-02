@@ -33,7 +33,11 @@ public class TaskLuncher {
     public static void main(String[] args) {
         try {
             I.$working = I.locate(System.getProperty("java.application.path"));
-            I.load(I.locate("F:\\Development\\Worker\\target\\classes"));
+            // I.load(I.locate("F:\\Development\\Worker\\target\\classes"));
+            if (true) {
+                // FIXME
+                throw new Error();
+            }
 
             switch (args[0]) {
             case "InvokeMethod":

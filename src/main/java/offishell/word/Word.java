@@ -47,9 +47,9 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTextDirection;
 
 import kiss.Disposable;
-import kiss.Events;
 import kiss.I;
 import kiss.Observer;
+import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
 import lombok.Setter;
@@ -81,11 +81,11 @@ public class Word {
      * 
      * @return A list of {@link XWPFParagraph}.
      */
-    public final Events<XWPFParagraph> paragraphs = new Events<XWPFParagraph>(observer -> {
+    public final Signal<XWPFParagraph> paragraphs = new Signal<XWPFParagraph>((observer, disposer) -> {
         for (IBodyElement element : calculated.getBodyElements()) {
             collectParagraph(element, observer);
         }
-        return Disposable.Φ;
+        return Disposable.empty();
     });
 
     /** The context. */
@@ -285,7 +285,7 @@ public class Word {
      * @param models
      * @return
      */
-    public Word calculateAndMerge(Events models, Object... additions) {
+    public Word calculateAndMerge(Signal models, Object... additions) {
         return calculateAndMerge(models.toList(), additions);
     }
 
@@ -1254,8 +1254,8 @@ public class Word {
 
                     Object value = variable.resolve(condition);
 
-                    if (value instanceof Events) {
-                        value = ((Events) value).toList();
+                    if (value instanceof Signal) {
+                        value = ((Signal) value).toList();
                     }
 
                     if (value instanceof Boolean) {

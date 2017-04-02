@@ -11,7 +11,7 @@ package offishell.platform;
 
 import java.util.function.Consumer;
 
-import kiss.Events;
+import kiss.Signal;
 
 /**
  * @version 2016/10/04 21:11:29
@@ -110,7 +110,7 @@ class UnknownAPI implements Native {
      * {@inheritDoc}
      */
     @Override
-    public Events clipboard() {
+    public Signal clipboard() {
         throw error();
     }
 

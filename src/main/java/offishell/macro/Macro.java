@@ -49,9 +49,9 @@ import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import com.sun.jna.platform.win32.WinUser.MSG;
 
-import kiss.Events;
 import kiss.I;
 import kiss.Observer;
+import kiss.Signal;
 
 /**
  * @version 2016/10/04 3:22:04
@@ -220,7 +220,7 @@ public abstract class Macro {
      * @param mouse
      * @return
      */
-    protected final Events<KeyEvent> when(Mouse mouse) {
+    protected final Signal<KeyEvent> when(Mouse mouse) {
         return new KeyMacro().register(this.mouseHook.moves);
     }
 
@@ -423,7 +423,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        Events<KeyEvent> press();
+        Signal<KeyEvent> press();
 
         /**
          * <p>
@@ -432,7 +432,7 @@ public abstract class Macro {
          * 
          * @return
          */
-        Events<KeyEvent> release();
+        Signal<KeyEvent> release();
 
         /**
          * <p>
@@ -546,7 +546,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public Events<KeyEvent> press() {
+        public Signal<KeyEvent> press() {
             return register((key.mouse ? mouseHook : keyboardHook).presses);
         }
 
@@ -554,7 +554,7 @@ public abstract class Macro {
          * {@inheritDoc}
          */
         @Override
-        public Events<KeyEvent> release() {
+        public Signal<KeyEvent> release() {
             return register((key.mouse ? mouseHook : keyboardHook).releases);
         }
 
@@ -566,10 +566,10 @@ public abstract class Macro {
          * @param macros
          * @return
          */
-        private Events<KeyEvent> register(List<KeyMacro> macros) {
+        private Signal<KeyEvent> register(List<KeyMacro> macros) {
             macros.add(this);
 
-            return new Events<KeyEvent>(observer -> {
+            return new Signal<KeyEvent>((observer, disposer) -> {
                 observers.add(observer);
                 return () -> observers.remove(observer);
             });
