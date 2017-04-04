@@ -68,7 +68,7 @@ public interface Task extends Extensible {
      */
     default Date month() {
         List<XWPFParagraph> paras = mainWord().paragraphs.toList();
-        List<String> methods = Signal.from(new Error().getStackTrace())
+        List<String> methods = I.signal(new Error().getStackTrace())
                 .take(e -> e.getClassName().equals(getClass().getName()))
                 .map(e -> e.getMethodName())
                 .toList();

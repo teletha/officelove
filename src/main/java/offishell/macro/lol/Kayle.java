@@ -11,9 +11,8 @@ package offishell.macro.lol;
 
 import static java.util.concurrent.TimeUnit.*;
 
-import kiss.Signal;
+import kiss.I;
 import offishell.macro.Key;
-import offishell.macro.lol.LoLMacro.Skill;
 
 /**
  * @version 2016/10/30 14:08:15
@@ -35,7 +34,7 @@ public class Kayle extends LoLMacro {
             cast(Skill.R);
 
             if (isCenter() || isLowHealth()) {
-                Signal.infinite(1, 100, MILLISECONDS).take(30).scan(0, (p, n) -> p + 1).to(skill -> {
+                I.signalInfinite(1, 100, MILLISECONDS).take(30).scan(0, (p, n) -> p + 1).to(skill -> {
                     selfCast(Skill.R);
                     System.out.println("TryCast " + skill);
                 });
