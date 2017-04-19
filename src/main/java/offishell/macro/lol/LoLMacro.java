@@ -11,10 +11,9 @@ package offishell.macro.lol;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javafx.beans.property.BooleanProperty;
-
 import kiss.I;
 import kiss.Signal;
+import kiss.Variable;
 import offishell.macro.Key;
 import offishell.macro.Macro;
 import offishell.macro.Window;
@@ -108,7 +107,7 @@ public abstract class LoLMacro extends Macro {
             Signal<Boolean> scoreOpen = when(Key.Tab).press().mapTo(true).merge(when(Key.Tab).release().mapTo(false));
 
             when(Key.MouseLeft).press().skipWhile(shopOpen).skipWhile(scoreOpen).to(e -> {
-                BooleanProperty released = when(Key.MouseLeft).release().take(1).toBinary();
+                Variable<Boolean> released = when(Key.MouseLeft).release().take(1).toBinary();
 
                 Location position = window().mousePosition();
                 int x = position.x();
