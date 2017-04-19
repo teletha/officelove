@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 
 import javafx.stage.FileChooser.ExtensionFilter;
 
+import filer.Filer;
 import kiss.I;
 import offishell.UI;
 
@@ -157,11 +158,11 @@ public class Directory {
                 FileName selectedFileName = new FileName(selected);
 
                 Path output = directory.resolve(file.name + "." + selectedFileName.extension);
-                I.copy(selected, output);
+                Filer.copy(selected, output);
                 directories.put(memorize, selected.getParent());
 
                 if (delete) {
-                    I.delete(selected);
+                    Filer.delete(selected);
                 }
                 return output;
             }

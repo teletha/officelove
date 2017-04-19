@@ -12,7 +12,7 @@ package task;
 import java.nio.file.Path;
 
 import bee.util.ZipArchiver;
-import kiss.I;
+import filer.Filer;
 
 /**
  * @version 2016/07/01 12:53:08
@@ -26,7 +26,7 @@ public class Exe extends bee.task.Exe {
     public Path build() {
         Path zip = super.build();
 
-        ZipArchiver.unpack(zip, I.locate("E:\\布教"));
+        ZipArchiver.unpack(zip, Filer.locate("E:\\布教"));
 
         return zip;
     }

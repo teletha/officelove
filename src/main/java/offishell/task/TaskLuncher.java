@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 
+import filer.Filer;
 import kiss.I;
 import offishell.Problem;
 
@@ -32,8 +33,8 @@ public class TaskLuncher {
      */
     public static void main(String[] args) {
         try {
-            I.$working = I.locate(System.getProperty("java.application.path"));
-            // I.load(I.locate("F:\\Development\\Worker\\target\\classes"));
+            I.$working = Filer.locate(System.getProperty("java.application.path"));
+            // I.load(Filer.locate("F:\\Development\\Worker\\target\\classes"));
             if (true) {
                 // FIXME
                 throw new Error();
@@ -41,7 +42,7 @@ public class TaskLuncher {
 
             switch (args[0]) {
             case "InvokeMethod":
-                invokeMethod(I.locate(args[1]), args[2]);
+                invokeMethod(Filer.locate(args[1]), args[2]);
                 break;
 
             default:

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import filer.Filer;
 import kiss.I;
 import offishell.macro.Window;
 
@@ -50,13 +51,13 @@ public class Recoverable {
         }
 
         try {
-            Path backup = I.locateTemporary();
-            I.copy(file, backup);
+            Path backup = Filer.locateTemporary();
+            Filer.copy(file, backup);
 
             reverts.add(() -> {
                 // ロールバック
-                I.delete(file);
-                I.copy(backup, file);
+                Filer.delete(file);
+                Filer.copy(backup, file);
             });
 
             try (OutputStream output = Files.newOutputStream(file);) {

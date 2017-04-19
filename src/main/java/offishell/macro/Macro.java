@@ -49,6 +49,7 @@ import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import com.sun.jna.platform.win32.WinUser.MSG;
 
+import filer.Filer;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
@@ -119,7 +120,7 @@ public abstract class Macro {
 
         try {
             name = getClass().getSimpleName();
-            tray = new TrayIcon(ImageIO.read(I.locate(Macro.class, "icon.png").toFile()));
+            tray = new TrayIcon(ImageIO.read(Filer.locate(Macro.class, "icon.png").toFile()));
             tray.setImageAutoSize(true);
             tray.setToolTip(name);
             tray.setPopupMenu(menu());

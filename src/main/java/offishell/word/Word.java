@@ -46,6 +46,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTextDirection;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTextDirection;
 
+import filer.Filer;
 import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
@@ -103,7 +104,7 @@ public class Word {
      * 
      */
     private Word() {
-        this.path = I.locateTemporary();
+        this.path = Filer.locateTemporary();
         this.calculated = new XWPFDocument();
 
         CTSectPr sect = calculated.getDocument().getBody().getSectPr();

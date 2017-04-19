@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import filer.Filer;
 import kiss.I;
 import kiss.Signal;
 import offishell.UI;
@@ -157,7 +158,7 @@ public class Mail {
         }
 
         try {
-            Path temp = Files.createDirectories(I.locateTemporary());
+            Path temp = Files.createDirectories(Filer.locateTemporary());
             Path created = Files.createFile(temp.resolve(name));
 
             file.save(created);
@@ -198,9 +199,9 @@ public class Mail {
         }
 
         try {
-            Path temp = Files.createDirectories(I.locateTemporary());
+            Path temp = Files.createDirectories(Filer.locateTemporary());
             Path created = Files.createFile(temp.resolve(name));
-            I.copy(file.path, created);
+            Filer.copy(file.path, created);
 
             return attachment(created);
         } catch (IOException e) {
