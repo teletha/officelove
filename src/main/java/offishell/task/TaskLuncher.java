@@ -33,7 +33,6 @@ public class TaskLuncher {
      */
     public static void main(String[] args) {
         try {
-            I.$working = Filer.locate(System.getProperty("java.application.path"));
             // I.load(Filer.locate("F:\\Development\\Worker\\target\\classes"));
             if (true) {
                 // FIXME
