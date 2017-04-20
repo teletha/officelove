@@ -136,7 +136,7 @@ public class Excel {
                     }
                 }
             }
-            return Disposable.empty();
+            return disposer;
         });
     }
 

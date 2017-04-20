@@ -428,7 +428,7 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
             Thread thread = new Thread(runnable);
             thread.setName(Clipboard.class.getSimpleName());
             thread.setPriority(Thread.MAX_PRIORITY);
-            thread.setDaemon(false);
+            thread.setDaemon(true);
             return thread;
         });
 

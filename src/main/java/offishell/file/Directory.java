@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import filer.Filer;
+import kiss.Configurable;
 import kiss.I;
 import offishell.UI;
 
@@ -210,9 +211,21 @@ public class Directory {
      * @return
      */
     public static Path by(String category) {
-        return I.make(MemorizedDirectory.class).computeIfAbsent(category, key -> UI.selectDirectory(category));
+        return I.make(MemorizedDirectory.class).restore().computeIfAbsent(category, key -> UI.selectDirectory(category));
     }
 
-    private static class MemorizedDirectory extends HashMap<String, Path> {
+    /**
+     * @version 2017/04/20 9:27:09
+     */
+    private static class MemorizedDirectory extends HashMap<String, Path> implements Configurable<MemorizedDirectory> {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String locate() {
+            System.out.println(Filer.locate("preferences").resolve(getClass().getName() + ".xml").toAbsolutePath().toString());
+            return Filer.locate("preferences").resolve(getClass().getName() + ".xml").toString();
+        }
     }
 }
