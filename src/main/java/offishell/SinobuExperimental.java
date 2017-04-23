@@ -10,11 +10,12 @@
 package offishell;
 
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import sun.reflect.ConstantPool;
 
 import jdk.internal.org.objectweb.asm.Type;
-import kiss.ClassVariable;
 import kiss.I;
 
 /**
@@ -23,7 +24,7 @@ import kiss.I;
 class SinobuExperimental {
 
     /** The holder for lambda parameter names. */
-    private static final ClassVariable<String> methods = new ClassVariable();
+    private static final Map<Class, String> methods = new ConcurrentHashMap();
 
     /** The accessible internal method for lambda info. */
     private static final Method findConstants;
@@ -68,7 +69,7 @@ class SinobuExperimental {
                 }
                 name = lambda.getDeclaredMethod(info[1], params).getParameters()[0].getName();
 
-                methods.set(clazz, name);
+                methods.put(clazz, name);
             } catch (Exception e) {
                 throw I.quiet(e);
             }
