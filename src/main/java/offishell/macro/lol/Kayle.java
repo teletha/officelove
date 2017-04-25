@@ -9,9 +9,6 @@
  */
 package offishell.macro.lol;
 
-import static java.util.concurrent.TimeUnit.*;
-
-import kiss.I;
 import offishell.macro.Key;
 
 /**
@@ -30,16 +27,16 @@ public class Kayle extends LoLMacro {
             selfCast(Skill.W);
         });
 
-        when(Key.R).consume().press().interval(3, SECONDS).to(e -> {
-            cast(Skill.R);
-
-            if (isCenter() || isLowHealth()) {
-                I.signalInfinite(1, 100, MILLISECONDS).take(30).scan(0, (p, n) -> p + 1).to(skill -> {
-                    selfCast(Skill.R);
-                    System.out.println("TryCast " + skill);
-                });
-            }
-        });
+        // when(Key.R).consume().press().interval(3, SECONDS).to(e -> {
+        // cast(Skill.R);
+        //
+        // if (isCenter() || isLowHealth()) {
+        // I.signalInfinite(1, 100, MILLISECONDS).take(30).scan(0, (p, n) -> p + 1).to(skill -> {
+        // selfCast(Skill.R);
+        // System.out.println("TryCast " + skill);
+        // });
+        // }
+        // });
     }
 
     /**
