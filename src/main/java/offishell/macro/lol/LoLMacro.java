@@ -25,10 +25,6 @@ import offishell.platform.Native;
  */
 public abstract class LoLMacro extends Macro {
 
-    static {
-        I.load(LoLMacro.class, true);
-    }
-
     /** The debug mode. */
     private static final boolean debug = true;
 

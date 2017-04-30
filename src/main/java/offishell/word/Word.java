@@ -66,7 +66,7 @@ import offishell.file.FileType;
 public class Word {
 
     static {
-        I.load(Word.class, false);
+        I.loadAll(Variable.class);
     }
 
     /** The template file. */
