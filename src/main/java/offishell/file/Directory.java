@@ -21,8 +21,8 @@ import java.util.function.Predicate;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import filer.Filer;
-import kiss.Configurable;
 import kiss.I;
+import kiss.Storable;
 import offishell.UI;
 
 /**
@@ -217,7 +217,7 @@ public class Directory {
     /**
      * @version 2017/04/20 9:27:09
      */
-    private static class MemorizedDirectory extends HashMap<String, Path> implements Configurable<MemorizedDirectory> {
+    private static class MemorizedDirectory extends HashMap<String, Path> implements Storable<MemorizedDirectory> {
 
         /**
          * {@inheritDoc}
