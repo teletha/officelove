@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 import filer.Filer;
 import kiss.I;
 import kiss.Signal;
+import kiss.Storable;
 import offishell.UI;
 import offishell.excel.Excel;
 import offishell.file.FileName;
@@ -215,7 +216,7 @@ public class Mail {
      * </p>
      */
     public void write() {
-        I.make(Mailer.class).invoke(this);
+        I.make(Mailer.class).restore().invoke(this);
     }
 
     /**
@@ -236,7 +237,7 @@ public class Mail {
     /**
      * @version 2016/07/11 16:09:19
      */
-    private static class Mailer {
+    private static class Mailer implements Storable<Mailer> {
 
         /** The thunderbird.exe. */
         public Path exe;
@@ -249,6 +250,7 @@ public class Mail {
         private void invoke(Mail mail) {
             if (exe == null || Files.notExists(exe)) {
                 exe = UI.selectFile(new FileName("thunderbird.exe"));
+                store();
             }
 
             StringBuilder option = new StringBuilder();
