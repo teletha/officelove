@@ -22,6 +22,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import filer.Filer;
 import kiss.I;
+import kiss.Manageable;
+import kiss.Singleton;
 import kiss.Storable;
 import offishell.UI;
 
@@ -161,6 +163,7 @@ public class Directory {
                 Path output = directory.resolve(file.name + "." + selectedFileName.extension);
                 Filer.copy(selected, output);
                 directories.put(memorize, selected.getParent());
+                directories.store();
 
                 if (delete) {
                     Filer.delete(selected);
@@ -217,14 +220,21 @@ public class Directory {
     /**
      * @version 2017/04/20 9:27:09
      */
+    @Manageable(lifestyle = Singleton.class)
     private static class MemorizedDirectory extends HashMap<String, Path> implements Storable<MemorizedDirectory> {
+
+        /**
+        * 
+        */
+        private MemorizedDirectory() {
+            restore();
+        }
 
         /**
          * {@inheritDoc}
          */
         @Override
         public String locate() {
-            System.out.println(Filer.locate("preferences").resolve(getClass().getName() + ".xml").toAbsolutePath().toString());
             return Filer.locate("preferences").resolve(getClass().getName() + ".xml").toString();
         }
     }
