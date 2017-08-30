@@ -264,7 +264,7 @@ public class Mail {
             }
 
             if (mail.body != null) {
-                option.append("body='").append(mail.body).append("',");
+                option.append("body=\"").append(mail.body).append("\",");
             }
 
             if (mail.files != null) {

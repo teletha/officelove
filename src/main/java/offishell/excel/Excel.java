@@ -656,7 +656,7 @@ public class Excel {
                     return numeric(cell, cell.getNumericCellValue(), modelClass);
                 }
             }
-            return null;
+            return initial(modelClass);
         }
 
         /**
@@ -774,23 +774,23 @@ public class Excel {
          * @return
          */
         private static <T> T initial(Class<T> type) {
-            if (type == int.class) {
+            if (type == int.class || type == Integer.class) {
                 return (T) Integer.valueOf(0);
             }
 
-            if (type == double.class) {
+            if (type == double.class || type == Double.class) {
                 return (T) Double.valueOf(0);
             }
 
-            if (type == long.class) {
+            if (type == long.class || type == Long.class) {
                 return (T) Long.valueOf(0);
             }
 
-            if (type == float.class) {
+            if (type == float.class || type == Float.class) {
                 return (T) Float.valueOf(0);
             }
 
-            if (type == boolean.class) {
+            if (type == boolean.class || type == Boolean.class) {
                 return (T) Boolean.FALSE;
             }
 

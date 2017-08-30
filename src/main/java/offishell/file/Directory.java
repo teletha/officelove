@@ -214,7 +214,11 @@ public class Directory {
      * @return
      */
     public static Path by(String category) {
-        return I.make(MemorizedDirectory.class).restore().computeIfAbsent(category, key -> UI.selectDirectory(category));
+        MemorizedDirectory dir = I.make(MemorizedDirectory.class).restore();
+        Path path = dir.computeIfAbsent(category, key -> UI.selectDirectory(category));
+        dir.store();
+
+        return path;
     }
 
     /**

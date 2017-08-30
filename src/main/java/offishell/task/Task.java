@@ -159,8 +159,8 @@ public interface Task extends Extensible {
      * 
      * @return
      */
-    default Excel excel(int year, String name) {
-        return Excel.of(directory().resolve(String.valueOf(year)), name);
+    default Excel excel(Date year, String name) {
+        return Excel.of(directoryFor(year), name);
     }
 
     /**
