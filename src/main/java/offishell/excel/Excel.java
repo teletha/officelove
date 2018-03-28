@@ -535,47 +535,6 @@ public class Excel {
 
         /**
          * <p>
-         * Create the specified model which is mapped by name.
-         * </p>
-         * 
-         * @param modelClass
-         * @return
-         */
-        public <M> M create(Class<M> modelClass, ExcelCellNameMapper... mappers) {
-            M instance = I.make(modelClass);
-            Model<M> model = Model.of(modelClass);
-
-            for (Entry<String, Integer> entry : header().entrySet()) {
-                Property property = model.property(entry.getKey());
-
-                if (property != null) {
-                    model.set(instance, property, value(entry.getValue(), property.model.type));
-                }
-            }
-
-            for (ExcelCellNameMapper mapper : mappers) {
-                String[] expressions = mapper.value().split("\\.");
-
-                Object object = instance;
-                Model objectModel = model;
-
-                for (int i = 0; i < expressions.length - 1; i++) {
-                    Property property = objectModel.property(expressions[i]);
-                    object = objectModel.get(object, property);
-                    objectModel = property.model;
-                }
-
-                Property property = objectModel.property(expressions[expressions.length - 1]);
-                objectModel.set(object, property, value(mapper.name(), property.model.type));
-            }
-
-            rows.put(instance, this);
-
-            return instance;
-        }
-
-        /**
-         * <p>
          * Create name-index header map.
          * </p>
          * 
@@ -815,18 +774,6 @@ public class Excel {
                 builder.append(run.getT());
             }
             return builder.toString();
-        }
-
-        /**
-         * <p>
-         * DSL helper,
-         * </p>
-         * 
-         * @param modelClass
-         * @return
-         */
-        public static <M> Function<Row, M> to(Class<M> modelClass, ExcelCellNameMapper... mappers) {
-            return row -> row.create(modelClass, mappers);
         }
     }
 }
