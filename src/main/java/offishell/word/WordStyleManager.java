@@ -13,8 +13,6 @@ import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import kiss.Extensible;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * @version 2016/09/06 16:35:24
@@ -39,8 +37,6 @@ public class WordStyleManager implements Extensible {
      * 
      * @version 2016/09/06 16:39:36
      */
-    @Setter
-    @Accessors(fluent = true, chain = true)
     public static class StyleDefinition {
 
         /** The font size. */
@@ -73,6 +69,96 @@ public class WordStyleManager implements Extensible {
                 run.setItalic(italic);
                 run.setUnderline(underline);
             }
+        }
+
+        /**
+         * Get the size property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @return The size property.
+         */
+        public int getSize() {
+            return size;
+        }
+
+        /**
+         * Set the size property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @param size The size value to set.
+         */
+        public void setSize(int size) {
+            this.size = size;
+        }
+
+        /**
+         * Get the family property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @return The family property.
+         */
+        public String getFamily() {
+            return family;
+        }
+
+        /**
+         * Set the family property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @param family The family value to set.
+         */
+        public void setFamily(String family) {
+            this.family = family;
+        }
+
+        /**
+         * Get the bold property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @return The bold property.
+         */
+        public boolean isBold() {
+            return bold;
+        }
+
+        /**
+         * Set the bold property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @param bold The bold value to set.
+         */
+        public void setBold(boolean bold) {
+            this.bold = bold;
+        }
+
+        /**
+         * Get the italic property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @return The italic property.
+         */
+        public boolean isItalic() {
+            return italic;
+        }
+
+        /**
+         * Set the italic property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @param italic The italic value to set.
+         */
+        public void setItalic(boolean italic) {
+            this.italic = italic;
+        }
+
+        /**
+         * Get the underline property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @return The underline property.
+         */
+        public UnderlinePatterns getUnderline() {
+            return underline;
+        }
+
+        /**
+         * Set the underline property of this {@link WordStyleManager.StyleDefinition}.
+         * 
+         * @param underline The underline value to set.
+         */
+        public void setUnderline(UnderlinePatterns underline) {
+            this.underline = underline;
         }
     }
 }

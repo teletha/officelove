@@ -53,8 +53,6 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import offishell.Problem;
 import offishell.UI;
 import offishell.file.Directory;
@@ -782,8 +780,6 @@ public class Word {
      * 
      * @version 2016/09/06 19:12:18
      */
-    @Setter
-    @Accessors(fluent = true)
     public class Section {
 
         private STPageOrientation.Enum orientation;
@@ -916,6 +912,139 @@ public class Word {
                 marginLeft = margin.getLeft().divide(BigInteger.valueOf(20)).intValue();
                 marginRight = margin.getRight().divide(BigInteger.valueOf(20)).intValue();
             }
+        }
+
+        /**
+         * Get the orientation property of this {@link Word.Section}.
+         * 
+         * @return The orientation property.
+         */
+        public STPageOrientation.Enum orientation() {
+            return orientation;
+        }
+
+        /**
+         * Set the orientation property of this {@link Word.Section}.
+         * 
+         * @param orientation The orientation value to set.
+         */
+        public Section orientation(STPageOrientation.Enum orientation) {
+            this.orientation = orientation;
+            return this;
+        }
+
+        /**
+         * Get the height property of this {@link Word.Section}.
+         * 
+         * @return The height property.
+         */
+        public int height() {
+            return height;
+        }
+
+        /**
+         * Set the height property of this {@link Word.Section}.
+         * 
+         * @param height The height value to set.
+         */
+        public Section height(int height) {
+            this.height = height;
+            return this;
+        }
+
+        /**
+         * Get the width property of this {@link Word.Section}.
+         * 
+         * @return The width property.
+         */
+        public int width() {
+            return width;
+        }
+
+        /**
+         * Set the width property of this {@link Word.Section}.
+         * 
+         * @param width The width value to set.
+         */
+        public Section width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        /**
+         * Get the marginTop property of this {@link Word.Section}.
+         * 
+         * @return The marginTop property.
+         */
+        public int marginTop() {
+            return marginTop;
+        }
+
+        /**
+         * Set the marginTop property of this {@link Word.Section}.
+         * 
+         * @param marginTop The marginTop value to set.
+         */
+        public Section marginTop(int marginTop) {
+            this.marginTop = marginTop;
+            return this;
+        }
+
+        /**
+         * Get the marginBottom property of this {@link Word.Section}.
+         * 
+         * @return The marginBottom property.
+         */
+        public int marginBottom() {
+            return marginBottom;
+        }
+
+        /**
+         * Set the marginBottom property of this {@link Word.Section}.
+         * 
+         * @param marginBottom The marginBottom value to set.
+         */
+        public Section marginBottom(int marginBottom) {
+            this.marginBottom = marginBottom;
+            return this;
+        }
+
+        /**
+         * Get the marginLeft property of this {@link Word.Section}.
+         * 
+         * @return The marginLeft property.
+         */
+        public int marginLeft() {
+            return marginLeft;
+        }
+
+        /**
+         * Set the marginLeft property of this {@link Word.Section}.
+         * 
+         * @param marginLeft The marginLeft value to set.
+         */
+        public Section marginLeft(int marginLeft) {
+            this.marginLeft = marginLeft;
+            return this;
+        }
+
+        /**
+         * Get the marginRight property of this {@link Word.Section}.
+         * 
+         * @return The marginRight property.
+         */
+        public int marginRight() {
+            return marginRight;
+        }
+
+        /**
+         * Set the marginRight property of this {@link Word.Section}.
+         * 
+         * @param marginRight The marginRight value to set.
+         */
+        public Section marginRight(int marginRight) {
+            this.marginRight = marginRight;
+            return this;
         }
     }
 

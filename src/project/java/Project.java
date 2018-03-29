@@ -22,6 +22,5 @@ public class Project extends bee.api.Project {
         require("org.apache.poi", "ooxml-schemas", "1.3");
         require("edu.cmu.sphinx", "sphinx4-core", "5prealpha-SNAPSHOT");
         require("edu.cmu.sphinx", "sphinx4-data", "5prealpha-SNAPSHOT");
-        requireLombok();
     }
 }
