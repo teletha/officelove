@@ -11,18 +11,18 @@ package offishell.msoffice;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import offishell.word.Word;
 
 /**
- * @version 2016/09/06 15:02:43
+ * @version 2018/04/02 16:52:58
  */
 public class WordParagraphTest implements WordTestHelper {
 
     @Test
-    @Ignore
+    @Disabled
     public void testname() throws IOException {
         Word.blank().header("Head1").text("Text1").text("Text1A").section(section -> {
             section.landscape().height(400).width(595).margin(50).head("Head2");

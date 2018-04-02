@@ -9,7 +9,7 @@
  */
 package offishell;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @version 2016/07/18 13:01:49
