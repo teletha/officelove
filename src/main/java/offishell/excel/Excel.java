@@ -23,7 +23,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -132,7 +131,22 @@ public class Excel {
                     XSSFCell cell = row.getCell(index);
 
                     if (cell != null) {
-                        observer.accept(new Row(row));
+                        switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_BLANK:
+                            break;
+
+                        case Cell.CELL_TYPE_STRING:
+                            String value = cell.getStringCellValue();
+
+                            if (value != null && !value.isEmpty()) {
+                                observer.accept(new Row(row));
+                            }
+                            break;
+
+                        default:
+                            observer.accept(new Row(row));
+                            break;
+                        }
                     }
                 }
             }

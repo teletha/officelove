@@ -1204,7 +1204,6 @@ public class Word {
             }
 
             String expression = expressions[index];
-
             if (expression.charAt(0) == '$') {
                 return resolve(expressions, index + 1, resolveBuiltinVariable(expression.substring(1)));
             }
