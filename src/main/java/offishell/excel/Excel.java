@@ -29,6 +29,8 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -103,8 +105,8 @@ public class Excel {
         font.setFontName("游ゴシック Medium");
         font.setFontHeightInPoints((short) 10);
         baseStyle.setFont(font);
-        baseStyle.setAlignment(CellStyle.ALIGN_CENTER);
-        baseStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        baseStyle.setAlignment(HorizontalAlignment.CENTER);
+        baseStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         baseStyle.setShrinkToFit(true);
         baseStyle.setWrapText(true);
 
@@ -783,6 +785,8 @@ public class Excel {
          */
         private static String ruby(XSSFCell cell) {
             StringBuilder builder = new StringBuilder();
+
+            cell.getRichStringCellValue().getCTRst();
 
             for (CTPhoneticRun run : cell.getRichStringCellValue().getCTRst().getRPhArray()) {
                 builder.append(run.getT());

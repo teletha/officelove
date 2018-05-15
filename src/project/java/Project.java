@@ -18,9 +18,10 @@ public class Project extends bee.api.Project {
         require("com.github.teletha", "antibug", "0.6").atTest();
         require("net.java.dev.jna", "jna", "4.2.2");
         require("net.java.dev.jna", "jna-platform", "4.2.2");
-        require("org.apache.poi", "poi-ooxml", "3.15-beta1");
+        require("org.apache.poi", "poi-ooxml", "3.17");
         require("org.apache.poi", "ooxml-schemas", "1.3");
-        require("edu.cmu.sphinx", "sphinx4-core", "5prealpha-SNAPSHOT");
-        require("edu.cmu.sphinx", "sphinx4-data", "5prealpha-SNAPSHOT");
+        require("javax.xml.bind", "jaxb-api", "2.3.0");
+        require("com.sun.xml.bind", "jaxb-core", "2.3.0");
+        require("com.sun.xml.bind", "jaxb-impl", "2.3.0");
     }
 }

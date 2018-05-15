@@ -551,7 +551,7 @@ public class Word {
             XWPFRun run = para.createRun();
             run.setText(headerText);
             styles().base().apply(run);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw I.quiet(e);
         }
         return this;
