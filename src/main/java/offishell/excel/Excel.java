@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
@@ -133,11 +134,11 @@ public class Excel {
                     XSSFCell cell = row.getCell(index);
 
                     if (cell != null) {
-                        switch (cell.getCellType()) {
-                        case Cell.CELL_TYPE_BLANK:
+                        switch (cell.getCellTypeEnum()) {
+                        case BLANK:
                             break;
 
-                        case Cell.CELL_TYPE_STRING:
+                        case STRING:
                             String value = cell.getStringCellValue();
 
                             if (value != null && !value.isEmpty()) {
@@ -333,7 +334,7 @@ public class Excel {
         for (; headerSize < head.getLastCellNum(); headerSize++) {
             Cell cell = head.getCell(headerSize);
 
-            if (cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+            if (cell == null || cell.getCellTypeEnum() == CellType.BLANK) {
                 headerSize--;
                 break;
             }
@@ -353,7 +354,7 @@ public class Excel {
                 if (cell == null) {
                     XSSFCell created = row.createCell(j);
                     created.setCellStyle(baseStyle);
-                } else if (cell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                } else if (cell.getCellTypeEnum() != CellType.BLANK) {
                     continue row;
                 }
             }
@@ -609,25 +610,25 @@ public class Excel {
                 return initial(modelClass);
             }
 
-            switch (cell.getCellType()) {
-            case Cell.CELL_TYPE_BLANK:
+            switch (cell.getCellTypeEnum()) {
+            case BLANK:
                 return blank(cell, modelClass);
 
-            case Cell.CELL_TYPE_STRING:
+            case STRING:
                 return string(cell, cell.getStringCellValue(), modelClass);
 
-            case Cell.CELL_TYPE_NUMERIC:
+            case NUMERIC:
                 return numeric(cell, cell.getNumericCellValue(), modelClass);
 
-            case Cell.CELL_TYPE_FORMULA:
-                switch (cell.getCachedFormulaResultType()) {
-                case Cell.CELL_TYPE_BLANK:
+            case FORMULA:
+                switch (cell.getCachedFormulaResultTypeEnum()) {
+                case BLANK:
                     return blank(cell, modelClass);
 
-                case Cell.CELL_TYPE_STRING:
+                case STRING:
                     return string(cell, cell.getStringCellValue(), modelClass);
 
-                case Cell.CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     return numeric(cell, cell.getNumericCellValue(), modelClass);
                 }
             }
