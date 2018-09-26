@@ -23,5 +23,7 @@ public class Project extends bee.api.Project {
         require("javax.xml.bind", "jaxb-api", "2.3.0");
         require("com.sun.xml.bind", "jaxb-core", "2.3.0");
         require("com.sun.xml.bind", "jaxb-impl", "2.3.0");
+        require("org.openjfx", "javafx-controls", "11");
+        require("org.openjfx", "javafx-media", "11");
     }
 }
