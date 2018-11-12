@@ -11,6 +11,7 @@ package offishell.word;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -445,8 +446,8 @@ public class Word {
      */
     public Word save(Path output, boolean overwrite) {
         if (overwrite == true || Files.notExists(output)) {
-            try {
-                calculated.write(Files.newOutputStream(output));
+            try (OutputStream stream = Files.newOutputStream(output)) {
+                calculated.write(stream);
             } catch (IOException e) {
                 throw I.quiet(e);
             }
