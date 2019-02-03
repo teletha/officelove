@@ -9,6 +9,7 @@
  */
 package offishell.excel;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +18,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,8 +34,10 @@ import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -49,6 +53,8 @@ import offishell.Problem;
 import offishell.Recoverable;
 import offishell.Text;
 import offishell.UI;
+import offishell.expression.Variable;
+import offishell.expression.VariableContext;
 import offishell.file.Directory;
 import offishell.file.FileName;
 import offishell.file.FileType;
@@ -58,6 +64,10 @@ import offishell.macro.Window;
  * @version 2016/07/16 14:38:19
  */
 public class Excel {
+
+    static {
+        I.load(Variable.class, false);
+    }
 
     /** The cache. */
     private static final Map<Path, Excel> byPath = new HashMap();
@@ -377,6 +387,31 @@ public class Excel {
             }
         }
         return row;
+    }
+
+    public Excel calculate(Object model) {
+        Map<CellAddress, XSSFComment> cellComments = sheet.getCellComments();
+
+        VariableContext context = new VariableContext(path, false, model);
+
+        for (Iterator<Entry<CellAddress, XSSFComment>> iterator = cellComments.entrySet().iterator(); iterator.hasNext();) {
+            Entry<CellAddress, XSSFComment> entry = iterator.next();
+
+            CellAddress address = entry.getKey();
+            String comment = entry.getValue().getString().getString().strip();
+
+            entry.getValue().setVisible(false);
+            XSSFCell cell = sheet.getRow(address.getRow()).getCell(address.getColumn());
+
+            cell.setCellValue(context.apply(comment));
+            cell.removeCellComment();
+        }
+
+        try {
+            return save(Files.createTempFile("calculated", ".xlsx"));
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**

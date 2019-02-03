@@ -15,6 +15,7 @@ public class Project extends bee.api.Project {
 
         require("com.github.teletha", "sinobu", "1.0");
         require("com.github.teletha", "filer", "0.5");
+        require("com.github.teletha", "psychopath", "0.8");
         require("com.github.teletha", "antibug", "0.6").atTest();
         require("net.java.dev.jna", "jna", "4.2.2");
         require("net.java.dev.jna", "jna-platform", "4.2.2");
@@ -25,5 +26,6 @@ public class Project extends bee.api.Project {
         require("com.sun.xml.bind", "jaxb-impl", "2.3.0");
         require("org.openjfx", "javafx-controls", "11");
         require("org.openjfx", "javafx-media", "11");
+        require("org.immutables", "value", "2.7.5").atAnnotation();
     }
 }

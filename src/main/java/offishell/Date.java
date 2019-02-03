@@ -9,8 +9,10 @@
  */
 package offishell;
 
-import static java.time.temporal.ChronoField.*;
-import static java.time.temporal.ChronoUnit.*;
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import static java.time.temporal.ChronoField.YEAR_OF_ERA;
+import static java.time.temporal.ChronoUnit.MONTHS;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -41,15 +43,14 @@ public class Date {
     /** The actual date. */
     public final LocalDate date;
 
-    /** The 日本暦 */
-    private final JapaneseDate japanese;
+    private final LocalDate japanese;
 
     /**
      * @param date
      */
     public Date(LocalDate date) {
         this.date = date;
-        this.japanese = JapaneseDate.from(date);
+        this.japanese = date;
     }
 
     /**
@@ -176,6 +177,17 @@ public class Date {
 
     /**
      * <p>
+     * 和暦の数値を返します。
+     * </p>
+     * 
+     * @return
+     */
+    public int yearJP() {
+        return JapaneseDate.from(date).get(ChronoField.YEAR_OF_ERA);
+    }
+
+    /**
+     * <p>
      * 来年の西暦の数値を返します。
      * </p>
      * 
@@ -266,7 +278,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -278,7 +290,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @return
@@ -289,7 +301,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -301,7 +313,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -313,7 +325,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -325,7 +337,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @return
@@ -336,7 +348,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -348,7 +360,7 @@ public class Date {
 
     /**
      * <p>
-     * 和年度の数値を返します。
+     * 西暦年度の数値を返します。
      * </p>
      * 
      * @return
@@ -359,7 +371,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和年度を返します。
+     * 整形した西暦年度を返します。
      * </p>
      * 
      * @return
@@ -370,7 +382,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和年度を返します。
+     * 整形した西暦年度を返します。
      * </p>
      * 
      * @return
@@ -381,7 +393,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和年度を返します。
+     * 整形した西暦年度を返します。
      * </p>
      * 
      * @param fill
@@ -393,7 +405,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和年度を返します。
+     * 整形した西暦年度を返します。
      * </p>
      * 
      * @return
@@ -404,7 +416,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和年度を返します。
+     * 整形した西暦年度を返します。
      * </p>
      * 
      * @param fill
@@ -416,7 +428,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @return
@@ -427,7 +439,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -439,7 +451,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -451,7 +463,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -463,7 +475,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @return
@@ -474,7 +486,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -486,7 +498,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -498,7 +510,7 @@ public class Date {
 
     /**
      * <p>
-     * 整形した和暦を返します。
+     * 整形した西暦を返します。
      * </p>
      * 
      * @param fill
@@ -506,6 +518,18 @@ public class Date {
      */
     public String 日(String fill) {
         return day(japanese, fill, "日");
+    }
+
+    /**
+     * <p>
+     * 整形した和暦を返します。
+     * </p>
+     * 
+     * @param fill
+     * @return
+     */
+    public String 曜日(String fill) {
+        return dow(japanese);
     }
 
     /**
