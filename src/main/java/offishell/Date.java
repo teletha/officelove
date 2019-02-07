@@ -43,14 +43,14 @@ public class Date {
     /** The actual date. */
     public final LocalDate date;
 
-    private final LocalDate japanese;
+    private final JapaneseDate japanese;
 
     /**
      * @param date
      */
     public Date(LocalDate date) {
         this.date = date;
-        this.japanese = date;
+        this.japanese = JapaneseDate.from(date);
     }
 
     /**
@@ -285,7 +285,7 @@ public class Date {
      * @return
      */
     public String 年(String fill) {
-        return year(japanese, fill, 2, "年");
+        return year(japanese, fill, 2, "年").replaceAll("元号", "平成3");
     }
 
     /**
@@ -400,7 +400,7 @@ public class Date {
      * @return
      */
     public String 年度(String fill) {
-        return year(japanese.minus(3, MONTHS), fill, 2, "年度");
+        return year(japanese.minus(3, MONTHS), fill, 2, "年度").replaceAll("元号", "平成3");
     }
 
     /**
