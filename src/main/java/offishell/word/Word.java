@@ -48,11 +48,11 @@ import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
+import officeman.model.FileType;
 import offishell.UI;
 import offishell.expression.Variable;
 import offishell.expression.VariableContext;
-import offishell.file.Directory;
-import offishell.file.FileType;
+import psychopath.Locator;
 
 /**
  * @version 2016/05/28 9:53:59
@@ -730,11 +730,19 @@ public class Word {
     }
 
     /**
+     * @param string
+     * @param fileName
+     */
+    public static Word of(String directoryPath, String fileName) {
+        return of(Path.of(directoryPath), fileName);
+    }
+
+    /**
      * @param root
      * @param string
      */
-    public static Word of(Path directory, String fineName) {
-        return of(Directory.of(directory).file(fineName, FileType.Word));
+    public static Word of(Path directory, String fileName) {
+        return of(Locator.directory(directory).walkFile(fileName + "." + FileType.Word).first().to().v.asJavaPath());
     }
 
     /**

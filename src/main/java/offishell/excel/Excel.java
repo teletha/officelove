@@ -48,6 +48,7 @@ import kiss.I;
 import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
+import officeman.model.FileType;
 import offishell.Date;
 import offishell.Problem;
 import offishell.Recoverable;
@@ -55,8 +56,6 @@ import offishell.Text;
 import offishell.UI;
 import offishell.expression.Variable;
 import offishell.expression.VariableContext;
-import offishell.file.Directory;
-import offishell.file.FileType;
 import offishell.macro.Window;
 import psychopath.File;
 import psychopath.Locator;
@@ -436,8 +435,8 @@ public class Excel {
      * @param root
      * @param string
      */
-    public static Excel of(Path directory, String fineName) {
-        return of(Directory.of(directory).file(fineName, FileType.Excel));
+    public static Excel of(Path directory, String fileName) {
+        return of(Locator.directory(directory).walkFile(fileName + "." + FileType.Excel).first().to().v.asJavaPath());
     }
 
     /**

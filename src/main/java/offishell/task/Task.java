@@ -26,9 +26,9 @@ import org.apache.poi.xwpf.usermodel.XWPFStyles;
 import kiss.Extensible;
 import kiss.I;
 import kiss.Signal;
+import officeman.model.Workspace;
 import offishell.Date;
 import offishell.excel.Excel;
-import offishell.file.Directory;
 import offishell.word.Word;
 
 /**
@@ -116,7 +116,7 @@ public interface Task extends Extensible {
      * @return
      */
     default Path directory() {
-        return Directory.by(category()).resolve(name());
+        return Workspace.by(category()).resolve(name());
     }
 
     /**

@@ -7,7 +7,12 @@
  *
  *          http://opensource.org/licenses/mit-license.php
  */
-package offishell.file;
+package officeman.model;
+
+import java.util.StringJoiner;
+import java.util.function.Predicate;
+
+import psychopath.Location;
 
 /**
  * @version 2016/07/18 16:51:35
@@ -46,4 +51,27 @@ public enum FileType {
         }
         return false;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(",", "{", "}");
+        for (String extension : extensions) {
+            joiner.add(extension);
+        }
+        return joiner.toString();
+    }
+
+    /**
+     * Create naming filter.
+     * 
+     * @param fileName
+     * @return
+     */
+    public Predicate<Location<?>> by(String fileName) {
+        return file -> file.base().equals(fileName) && match(file.extension());
+    }
+
 }

@@ -16,9 +16,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-import filer.Filer;
-import offishell.file.Directory;
-import offishell.file.FileType;
 import offishell.word.Word;
 
 /**
@@ -27,7 +24,7 @@ import offishell.word.Word;
 public interface WordTestHelper extends AssertionHelper {
 
     public default Word expect(String name) {
-        return Word.of(Directory.of(Filer.locate("src/test/resources/offishell/msoffice")).file(name, FileType.Word));
+        return Word.of("src/test/resources/offishell/msoffice", name);
     }
 
     /**
