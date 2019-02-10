@@ -35,8 +35,6 @@ public class Directory {
     /** The root directory to search. */
     private Path directory;
 
-    private String findingText;
-
     private List<ExtensionFilter> findingFilter = new ArrayList();
 
     private Path findingDirectory;
@@ -68,75 +66,6 @@ public class Directory {
 
     /**
      * <p>
-     * Specify finding UI text.
-     * </p>
-     * 
-     * @param text
-     * @return
-     */
-    public Directory searchText(String text) {
-        this.findingText = text;
-
-        return this;
-    }
-
-    /**
-     * <p>
-     * Specify finding UI filters.
-     * </p>
-     * 
-     * @param text
-     * @return
-     */
-    public Directory searchFilter(String description, String... filters) {
-        this.findingFilter.add(new ExtensionFilter(description, filters));
-
-        return this;
-    }
-
-    /**
-     * <p>
-     * Specify finding directory.
-     * </p>
-     * 
-     * @param text
-     * @return
-     */
-    public Directory searchDirectory(Path directory) {
-        this.findingDirectory = directory;
-
-        return this;
-    }
-
-    /**
-     * <p>
-     * 検索ディレクトリを記憶して次回に使用します。
-     * </p>
-     * 
-     * @param key
-     * @return
-     */
-    public Directory memorizeSearchDirectory() {
-        this.memorize = new Error().getStackTrace()[1].getMethodName();
-
-        return this;
-    }
-
-    /**
-     * <p>
-     * Setting delete mode.
-     * </p>
-     * 
-     * @return
-     */
-    public Directory deleteOriginalOnCopy() {
-        this.delete = true;
-
-        return this;
-    }
-
-    /**
-     * <p>
      * Specify the file name which you want to select.
      * </p>
      * 
@@ -152,11 +81,7 @@ public class Directory {
             } else {
                 MemorizedDirectory directories = I.make(MemorizedDirectory.class);
 
-                if (findingText == null) {
-                    findingText = fileName + "を選択してください";
-                }
-
-                Path selected = UI.selectFile(findingText, directories.get(memorize), findingFilter);
+                Path selected = UI.selectFile(fileName, directories.get(memorize), findingFilter);
                 File selectedFile = Locator.file(selected);
 
                 Path output = directory.resolve(fileName + "." + selectedFile.extension());
@@ -182,6 +107,10 @@ public class Directory {
      */
     private boolean match(Location file, String fileName, FileType[] types) {
         if (file.base().equals(fileName)) {
+            if (types.length == 0) {
+                return true;
+            }
+
             for (FileType type : types) {
                 if (type.match(file.extension())) {
                     return true;
