@@ -52,6 +52,7 @@ import officeman.model.FileType;
 import offishell.UI;
 import offishell.expression.Variable;
 import offishell.expression.VariableContext;
+import psychopath.Directory;
 import psychopath.Locator;
 
 /**
@@ -734,15 +735,15 @@ public class Word {
      * @param fileName
      */
     public static Word of(String directoryPath, String fileName) {
-        return of(Path.of(directoryPath), fileName);
+        return of(Locator.directory(directoryPath), fileName);
     }
 
     /**
      * @param root
      * @param string
      */
-    public static Word of(Path directory, String fileName) {
-        return of(Locator.directory(directory).walkFile(fileName + "." + FileType.Word).first().to().v.asJavaPath());
+    public static Word of(Directory directory, String fileName) {
+        return of(directory.walkFile(fileName + "." + FileType.Word).first().to().v.asJavaPath());
     }
 
     /**

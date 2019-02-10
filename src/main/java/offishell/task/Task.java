@@ -30,6 +30,7 @@ import officeman.model.Workspace;
 import offishell.Date;
 import offishell.excel.Excel;
 import offishell.word.Word;
+import psychopath.Locator;
 
 /**
  * @version 2016/06/30 16:16:12
@@ -182,7 +183,7 @@ public interface Task extends Extensible {
      * @return
      */
     default Word word(String name) {
-        return Word.of(directory(), name);
+        return Word.of(Locator.directory(directory()), name);
     }
 
     /**
