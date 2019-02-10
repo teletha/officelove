@@ -79,7 +79,7 @@ public class Excel {
     public final Path path;
 
     /** The actual file. */
-    private final File excel;
+    public final File excel;
 
     /** The main excel file. */
     public final XSSFWorkbook book;

@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import filer.Filer;
 import kiss.I;
 import offishell.macro.Window;
+import psychopath.File;
+import psychopath.Locator;
 
 /**
  * @version 2016/08/01 17:41:04
@@ -51,13 +52,15 @@ public class Recoverable {
         }
 
         try {
-            Path backup = Filer.locateTemporary();
-            Filer.copy(file, backup);
+            File original = Locator.file(file);
+            File backup = Locator.temporaryFile();
+
+            original.copyTo(backup);
 
             reverts.add(() -> {
                 // ロールバック
-                Filer.delete(file);
-                Filer.copy(backup, file);
+                original.delete();
+                backup.copyTo(original);
             });
 
             try (OutputStream output = Files.newOutputStream(file);) {

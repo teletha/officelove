@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import filer.Filer;
 import kiss.I;
 import kiss.Signal;
 import kiss.Storable;
@@ -159,7 +158,7 @@ public class Mail {
         }
 
         try {
-            Path temp = Files.createDirectories(Filer.locateTemporary());
+            Path temp = Locator.temporaryDirectory().asJavaPath();
             Path created = Files.createFile(temp.resolve(name));
 
             file.save(created);
@@ -198,16 +197,7 @@ public class Mail {
         if (!name.endsWith(".xlsx") && !name.endsWith(".xlsm")) {
             name += ".xlsx";
         }
-
-        try {
-            Path temp = Files.createDirectories(Filer.locateTemporary());
-            Path created = Files.createFile(temp.resolve(name));
-            Filer.copy(file.path, created);
-
-            return attachment(created);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        return attachment(file.excel.copyTo(Locator.temporaryFile(name)).asJavaPath());
     }
 
     /**

@@ -12,15 +12,12 @@ package offishell.task;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.file.Path;
 
-import filer.Filer;
 import kiss.I;
 import offishell.Problem;
+import psychopath.File;
+import psychopath.Locator;
 
-/**
- * @version 2016/07/08 15:36:28
- */
 public class TaskLuncher {
 
     /**
@@ -41,7 +38,7 @@ public class TaskLuncher {
 
             switch (args[0]) {
             case "InvokeMethod":
-                invokeMethod(Filer.locate(args[1]), args[2]);
+                invokeMethod(Locator.file(args[1]), args[2]);
                 break;
 
             default:
@@ -61,9 +58,9 @@ public class TaskLuncher {
      * @param file
      * @param methodName
      */
-    private static void invokeMethod(Path file, String methodName) {
+    private static void invokeMethod(File file, String methodName) {
         for (Task task : I.find(Task.class)) {
-            if (file.startsWith(task.directory())) {
+            if (file.asJavaPath().startsWith(task.directory())) {
                 Class clazz = task.getClass();
 
                 try {
