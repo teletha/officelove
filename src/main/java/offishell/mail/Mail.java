@@ -22,8 +22,8 @@ import kiss.Signal;
 import kiss.Storable;
 import offishell.UI;
 import offishell.excel.Excel;
-import offishell.file.FileName;
 import offishell.word.Word;
+import psychopath.Locator;
 
 /**
  * import offishell.files.FileName; * @version 2016/07/11 16:13:07
@@ -249,7 +249,7 @@ public class Mail {
          */
         private void invoke(Mail mail) {
             if (exe == null || Files.notExists(exe)) {
-                exe = UI.selectFile(new FileName("thunderbird.exe"));
+                exe = UI.selectFile(Locator.file("thunderbird.exe"));
                 store();
             }
 

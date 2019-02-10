@@ -10,22 +10,22 @@
 package offishell.file;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
-
-import javafx.stage.FileChooser.ExtensionFilter;
 
 import filer.Filer;
+import javafx.stage.FileChooser.ExtensionFilter;
 import kiss.I;
 import kiss.Manageable;
 import kiss.Singleton;
 import kiss.Storable;
 import offishell.UI;
+import psychopath.File;
+import psychopath.Location;
+import psychopath.Locator;
 
 /**
  * @version 2016/07/16 17:03:37
@@ -145,11 +145,10 @@ public class Directory {
      */
     public Path file(String fileName, FileType... types) {
         try {
-            FileName file = new FileName(fileName);
-            List<Path> candidates = scan(directory, name -> name.match(file, types));
+            List<Location<?>> candidates = Locator.directory(directory).children().take(file -> match(file, fileName, types)).toList();
 
             if (!candidates.isEmpty()) {
-                return candidates.get(0);
+                return candidates.get(0).asJavaPath();
             } else {
                 MemorizedDirectory directories = I.make(MemorizedDirectory.class);
 
@@ -158,9 +157,9 @@ public class Directory {
                 }
 
                 Path selected = UI.selectFile(findingText, directories.get(memorize), findingFilter);
-                FileName selectedFileName = new FileName(selected);
+                File selectedFile = Locator.file(selected);
 
-                Path output = directory.resolve(file.name + "." + selectedFileName.extension);
+                Path output = directory.resolve(fileName + "." + selectedFile.extension());
                 Filer.copy(selected, output);
                 directories.put(memorize, selected.getParent());
                 directories.store();
@@ -176,25 +175,20 @@ public class Directory {
     }
 
     /**
-     * <p>
-     * Scan directory.
-     * </p>
-     * 
-     * @param directory
-     * @param filter
+     * @param file
+     * @param fileName
+     * @param types
      * @return
      */
-    private List<Path> scan(Path directory, Predicate<FileName> filter) {
-        List<Path> list = new ArrayList();
-
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, path -> filter.test(new FileName(path)))) {
-            for (Path path : stream) {
-                list.add(path);
+    private boolean match(Location file, String fileName, FileType[] types) {
+        if (file.base().equals(fileName)) {
+            for (FileType type : types) {
+                if (type.match(file.extension())) {
+                    return true;
+                }
             }
-        } catch (Exception e) {
-            throw I.quiet(e);
         }
-        return list;
+        return false;
     }
 
     /**

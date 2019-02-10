@@ -56,9 +56,10 @@ import offishell.UI;
 import offishell.expression.Variable;
 import offishell.expression.VariableContext;
 import offishell.file.Directory;
-import offishell.file.FileName;
 import offishell.file.FileType;
 import offishell.macro.Window;
+import psychopath.File;
+import psychopath.Locator;
 
 /**
  * @version 2016/07/16 14:38:19
@@ -78,8 +79,8 @@ public class Excel {
     /** The actual file path. */
     public final Path path;
 
-    /** The actual file name. */
-    private final FileName excelName;
+    /** The actual file. */
+    private final File excel;
 
     /** The main excel file. */
     public final XSSFWorkbook book;
@@ -104,7 +105,7 @@ public class Excel {
     private Excel(Path path, XSSFWorkbook book) {
         this.path = path;
         this.book = book;
-        this.excelName = new FileName(path);
+        this.excel = Locator.file(path);
         this.sheet = book.getSheetAt(0);
         this.baseStyle = book.createCellStyle();
         this.dateStyle = book.createCellStyle();
@@ -332,7 +333,7 @@ public class Excel {
     }
 
     public Excel save(String name) {
-        return save(path.resolveSibling(new FileName(name).name + "." + excelName.extension));
+        return save(path.resolveSibling(Locator.file(name).base() + "." + excel.extension()));
     }
 
     private XSSFRow findFirstBlankRow() {

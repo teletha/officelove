@@ -22,9 +22,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-
 import kiss.I;
-import offishell.file.FileName;
 
 /**
  * @version 2016/07/11 16:25:08
@@ -90,8 +88,8 @@ public class UI {
      * @param filters
      * @return
      */
-    public static Path selectFile(FileName name) {
-        return selectFile("Search " + name + " file.", null, name.extensionFilter());
+    public static Path selectFile(psychopath.File file) {
+        return selectFile("Search " + file.base() + " file.", null, new ExtensionFilter(file.base(), file.name()));
     }
 
     /**
