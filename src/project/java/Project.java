@@ -26,5 +26,7 @@ public class Project extends bee.api.Project {
         require("org.openjfx", "javafx-controls", "11");
         require("org.openjfx", "javafx-media", "11");
         require("org.immutables", "value", "2.7.5").atAnnotation();
+
+        versionControlSystem("https://github.com/teletha/offishell");
     }
 }
