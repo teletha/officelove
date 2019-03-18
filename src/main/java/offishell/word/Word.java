@@ -60,7 +60,7 @@ import psychopath.Locator;
 public class Word {
 
     static {
-        I.load(Variable.class, false);
+        I.load(Variable.class);
     }
 
     /** The template file. */
