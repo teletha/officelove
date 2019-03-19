@@ -6,3 +6,4 @@
 target/
 preferences/
 /bin/
+/.apt_generated_tests/

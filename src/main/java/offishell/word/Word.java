@@ -48,8 +48,8 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 import officeman.model.FileType;
+import offishell.Date;
 import offishell.UI;
-import offishell.expression.Variable;
 import offishell.expression.VariableContext;
 import psychopath.Directory;
 import psychopath.Locator;
@@ -60,7 +60,7 @@ import psychopath.Locator;
 public class Word {
 
     static {
-        I.load(Variable.class);
+        I.load(Date.class);
     }
 
     /** The template file. */

@@ -54,7 +54,6 @@ import offishell.Problem;
 import offishell.Recoverable;
 import offishell.Text;
 import offishell.UI;
-import offishell.expression.Variable;
 import offishell.expression.VariableContext;
 import offishell.macro.Window;
 import psychopath.File;
@@ -66,7 +65,7 @@ import psychopath.Locator;
 public class Excel {
 
     static {
-        I.load(Variable.class);
+        I.load(Date.class);
     }
 
     /** The cache. */
