@@ -9,10 +9,8 @@
  */
 package offishell;
 
-import static java.time.temporal.ChronoField.DAY_OF_MONTH;
-import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
-import static java.time.temporal.ChronoField.YEAR_OF_ERA;
-import static java.time.temporal.ChronoUnit.MONTHS;
+import static java.time.temporal.ChronoField.*;
+import static java.time.temporal.ChronoUnit.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -285,7 +283,7 @@ public class Date {
      * @return
      */
     public String 年(String fill) {
-        return year(japanese, fill, 2, "年").replaceAll("元号", "平成3").replaceAll("平成31年", "2019年");
+        return year(japanese, fill, 2, "年").replaceAll("元号", "令和").replaceAll("平成31年", "2019年");
     }
 
     /**
@@ -400,7 +398,7 @@ public class Date {
      * @return
      */
     public String 年度(String fill) {
-        return year(japanese.minus(3, MONTHS), fill, 2, "年度").replaceAll("元号", "平成3");
+        return year(japanese.minus(3, MONTHS), fill, 2, "年度").replaceAll("元号", "令和");
     }
 
     /**
