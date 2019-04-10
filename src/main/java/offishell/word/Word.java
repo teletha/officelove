@@ -355,9 +355,10 @@ public class Word {
                     outMargin.setRight(inMargin.getRight());
                     outMargin.setTop(inMargin.getTop());
 
-                    List<XWPFFooter> inFooter = para.getDocument().getFooterList();
-                    List<XWPFFooter> outFooter = created.getDocument().getFooterList();
-                    XWPFHeaderFooterPolicy headerFooterPolicy = created.getDocument().getHeaderFooterPolicy();
+                    // List<XWPFFooter> inFooter = para.getDocument().getFooterList();
+                    // List<XWPFFooter> outFooter = created.getDocument().getFooterList();
+                    // XWPFHeaderFooterPolicy headerFooterPolicy =
+                    // created.getDocument().getHeaderFooterPolicy();
                 }
             } else if (element instanceof XWPFTable) {
                 XWPFTable table = (XWPFTable) element;

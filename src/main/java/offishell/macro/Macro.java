@@ -399,7 +399,7 @@ public abstract class Macro {
      * </p>
      */
     public static <M extends Macro> void use(Class<M> clazz) {
-        Macro macro = I.make(clazz);
+        I.make(clazz);
     }
 
     /**

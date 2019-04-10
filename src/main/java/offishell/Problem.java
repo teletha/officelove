@@ -15,6 +15,7 @@ import java.util.StringJoiner;
 /**
  * @version 2016/07/08 17:03:40
  */
+@SuppressWarnings("serial")
 public class Problem extends Error {
 
     private static final String EOL = System.lineSeparator();

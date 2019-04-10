@@ -476,18 +476,6 @@ public class Excel {
 
     /**
      * <p>
-     * Retrieve {@link Excel} object for the specified {@link XSSFCell}.
-     * </p>
-     * 
-     * @param model A target excel model.
-     * @return An associated {@link Excel} instance.
-     */
-    private static Excel of(XSSFCell model) {
-        return of(Objects.requireNonNull(model).getSheet());
-    }
-
-    /**
-     * <p>
      * Enhanced {@link XSSFRow}.
      * </p>
      * 
