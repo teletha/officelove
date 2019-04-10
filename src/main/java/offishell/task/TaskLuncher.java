@@ -16,7 +16,6 @@ import java.lang.reflect.Modifier;
 import kiss.I;
 import offishell.Problem;
 import psychopath.File;
-import psychopath.Locator;
 
 public class TaskLuncher {
 
@@ -36,14 +35,14 @@ public class TaskLuncher {
                 throw new Error();
             }
 
-            switch (args[0]) {
-            case "InvokeMethod":
-                invokeMethod(Locator.file(args[1]), args[2]);
-                break;
-
-            default:
-                break;
-            }
+            // switch (args[0]) {
+            // case "InvokeMethod":
+            // invokeMethod(Locator.file(args[1]), args[2]);
+            // break;
+            //
+            // default:
+            // break;
+            // }
         } catch (Exception e) {
             e.printStackTrace(System.out);
             throw I.quiet(e);
@@ -58,6 +57,7 @@ public class TaskLuncher {
      * @param file
      * @param methodName
      */
+    @SuppressWarnings("unused")
     private static void invokeMethod(File file, String methodName) {
         for (Task task : I.find(Task.class)) {
             if (file.asJavaPath().startsWith(task.directory())) {
