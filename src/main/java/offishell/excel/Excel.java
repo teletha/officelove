@@ -652,7 +652,12 @@ public class Excel {
 
                 case NUMERIC:
                     return numeric(cell, cell.getNumericCellValue(), modelClass);
+
+                default:
+                    break;
                 }
+            default:
+                break;
             }
             return initial(modelClass);
         }
