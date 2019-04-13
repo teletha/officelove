@@ -283,7 +283,7 @@ public class Date {
      * @return
      */
     public String 年(String fill) {
-        return year(japanese, fill, 2, "年").replaceAll("元号", "令和").replaceAll("平成31年", "2019年");
+        return year(japanese, fill, 2, "年").replaceAll("令和1年", "令和元年").replaceAll("平成31年", "2019年");
     }
 
     /**
