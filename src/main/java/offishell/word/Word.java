@@ -1085,11 +1085,11 @@ public class Word {
         public void isStartConditinalBlock(XWPFParagraph paragraph) {
             try {
                 CTP context = paragraph.getCTP();
-                List<CTMarkupRange> starts = context.getCommentRangeStartList();
+                CTMarkupRange[] starts = context.getCommentRangeStartArray();
 
-                if (starts.size() != 0) {
+                if (starts.length != 0) {
                     String special = "";
-                    String condition = paragraph.getDocument().getCommentByID(starts.get(0).getId().toString()).getText();
+                    String condition = paragraph.getDocument().getCommentByID(starts[0].getId().toString()).getText();
 
                     int index = condition.indexOf("#");
 
@@ -1151,7 +1151,7 @@ public class Word {
             try {
                 CTP context = paragraph.getCTP();
 
-                if (context.getCommentRangeEndList().size() != 0) {
+                if (context.getCommentRangeEndArray().length != 0) {
                     block.end(paragraph);
                     block = new Normal();
                 }

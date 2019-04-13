@@ -29,28 +29,18 @@ import org.apache.xmlbeans.SchemaType;
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTBlip;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTEmpty;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFldChar;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTMarkup;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTObject;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPTab;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPicture;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSym;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTrPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum;
 
@@ -271,7 +261,7 @@ public class WordHeleper {
         out.setShadow(in.isShadowed());
         out.setSmallCaps(in.isSmallCaps());
         out.setStrikeThrough(in.isStrikeThrough());
-        out.setVerticalAlignment(in.getVerticalAlignment().toString());
+        out.setSubscript(in.getSubscript());
         out.setTextPosition(in.getTextPosition());
         out.setUnderline(in.getUnderline());
 
@@ -288,23 +278,23 @@ public class WordHeleper {
         // out.addTab();
         // }
 
-        outCTR.setAnnotationRefArray(inCTR.getAnnotationRefList().toArray(CTEmpty[]::new));
-        outCTR.setBrArray(inCTR.getBrList().toArray(CTBr[]::new));
-        outCTR.setCommentReferenceArray(inCTR.getCommentReferenceList().toArray(CTMarkup[]::new));
-        outCTR.setContinuationSeparatorArray(inCTR.getContinuationSeparatorList().toArray(CTEmpty[]::new));
-        outCTR.setCrArray(inCTR.getCrList().toArray(CTEmpty[]::new));
-        outCTR.setDelInstrTextArray(inCTR.getDelInstrTextList().toArray(CTText[]::new));
-        outCTR.setDrawingArray(inCTR.getDrawingList().toArray(CTDrawing[]::new));
-        outCTR.setEndnoteRefArray(inCTR.getEndnoteRefList().toArray(CTEmpty[]::new));
-        outCTR.setFldCharArray(inCTR.getFldCharList().toArray(CTFldChar[]::new));
-        outCTR.setFootnoteRefArray(inCTR.getFootnoteRefList().toArray(CTEmpty[]::new));
-        outCTR.setInstrTextArray(inCTR.getInstrTextList().toArray(CTText[]::new));
-        outCTR.setLastRenderedPageBreakArray(inCTR.getLastRenderedPageBreakList().toArray(CTEmpty[]::new));
-        outCTR.setObjectArray(inCTR.getObjectList().toArray(CTObject[]::new));
-        outCTR.setPictArray(inCTR.getPictList().toArray(CTPicture[]::new));
-        outCTR.setPtabArray(inCTR.getPtabList().toArray(CTPTab[]::new));
-        outCTR.setSymArray(inCTR.getSymList().toArray(CTSym[]::new));
-        outCTR.setTabArray(inCTR.getTabList().toArray(CTEmpty[]::new));
+        outCTR.setAnnotationRefArray(inCTR.getAnnotationRefArray());
+        outCTR.setBrArray(inCTR.getBrArray());
+        outCTR.setCommentReferenceArray(inCTR.getCommentReferenceArray());
+        outCTR.setContinuationSeparatorArray(inCTR.getContinuationSeparatorArray());
+        outCTR.setCrArray(inCTR.getCrArray());
+        outCTR.setDelInstrTextArray(inCTR.getDelInstrTextArray());
+        outCTR.setDrawingArray(inCTR.getDrawingArray());
+        outCTR.setEndnoteRefArray(inCTR.getEndnoteRefArray());
+        outCTR.setFldCharArray(inCTR.getFldCharArray());
+        outCTR.setFootnoteRefArray(inCTR.getFootnoteRefArray());
+        outCTR.setInstrTextArray(inCTR.getInstrTextArray());
+        outCTR.setLastRenderedPageBreakArray(inCTR.getLastRenderedPageBreakArray());
+        outCTR.setObjectArray(inCTR.getObjectArray());
+        outCTR.setPictArray(inCTR.getPictArray());
+        outCTR.setPtabArray(inCTR.getPtabArray());
+        outCTR.setSymArray(inCTR.getSymArray());
+        outCTR.setTabArray(inCTR.getTabArray());
 
         // copy image
         for (XWPFPicture inPicture : in.getEmbeddedPictures()) {

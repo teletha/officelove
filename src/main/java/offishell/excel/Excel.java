@@ -143,7 +143,7 @@ public class Excel {
                     XSSFCell cell = row.getCell(index);
 
                     if (cell != null) {
-                        switch (cell.getCellType()) {
+                        switch (cell.getCellTypeEnum()) {
                         case BLANK:
                             break;
 
@@ -343,7 +343,7 @@ public class Excel {
         for (; headerSize < head.getLastCellNum(); headerSize++) {
             Cell cell = head.getCell(headerSize);
 
-            if (cell == null || cell.getCellType() == CellType.BLANK) {
+            if (cell == null || cell.getCellTypeEnum() == CellType.BLANK) {
                 headerSize--;
                 break;
             }
@@ -363,7 +363,7 @@ public class Excel {
                 if (cell == null) {
                     XSSFCell created = row.createCell(j);
                     created.setCellStyle(baseStyle);
-                } else if (cell.getCellType() != CellType.BLANK) {
+                } else if (cell.getCellTypeEnum() != CellType.BLANK) {
                     continue row;
                 }
             }
@@ -632,7 +632,7 @@ public class Excel {
                 return initial(modelClass);
             }
 
-            switch (cell.getCellType()) {
+            switch (cell.getCellTypeEnum()) {
             case BLANK:
                 return blank(cell, modelClass);
 
@@ -643,7 +643,7 @@ public class Excel {
                 return numeric(cell, cell.getNumericCellValue(), modelClass);
 
             case FORMULA:
-                switch (cell.getCachedFormulaResultType()) {
+                switch (cell.getCachedFormulaResultTypeEnum()) {
                 case BLANK:
                     return blank(cell, modelClass);
 
@@ -652,12 +652,7 @@ public class Excel {
 
                 case NUMERIC:
                     return numeric(cell, cell.getNumericCellValue(), modelClass);
-
-                default:
-                    break;
                 }
-            default:
-                break;
             }
             return initial(modelClass);
         }
@@ -816,7 +811,7 @@ public class Excel {
 
             cell.getRichStringCellValue().getCTRst();
 
-            for (CTPhoneticRun run : cell.getRichStringCellValue().getCTRst().getRPhList()) {
+            for (CTPhoneticRun run : cell.getRichStringCellValue().getCTRst().getRPhArray()) {
                 builder.append(run.getT());
             }
             return builder.toString();
