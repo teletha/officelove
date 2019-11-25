@@ -283,7 +283,7 @@ public class Date {
      * @return
      */
     public String 年(String fill) {
-        return year(japanese, fill, 2, "年").replaceAll("令和1年", "令和元年").replaceAll("平成31年", "2019年");
+        return year(japanese, fill, 2, "年").replaceAll("令和1年", "令和元年");
     }
 
     /**
@@ -386,7 +386,7 @@ public class Date {
      * @return
      */
     public String 短縮年度() {
-        return 年度(padding).replace("年度", "").replace("平成", "H").replace("昭和", "S");
+        return 年度(padding).replace("元年", "01年").replace("年度", "").replace("平成", "H").replace("昭和", "S").replace("令和", "R");
     }
 
     /**
@@ -398,7 +398,7 @@ public class Date {
      * @return
      */
     public String 年度(String fill) {
-        return year(japanese.minus(3, MONTHS), fill, 2, "年度").replaceAll("元号", "令和");
+        return year(japanese.minus(3, MONTHS), fill, 2, "年度").replace("平成31年", "令和元年").replace("令和1年", "令和元年");
     }
 
     /**
