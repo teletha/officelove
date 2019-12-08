@@ -13,13 +13,13 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 import kiss.I;
-import kiss.Manageable;
+import kiss.Managed;
 import kiss.Singleton;
 import kiss.Storable;
 import offishell.UI;
 
 @SuppressWarnings("serial")
-@Manageable(lifestyle = Singleton.class)
+@Managed(value = Singleton.class)
 public class Workspace extends HashMap<String, Path> implements Storable<Workspace> {
 
     /**
