@@ -162,6 +162,7 @@ public class Excel {
                     }
                 }
             }
+            observer.complete();
             return disposer;
         });
     }
