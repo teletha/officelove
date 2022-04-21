@@ -56,7 +56,6 @@ public class VariableContext implements UnaryOperator<String> {
     }
 
     /**
-     * @param model
      */
     public VariableContext(Path path, boolean isVertical, List models) {
         this.documentPath = path;

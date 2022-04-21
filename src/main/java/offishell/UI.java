@@ -84,8 +84,6 @@ public class UI {
      * Create UI for file selection.
      * </p>
      * 
-     * @param title
-     * @param filters
      * @return
      */
     public static Path selectFile(psychopath.File file) {

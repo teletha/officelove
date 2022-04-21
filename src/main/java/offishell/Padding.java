@@ -113,7 +113,6 @@ public class Padding {
     }
 
     /**
-     * @param maxNameSize
      * @return
      */
     public static Padding size(int size) {
@@ -121,7 +120,6 @@ public class Padding {
     }
 
     /**
-     * @param string
      * @return
      */
     public Padding text(String text) {

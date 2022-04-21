@@ -267,7 +267,6 @@ public class Excel {
      * </p>
      * 
      * @param models
-     * @param operation
      * @return
      */
     public Excel update(Signal models) {
@@ -280,7 +279,6 @@ public class Excel {
      * </p>
      * 
      * @param models
-     * @param operation
      * @return
      */
     public Excel update(List models) {
@@ -431,8 +429,6 @@ public class Excel {
     }
 
     /**
-     * @param root
-     * @param string
      */
     public static Excel of(Path directory, String fileName) {
         return of(Locator.directory(directory).walkFile(fileName + "." + FileType.Excel).first().to().v.asJavaPath());

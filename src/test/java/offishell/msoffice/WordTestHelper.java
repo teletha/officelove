@@ -75,7 +75,6 @@ public interface WordTestHelper extends AssertionHelper {
      * Assertion helper.
      * </p>
      * 
-     * @param para
      * @param value
      */
     public default void checkRun(XWPFRun run, Assertion value) {

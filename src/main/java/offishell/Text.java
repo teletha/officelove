@@ -23,7 +23,6 @@ public class Text {
      * Helper method to normalize text.
      * </p>
      * 
-     * @param text
      * @return
      */
     public static String normalize(Path fileName) {

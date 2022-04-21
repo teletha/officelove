@@ -74,7 +74,6 @@ public class Mail {
      * Set message body.
      * </p>
      * 
-     * @param body
      * @return
      */
     public Mail body(Consumer<Body> writer) {
@@ -91,7 +90,6 @@ public class Mail {
      * Set attachments.
      * </p>
      * 
-     * @param files
      * @return
      */
     public Mail attachment(Path file) {
@@ -133,7 +131,6 @@ public class Mail {
      * Set attachments.
      * </p>
      * 
-     * @param files
      * @return
      */
     public Mail attachment(Word file) {
@@ -145,7 +142,6 @@ public class Mail {
      * Set attachments.
      * </p>
      * 
-     * @param files
      * @return
      */
     public Mail attachment(Word file, String name) {
@@ -174,7 +170,6 @@ public class Mail {
      * Set attachments.
      * </p>
      * 
-     * @param files
      * @return
      */
     public Mail attachment(Excel file) {
@@ -186,7 +181,6 @@ public class Mail {
      * Set attachments.
      * </p>
      * 
-     * @param files
      * @return
      */
     public Mail attachment(Excel file, String name) {
@@ -258,7 +252,9 @@ public class Mail {
             }
 
             if (mail.files != null) {
-                option.append("attachment='").append(I.join(",", mail.files)).append("',");
+                option.append("attachment='")
+                        .append(String.join(",", mail.files.stream().map(Path::toString).toArray(String[]::new)))
+                        .append("',");
             }
 
             ProcessBuilder builder = new ProcessBuilder(exe.toString(), "-compose", option.toString());
@@ -298,8 +294,6 @@ public class Mail {
          * <p>
          * Write single line message.
          * </p>
-         * 
-         * @param line
          */
         public void writeLine() {
             text.append("\r\n");

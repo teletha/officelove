@@ -253,7 +253,6 @@ public class WordHeleper {
      * 
      * @param in
      * @param out
-     * @param model
      */
     public static void copy(XWPFRun in, XWPFRun out, UnaryOperator<String> converter) {
         // copy

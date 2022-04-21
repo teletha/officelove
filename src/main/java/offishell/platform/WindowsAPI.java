@@ -409,8 +409,6 @@ class WindowsAPI implements offishell.platform.Native<HWND> {
          * The GetPixel function retrieves the red, green, blue (RGB) color value of the pixel at
          * the specified coordinates.
          *
-         * @param uCode The virtual key code or scan code for a key.
-         * @param uMapType The translation to be performed.
          * @return The return value is either a scan code, a virtual-key code, or a character value,
          *         depending on the value of uCode and uMapType. If there is no translation, the
          *         return value is zero.

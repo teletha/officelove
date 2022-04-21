@@ -73,8 +73,6 @@ public class Word {
      * <p>
      * Collect all paragraphs in this document.
      * </p>
-     * 
-     * @return A list of {@link XWPFParagraph}.
      */
     public final Signal<XWPFParagraph> paragraphs = new Signal<XWPFParagraph>((observer, disposer) -> {
         for (IBodyElement element : calculated.getBodyElements()) {
@@ -165,7 +163,7 @@ public class Word {
      * @return A serach result.
      */
     public XWPFParagraph findParagraphWith(String text, XWPFParagraph start) {
-        List<XWPFParagraph> list = paragraphs.skipUntil(start).take(p -> p.getText().contains(text)).toList();
+        List<XWPFParagraph> list = paragraphs.skipUntil(start::equals).take(p -> p.getText().contains(text)).toList();
 
         return list.isEmpty() ? null : list.get(0);
     }
@@ -731,7 +729,6 @@ public class Word {
     }
 
     /**
-     * @param string
      * @param fileName
      */
     public static Word of(String directoryPath, String fileName) {
@@ -739,8 +736,6 @@ public class Word {
     }
 
     /**
-     * @param root
-     * @param string
      */
     public static Word of(Directory directory, String fileName) {
         return of(directory.walkFile(fileName + "." + FileType.Word).first().to().v.asJavaPath());
@@ -1080,7 +1075,6 @@ public class Word {
 
         /**
          * @param paragraph
-         * @param model
          */
         public void isStartConditinalBlock(XWPFParagraph paragraph) {
             try {
@@ -1145,7 +1139,6 @@ public class Word {
         }
 
         /**
-         * @param para
          */
         public void isEndConditionalBlock(XWPFParagraph paragraph) {
             try {

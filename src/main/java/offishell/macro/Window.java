@@ -57,7 +57,6 @@ public class Window {
     }
 
     /**
-     * @param mouse
      */
     public Color color(int locationX, int locationY) {
         Location window = windowPosition();
@@ -65,7 +64,6 @@ public class Window {
     }
 
     /**
-     * @param mouse
      */
     public Color color(Location location) {
         return Native.API.getColor(location);
@@ -108,8 +106,6 @@ public class Window {
      * <p>
      * Check whetner the specified title window exists or not.
      * </p>
-     * 
-     * @param string
      */
     public static boolean existByTitle(String title) {
         return findByTitle(title).to().v != null;
@@ -141,7 +137,6 @@ public class Window {
      * Get the current window.
      * </p>
      * 
-     * @param title A part of title.
      * @return
      */
     public static Window now() {

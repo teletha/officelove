@@ -386,8 +386,6 @@ public abstract class Macro {
      * <p>
      * Declare the condition of macro activation.
      * </p>
-     * 
-     * @param condition
      */
     protected final void requireTitle(String title, Runnable definitions) {
         require(window -> window.title().contains(title), definitions);

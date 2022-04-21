@@ -85,39 +85,6 @@ public class Date {
      * <p>
      * If the field is a {@link ChronoUnit} then the addition is implemented here. The supported
      * fields behave as follows:
-     * <ul>
-     * <li>{@code DAYS} - Returns a {@code LocalDate} with the specified number of days added. This
-     * is equivalent to {@link #plusDays(long)}.
-     * <li>{@code WEEKS} - Returns a {@code LocalDate} with the specified number of weeks added.
-     * This is equivalent to {@link #plusWeeks(long)} and uses a 7 day week.
-     * <li>{@code MONTHS} - Returns a {@code LocalDate} with the specified number of months added.
-     * This is equivalent to {@link #plusMonths(long)}. The day-of-month will be unchanged unless it
-     * would be invalid for the new month and year. In that case, the day-of-month is adjusted to
-     * the maximum valid value for the new month and year.
-     * <li>{@code YEARS} - Returns a {@code LocalDate} with the specified number of years added.
-     * This is equivalent to {@link #plusYears(long)}. The day-of-month will be unchanged unless it
-     * would be invalid for the new month and year. In that case, the day-of-month is adjusted to
-     * the maximum valid value for the new month and year.
-     * <li>{@code DECADES} - Returns a {@code LocalDate} with the specified number of decades added.
-     * This is equivalent to calling {@link #plusYears(long)} with the amount multiplied by 10. The
-     * day-of-month will be unchanged unless it would be invalid for the new month and year. In that
-     * case, the day-of-month is adjusted to the maximum valid value for the new month and year.
-     * <li>{@code CENTURIES} - Returns a {@code LocalDate} with the specified number of centuries
-     * added. This is equivalent to calling {@link #plusYears(long)} with the amount multiplied by
-     * 100. The day-of-month will be unchanged unless it would be invalid for the new month and
-     * year. In that case, the day-of-month is adjusted to the maximum valid value for the new month
-     * and year.
-     * <li>{@code MILLENNIA} - Returns a {@code LocalDate} with the specified number of millennia
-     * added. This is equivalent to calling {@link #plusYears(long)} with the amount multiplied by
-     * 1,000. The day-of-month will be unchanged unless it would be invalid for the new month and
-     * year. In that case, the day-of-month is adjusted to the maximum valid value for the new month
-     * and year.
-     * <li>{@code ERAS} - Returns a {@code LocalDate} with the specified number of eras added. Only
-     * two eras are supported so the amount must be one, zero or minus one. If the amount is
-     * non-zero then the year is changed such that the year-of-era is unchanged. The day-of-month
-     * will be unchanged unless it would be invalid for the new month and year. In that case, the
-     * day-of-month is adjusted to the maximum valid value for the new month and year.
-     * </ul>
      * <p>
      * All other {@code ChronoUnit} instances will throw an {@code UnsupportedTemporalTypeException}
      * .
@@ -151,7 +118,7 @@ public class Date {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param amountToSubtract the amount of the unit to subtract from the result, may be negative
+     * @param amountToMinus the amount of the unit to subtract from the result, may be negative
      * @param unit the unit of the amount to subtract, not null
      * @return a {@code LocalDate} based on this date with the specified amount subtracted, not null
      * @throws DateTimeException if the subtraction cannot be made
@@ -314,7 +281,6 @@ public class Date {
      * 整形した西暦を返します。
      * </p>
      * 
-     * @param fill
      * @return
      */
     public String 年月日() {
@@ -452,7 +418,6 @@ public class Date {
      * 整形した西暦を返します。
      * </p>
      * 
-     * @param fill
      * @return
      */
     public String 月日() {
@@ -499,7 +464,6 @@ public class Date {
      * 整形した西暦を返します。
      * </p>
      * 
-     * @param fill
      * @return
      */
     public String 日() {
