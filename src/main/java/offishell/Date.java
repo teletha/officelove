@@ -207,7 +207,7 @@ public class Date {
      * @return
      */
     public int hour() {
-        return date.get(ChronoField.HOUR_OF_DAY);
+        return time.get(ChronoField.HOUR_OF_DAY);
     }
 
     /**
@@ -216,7 +216,7 @@ public class Date {
      * @return
      */
     public int minute() {
-        return date.get(ChronoField.MINUTE_OF_HOUR);
+        return time.get(ChronoField.MINUTE_OF_HOUR);
     }
 
     /**
