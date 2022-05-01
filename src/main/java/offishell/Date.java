@@ -10,13 +10,15 @@
 package offishell;
 
 import static java.time.temporal.ChronoField.*;
-import static java.time.temporal.ChronoUnit.*;
+import static java.time.temporal.ChronoUnit.MONTHS;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.chrono.JapaneseChronology;
 import java.time.chrono.JapaneseDate;
+import java.time.chrono.JapaneseEra;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
@@ -24,9 +26,6 @@ import java.time.temporal.TemporalUnit;
 import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.Objects;
 
-/**
- * @version 2016/06/23 10:17:18
- */
 public class Date {
 
     /** 詰め文字 */
@@ -43,12 +42,23 @@ public class Date {
 
     private final JapaneseDate japanese;
 
+    /** The actual time. */
+    private final LocalTime time;
+
     /**
      * @param date
      */
     public Date(LocalDate date) {
+        this(date, null);
+    }
+
+    /**
+     * @param date
+     */
+    public Date(LocalDate date, LocalTime time) {
         this.date = date;
         this.japanese = JapaneseDate.from(date);
+        this.time = time == null ? LocalTime.MIN : time;
     }
 
     /**
@@ -72,28 +82,19 @@ public class Date {
     }
 
     /**
-     * Returns a copy of this date with the specified amount added.
-     * <p>
-     * This returns a {@code LocalDate}, based on this one, with the amount in terms of the unit
-     * added. If it is not possible to add the amount, because the unit is not supported or for some
-     * other reason, an exception is thrown.
-     * <p>
-     * In some cases, adding the amount can cause the resulting date to become invalid. For example,
-     * adding one month to 31st January would result in 31st February. In cases like this, the unit
-     * is responsible for resolving the date. Typically it will choose the previous valid date,
-     * which would be the last valid day of February in this example.
-     * <p>
-     * If the field is a {@link ChronoUnit} then the addition is implemented here. The supported
-     * fields behave as follows:
-     * <p>
-     * All other {@code ChronoUnit} instances will throw an {@code UnsupportedTemporalTypeException}
-     * .
-     * <p>
-     * If the field is not a {@code ChronoUnit}, then the result of this method is obtained by
-     * invoking {@code TemporalUnit.addTo(Temporal, long)} passing {@code this} as the argument. In
-     * this case, the unit determines whether and how to perform the addition.
-     * <p>
-     * This instance is immutable and unaffected by this method call.
+     * Returns a copy of this date with the specified amount added. This returns a
+     * {@code LocalDate}, based on this one, with the amount in terms of the unit added. If it is
+     * not possible to add the amount, because the unit is not supported or for some other reason,
+     * an exception is thrown. In some cases, adding the amount can cause the resulting date to
+     * become invalid. For example, adding one month to 31st January would result in 31st February.
+     * In cases like this, the unit is responsible for resolving the date. Typically it will choose
+     * the previous valid date, which would be the last valid day of February in this example. If
+     * the field is a {@link ChronoUnit} then the addition is implemented here. The supported fields
+     * behave as follows: All other {@code ChronoUnit} instances will throw an
+     * {@code UnsupportedTemporalTypeException} . If the field is not a {@code ChronoUnit}, then the
+     * result of this method is obtained by invoking {@code TemporalUnit.addTo(Temporal, long)}
+     * passing {@code this} as the argument. In this case, the unit determines whether and how to
+     * perform the addition. This instance is immutable and unaffected by this method call.
      *
      * @param amountToAdd the amount of the unit to add to the result, may be negative
      * @param unit the unit of the amount to add, not null
@@ -107,16 +108,13 @@ public class Date {
     }
 
     /**
-     * Returns a copy of this date with the specified amount subtracted.
-     * <p>
-     * This returns a {@code LocalDate}, based on this one, with the amount in terms of the unit
-     * subtracted. If it is not possible to subtract the amount, because the unit is not supported
-     * or for some other reason, an exception is thrown.
-     * <p>
-     * This method is equivalent to {@link #plus(long, TemporalUnit)} with the amount negated. See
-     * that method for a full description of how addition, and thus subtraction, works.
-     * <p>
-     * This instance is immutable and unaffected by this method call.
+     * Returns a copy of this date with the specified amount subtracted. This returns a
+     * {@code LocalDate}, based on this one, with the amount in terms of the unit subtracted. If it
+     * is not possible to subtract the amount, because the unit is not supported or for some other
+     * reason, an exception is thrown. This method is equivalent to
+     * {@link #plus(long, TemporalUnit)} with the amount negated. See that method for a full
+     * description of how addition, and thus subtraction, works. This instance is immutable and
+     * unaffected by this method call.
      *
      * @param amountToMinus the amount of the unit to subtract from the result, may be negative
      * @param unit the unit of the amount to subtract, not null
@@ -130,9 +128,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 西暦の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -141,9 +137,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 和暦の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -152,9 +146,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 来年の西暦の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -163,9 +155,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -175,9 +165,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 西暦年度の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -186,9 +174,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦年度を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -198,9 +184,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 月の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -209,9 +193,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 日の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -220,9 +202,16 @@ public class Date {
     }
 
     /**
-     * <p>
+     * 元号を返します。
+     * 
+     * @return
+     */
+    public JapaneseEra era() {
+        return japanese.getEra();
+    }
+
+    /**
      * 和暦の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -231,9 +220,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した和暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -242,9 +229,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -254,9 +239,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -265,9 +248,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -277,9 +258,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -288,9 +267,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -300,9 +277,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -311,9 +286,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -323,9 +296,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 西暦年度の数値を返します。
-     * </p>
      * 
      * @return
      */
@@ -334,9 +305,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦年度を返します。
-     * </p>
      * 
      * @return
      */
@@ -345,9 +314,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦年度を返します。
-     * </p>
      * 
      * @return
      */
@@ -356,9 +323,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦年度を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -368,9 +333,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦年度を返します。
-     * </p>
      * 
      * @return
      */
@@ -379,9 +342,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦年度を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -391,9 +352,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -402,9 +361,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -414,9 +371,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -425,9 +380,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -437,9 +390,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -448,9 +399,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -460,9 +409,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @return
      */
@@ -471,9 +418,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した西暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -483,9 +428,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 整形した和暦を返します。
-     * </p>
      * 
      * @param fill
      * @return
@@ -495,9 +438,30 @@ public class Date {
     }
 
     /**
-     * <p>
+     * 整形した和時刻を返します。
+     * 
+     * @return
+     */
+    public String 時刻() {
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        String prefix = (hour < 12 ? "午前" : "午後") + hour + "時";
+        String suffix = minute == 0 ? "" : minute + "分";
+
+        return prefix + suffix;
+    }
+
+    /**
+     * 整形した時刻を返します。
+     * 
+     * @return
+     */
+    public String time() {
+        return Padding.size(2).text("0").format(time.getHour()) + ":" + Padding.size(2).text("0").format(time.getMinute());
+    }
+
+    /**
      * 今日と比較して過去かどうか
-     * </p>
      * 
      * @return
      */
@@ -506,9 +470,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 今日と比較して未来かどうか
-     * </p>
      * 
      * @return
      */
@@ -517,9 +479,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * Helper method to retrive japanese era.
-     * </p>
      * 
      * @param date
      * @return
@@ -533,9 +493,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * Helper method to format the specified {@link ChronoLocalDate}.
-     * </p>
      * 
      * @param date
      * @param fill
@@ -548,9 +506,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * Helper method to format the specified {@link ChronoLocalDate}.
-     * </p>
      * 
      * @param date
      * @param fill
@@ -563,9 +519,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * Helper method to format the specified {@link ChronoLocalDate}.
-     * </p>
      * 
      * @param date
      * @param fill
@@ -578,9 +532,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * Helper method to format the specified {@link ChronoLocalDate}.
-     * </p>
      * 
      * @param date
      * @return
@@ -618,20 +570,44 @@ public class Date {
     }
 
     /**
+     * @param month
+     * @param dayOfMonth
+     * @return
+     */
+    public static Date of(int month, int dayOfMonth, int hour, int minute) {
+        return of(LocalDate.now().getYear(), month, dayOfMonth, hour, minute);
+    }
+
+    /**
+     * @param month
+     * @param dayOfMonth
+     * @return
+     */
+    public static Date of(int year, int month, int dayOfMonth, int hour, int minute) {
+        return of(LocalDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute));
+    }
+
+    /**
      * @param date
      * @return
      */
     public static Date of(LocalDate date) {
-        if (date == null) {
-            return now();
-        }
-        return new Date(date);
+        return of(date, null);
     }
 
     /**
-     * <p>
+     * @param date
+     * @return
+     */
+    public static Date of(LocalDate date, LocalTime time) {
+        if (date == null) {
+            return now();
+        }
+        return new Date(date, time);
+    }
+
+    /**
      * 現在の西暦数を返す。
-     * </p>
      * 
      * @return
      */
@@ -640,9 +616,7 @@ public class Date {
     }
 
     /**
-     * <p>
      * 現在の西暦年度数を返す。
-     * </p>
      * 
      * @return
      */
