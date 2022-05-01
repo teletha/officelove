@@ -202,6 +202,24 @@ public class Date {
     }
 
     /**
+     * 日の数値を返します。
+     * 
+     * @return
+     */
+    public int hour() {
+        return date.get(ChronoField.HOUR_OF_DAY);
+    }
+
+    /**
+     * 日の数値を返します。
+     * 
+     * @return
+     */
+    public int minute() {
+        return date.get(ChronoField.MINUTE_OF_HOUR);
+    }
+
+    /**
      * 元号を返します。
      * 
      * @return
