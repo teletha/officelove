@@ -45,6 +45,9 @@ public class Date {
     /** The actual time. */
     private final LocalTime time;
 
+    /** mode */
+    private boolean fuzzy;
+
     /**
      * @param date
      */
@@ -198,6 +201,9 @@ public class Date {
      * @return
      */
     public int month() {
+        if (fuzzy) {
+            return -1;
+        }
         return date.get(ChronoField.MONTH_OF_YEAR);
     }
 
@@ -207,6 +213,9 @@ public class Date {
      * @return
      */
     public int day() {
+        if (fuzzy) {
+            return -1;
+        }
         return date.get(ChronoField.DAY_OF_MONTH);
     }
 
@@ -542,6 +551,9 @@ public class Date {
      * @return
      */
     private String month(ChronoLocalDate date, String fill, String postfix) {
+        if (fuzzy) {
+            return "";
+        }
         return Padding.size(2).text(fill).format(date.get(MONTH_OF_YEAR)) + postfix;
     }
 
@@ -555,6 +567,9 @@ public class Date {
      * @return
      */
     private String day(ChronoLocalDate date, String fill, String postfix) {
+        if (fuzzy) {
+            return "";
+        }
         return Padding.size(2).text(fill).format(date.get(DAY_OF_MONTH)) + postfix;
     }
 
@@ -647,6 +662,44 @@ public class Date {
             return now();
         }
         return new Date(date, time);
+    }
+
+    public static Date of(JapaneseEra era, int year, int month, int day) {
+        if (era == JapaneseEra.MEIJI && year < 6) {
+            year = 6;
+        }
+
+        // 大正から昭和への過渡期なので間違っていることが多いので補正しておく
+        if (era == JapaneseEra.TAISHO) {
+            if (15 < year) {
+                era = JapaneseEra.SHOWA;
+                year = year - 14;
+            }
+        }
+        if (era == JapaneseEra.SHOWA) {
+            if (year == 1 && month <= 12 && day < 25) {
+                era = JapaneseEra.TAISHO;
+                year = 15;
+            }
+        }
+
+        try {
+            return new Date(JapaneseDate.of(era, year, month, day), null);
+        } catch (DateTimeException e) {
+            // fuzzy mode
+            if (month < 1 || 12 < month) {
+                month = 1;
+            }
+
+            if (day < 1 || 31 < day) {
+                day = 1;
+            }
+
+            Date date = new Date(JapaneseDate.of(era, year, month, day), null);
+            date.fuzzy = true;
+
+            return date;
+        }
     }
 
     /**
