@@ -10,7 +10,7 @@
 package offishell;
 
 import static java.time.temporal.ChronoField.*;
-import static java.time.temporal.ChronoUnit.MONTHS;
+import static java.time.temporal.ChronoUnit.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -58,6 +58,15 @@ public class Date {
     public Date(LocalDate date, LocalTime time) {
         this.date = date;
         this.japanese = JapaneseDate.from(date);
+        this.time = time == null ? LocalTime.MIN : time;
+    }
+
+    /**
+     * @param date
+     */
+    public Date(JapaneseDate date, LocalTime time) {
+        this.date = LocalDate.from(date);
+        this.japanese = date;
         this.time = time == null ? LocalTime.MIN : time;
     }
 
@@ -603,6 +612,22 @@ public class Date {
      */
     public static Date of(int year, int month, int dayOfMonth, int hour, int minute) {
         return of(LocalDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute));
+    }
+
+    /**
+     * @param date
+     * @return
+     */
+    public static Date of(JapaneseDate date) {
+        return of(date, null);
+    }
+
+    /**
+     * @param date
+     * @return
+     */
+    public static Date of(JapaneseDate date, LocalTime time) {
+        return new Date(date, time);
     }
 
     /**
