@@ -10,6 +10,7 @@
 package offishell.word;
 
 import java.awt.Desktop;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
@@ -21,6 +22,8 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.BodyType;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
@@ -52,6 +55,7 @@ import offishell.Date;
 import offishell.UI;
 import offishell.expression.VariableContext;
 import psychopath.Directory;
+import psychopath.File;
 import psychopath.Locator;
 
 /**
@@ -451,6 +455,34 @@ public class Word {
         return this;
     }
 
+    public Word saveAsPDF(Directory output) {
+        Path temp = Locator.temporaryFile().asJavaPath();
+        save(temp);
+
+        ProcessBuilder builder = new ProcessBuilder("D:\\Application\\LibreOffice\\program\\soffice.exe", "--convert-to", "pdf", "--outdir", output
+                .absolutize()
+                .toString(), temp.toAbsolutePath().toString());
+
+        try {
+            builder.start().waitFor();
+
+            File file = output.file(temp.getFileName().toString() + ".pdf");
+            PDDocument doc = PDDocument.load(file.asJavaFile());
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.setPageable(new PDFPageable(doc));
+            if (job.printDialog()) {
+                job.print();
+            }
+            doc.close();
+        } catch (InterruptedException e) {
+            throw I.quiet(e);
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
+
+        return this;
+    }
+
     /**
      * <p>
      * Replace variable text.
@@ -489,6 +521,8 @@ public class Word {
                 replace(para);
             }
         }
+
+        // for textbox
     }
 
     /**
