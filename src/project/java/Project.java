@@ -18,12 +18,9 @@ public class Project extends bee.api.Project {
         require("com.github.teletha", "antibug").atTest();
         require("org.apache.poi", "poi-ooxml", "4.1.2");
         require("org.apache.poi", "ooxml-schemas", "1.4");
-        require("org.apache.poi", "ooxml-schemas", "1.4");
-        require("org.apache.pdfbox", "pdfbox", "2.0.26");
         require("javax.xml.bind", "jaxb-api");
         require("com.sun.xml.bind", "jaxb-core");
         require("com.sun.xml.bind", "jaxb-impl");
-        require("org.immutables", "value", "2.7.5").atAnnotation();
 
         versionControlSystem("https://github.com/teletha/offishell");
     }
