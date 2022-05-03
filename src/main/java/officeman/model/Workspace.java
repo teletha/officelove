@@ -16,7 +16,6 @@ import kiss.I;
 import kiss.Managed;
 import kiss.Singleton;
 import kiss.Storable;
-import offishell.UI;
 
 @SuppressWarnings("serial")
 @Managed(value = Singleton.class)
@@ -35,7 +34,7 @@ public class Workspace extends HashMap<String, Path> implements Storable<Workspa
      */
     public static Path by(String category) {
         Workspace dir = I.make(Workspace.class).restore();
-        Path path = dir.computeIfAbsent(category, key -> UI.selectDirectory(category));
+        Path path = Path.of("workspace/" + category);
         dir.store();
 
         return path;

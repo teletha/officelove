@@ -51,11 +51,9 @@ import kiss.model.Property;
 import officeman.model.FileType;
 import offishell.Date;
 import offishell.Problem;
-import offishell.Recoverable;
 import offishell.Text;
 import offishell.UI;
 import offishell.expression.VariableContext;
-import offishell.macro.Window;
 import psychopath.File;
 import psychopath.Locator;
 
@@ -234,9 +232,7 @@ public class Excel {
      * @return Chainable API
      */
     public Excel open() {
-        if (!Window.existByTitle(path.getFileName().toString())) {
-            UI.open(path);
-        }
+        UI.open(path);
 
         // API definition
         return this;
@@ -319,13 +315,11 @@ public class Excel {
     }
 
     public Excel save(Path path) {
-        Recoverable.write(path, output -> {
-            try {
-                book.write(output);
-            } catch (Throwable e) {
-                throw I.quiet(e);
-            }
-        });
+        try {
+            book.write(Files.newOutputStream(path));
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
         return of(path);
     }
 
