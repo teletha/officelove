@@ -225,7 +225,7 @@ public class VariableContext implements UnaryOperator<String> {
                 throw errorInVariableResolve(value, expressions, expression);
             }
 
-            for (Method method : model.type.getDeclaredMethods()) {
+            for (Method method : model.type.getMethods()) {
                 // exclude void type
                 if (method.getReturnType() == void.class) {
                     continue;
