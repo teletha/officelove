@@ -364,7 +364,14 @@ public class Date {
      * @return
      */
     public String 短縮年度() {
-        return 年度(padding).replace("元年", "01年").replace("年度", "").replace("平成", "H").replace("昭和", "S").replace("令和", "R");
+        return 年度(padding).replace("元年", "01年")
+                .replace("年度", "")
+                .replace("明治", "M")
+                .replace("大正", "T")
+                .replace("昭和", "S")
+                .replace("平成", "H")
+                .replace("令和", "R");
+
     }
 
     /**
