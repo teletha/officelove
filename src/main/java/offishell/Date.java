@@ -313,6 +313,15 @@ public class Date {
     }
 
     /**
+     * 整形した短縮年月日を返します。
+     * 
+     * @return
+     */
+    public String 短縮年月日() {
+        return 短縮年度() + "." + 月日().replace("月", ".").replace("日", "");
+    }
+
+    /**
      * 整形した西暦を返します。
      * 
      * @return
