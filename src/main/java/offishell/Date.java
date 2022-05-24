@@ -90,7 +90,11 @@ public class Date {
      */
     @Override
     public String toString() {
-        return 年月日曜();
+        if (time == LocalTime.MIN) {
+            return 年月日曜();
+        } else {
+            return 年月日曜() + " " + 時刻();
+        }
     }
 
     /**
