@@ -681,6 +681,15 @@ public class Date {
     }
 
     public static Date of(JapaneseEra era, int year, int month, int day) {
+        return of(era, year, month, day, -1, -1);
+    }
+
+    public static Date of(JapaneseEra era, int year, int month, int day, int hour, int minute) {
+        LocalTime time = null;
+        if (0 <= hour && 0 <= minute) {
+            time = LocalTime.of(hour, minute);
+        }
+
         if (era == JapaneseEra.MEIJI && year < 6) {
             year = 6;
         }
@@ -700,7 +709,7 @@ public class Date {
         }
 
         try {
-            return new Date(JapaneseDate.of(era, year, month, day), null);
+            return new Date(JapaneseDate.of(era, year, month, day), time);
         } catch (DateTimeException e) {
             // fuzzy mode
             if (month < 1 || 12 < month) {
@@ -711,7 +720,7 @@ public class Date {
                 day = 1;
             }
 
-            Date date = new Date(JapaneseDate.of(era, year, month, day), null);
+            Date date = new Date(JapaneseDate.of(era, year, month, day), time);
             date.fuzzy = true;
 
             return date;
