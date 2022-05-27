@@ -14,6 +14,7 @@ import static java.time.temporal.ChronoUnit.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.chrono.JapaneseChronology;
@@ -43,7 +44,9 @@ public class Date {
     private final JapaneseDate japanese;
 
     /** The actual time. */
-    private final LocalTime time;
+    public final LocalTime time;
+
+    public final LocalDateTime datetime;
 
     /** mode */
     private boolean fuzzy;
@@ -62,6 +65,7 @@ public class Date {
         this.date = date;
         this.japanese = JapaneseDate.from(date);
         this.time = time == null ? LocalTime.MIN : time;
+        this.datetime = LocalDateTime.of(date, time == null ? LocalTime.MIN : time);
     }
 
     /**
@@ -71,6 +75,7 @@ public class Date {
         this.date = LocalDate.from(date);
         this.japanese = date;
         this.time = time == null ? LocalTime.MIN : time;
+        this.datetime = LocalDateTime.of(this.date, time == null ? LocalTime.MIN : time);
     }
 
     /**
