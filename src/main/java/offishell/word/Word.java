@@ -236,7 +236,7 @@ public class Word {
      */
     public Word calculate(Object model, Object... models) {
         ArrayList list = new ArrayList();
-        list.add(model);
+        if (model != null) list.add(model);
         list.addAll(Arrays.asList(models));
 
         return calculate(list);
