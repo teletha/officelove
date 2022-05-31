@@ -357,6 +357,8 @@ public class WordHeleper {
      * @param text
      */
     public static void write(XWPFRun run, String text) {
+        text = WordStyle.apply(run, text);
+
         String[] lines = text.split("\n");
 
         if (lines.length != 0) {

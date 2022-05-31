@@ -469,9 +469,11 @@ public class Word {
         for (XWPFTable table : copy(doc.getTables())) {
             for (XWPFTableRow row : copy(table.getRows())) {
                 for (XWPFTableCell cell : copy(row.getTableCells())) {
+                    context.cell = cell;
                     for (XWPFParagraph para : copy(cell.getParagraphs())) {
                         replace(para);
                     }
+                    context.cell = null;
                 }
             }
         }
@@ -1075,6 +1077,9 @@ public class Word {
         /** The variable context. */
         private VariableContext variable;
 
+        /** The current processing cell. */
+        private XWPFTableCell cell;
+
         /**
          * @param paragraph
          */
@@ -1167,7 +1172,9 @@ public class Word {
             public void process(XWPFParagraph paragraph) {
                 for (XWPFRun run : paragraph.getRuns()) {
                     try {
-                        WordHeleper.write(run, variable.apply(run.getText(0)));
+                        String text = variable.apply(run.getText(0));
+                        text = WordCellStyle.apply(context.cell, text);
+                        WordHeleper.write(run, text);
                     } catch (XmlValueDisconnectedException e) {
                         // ignore
                     }
