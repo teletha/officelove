@@ -269,6 +269,15 @@ public class Date {
      * 
      * @return
      */
+    public String 年無() {
+        return 年().replace("年", "");
+    }
+
+    /**
+     * 整形した和暦を返します。
+     * 
+     * @return
+     */
     public String 年() {
         return 年(padding);
     }
