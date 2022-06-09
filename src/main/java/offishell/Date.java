@@ -636,7 +636,7 @@ public class Date implements Comparable<Date> {
      * @return
      */
     public static Date now() {
-        return of(LocalDate.now());
+        return of(LocalDate.now(), LocalTime.now());
     }
 
     /**
