@@ -10,7 +10,7 @@
 package offishell;
 
 import static java.time.temporal.ChronoField.*;
-import static java.time.temporal.ChronoUnit.MONTHS;
+import static java.time.temporal.ChronoUnit.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -25,14 +25,9 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.time.temporal.UnsupportedTemporalTypeException;
-import java.util.Comparator;
 import java.util.Objects;
 
 public class Date implements Comparable<Date> {
-
-    /** The special comparator. */
-    private static final Comparator<Date> COMPARATOR = Comparator.<Date, LocalDate> comparing(v -> v.date)
-            .thenComparing(Comparator.<Date, LocalTime> comparing(v -> v.time));
 
     /** 詰め文字 */
     private static final String padding = "";
@@ -112,7 +107,12 @@ public class Date implements Comparable<Date> {
      */
     @Override
     public int compareTo(Date o) {
-        return COMPARATOR.compare(this, o);
+        int result = date.compareTo(o.date);
+        if (result != 0) {
+            return result;
+        } else {
+            return time.compareTo(o.time);
+        }
     }
 
     /**
