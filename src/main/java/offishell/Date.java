@@ -296,6 +296,22 @@ public class Date implements Comparable<Date> {
     }
 
     /**
+     * 整形した西暦年度を返します。
+     * 
+     * @return
+     */
+    public String 短縮年() {
+        return 年(padding).replace("元年", "01年")
+                .replace("年", "")
+                .replace("明治", "M")
+                .replace("大正", "T")
+                .replace("昭和", "S")
+                .replace("平成", "H")
+                .replace("令和", "R");
+
+    }
+
+    /**
      * 整形した西暦を返します。
      * 
      * @param fill
