@@ -365,7 +365,7 @@ public class Date implements Comparable<Date> {
      * @return
      */
     public String 短縮年月日() {
-        return 短縮年度() + "." + 月日().replace("月", ".").replace("日", "");
+        return 短縮年() + "." + 月日().replace("月", ".").replace("日", "");
     }
 
     /**
