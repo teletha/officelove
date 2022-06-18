@@ -452,9 +452,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Replace variable text.
-     * </p>
      * 
      * @param doc
      * @param object
@@ -467,15 +465,7 @@ public class Word {
 
         // for table
         for (XWPFTable table : copy(doc.getTables())) {
-            for (XWPFTableRow row : copy(table.getRows())) {
-                for (XWPFTableCell cell : copy(row.getTableCells())) {
-                    context.cell = cell;
-                    for (XWPFParagraph para : copy(cell.getParagraphs())) {
-                        replace(para);
-                    }
-                    context.cell = null;
-                }
-            }
+            replace(table);
         }
 
         // for header
@@ -493,6 +483,22 @@ public class Word {
         }
 
         // for textbox
+    }
+
+    private void replace(XWPFTable table) {
+        for (XWPFTableRow row : copy(table.getRows())) {
+            for (XWPFTableCell cell : copy(row.getTableCells())) {
+                context.cell = cell;
+                for (XWPFParagraph para : copy(cell.getParagraphs())) {
+                    replace(para);
+                }
+                context.cell = null;
+
+                for (XWPFTable innerTable : copy((cell.getTables()))) {
+                    replace(innerTable);
+                }
+            }
+        }
     }
 
     /**
@@ -524,6 +530,10 @@ public class Word {
                 for (XWPFTableCell cell : row.getTableCells()) {
                     for (XWPFParagraph para : cell.getParagraphs()) {
                         collectParagraph(para, observer);
+                    }
+
+                    for (XWPFTable innerTable : cell.getTables()) {
+                        collectParagraph(innerTable, observer);
                     }
                 }
             }
