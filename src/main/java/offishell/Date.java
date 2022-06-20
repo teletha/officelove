@@ -759,6 +759,10 @@ public class Date implements Comparable<Date> {
             return new Date(JapaneseDate.of(era, year, month, day), time);
         } catch (DateTimeException e) {
             // fuzzy mode
+            if (year < 1 || 99 < year) {
+                return null;
+            }
+
             if (month < 1 || 12 < month) {
                 month = 1;
             }
