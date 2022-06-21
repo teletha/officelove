@@ -27,6 +27,8 @@ import java.time.temporal.TemporalUnit;
 import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.Objects;
 
+import kiss.I;
+
 public class Date implements Comparable<Date> {
 
     /** 詰め文字 */
@@ -771,10 +773,15 @@ public class Date implements Comparable<Date> {
                 day = 1;
             }
 
-            Date date = new Date(JapaneseDate.of(era, year, month, day), time);
-            date.fuzzy = true;
+            try {
+                Date date = new Date(JapaneseDate.of(era, year, month, day), time);
+                date.fuzzy = true;
 
-            return date;
+                return date;
+            } catch (DateTimeException fuz) {
+                System.out.println(era + " " + year + " " + month + " " + day);
+                throw I.quiet(fuz);
+            }
         }
     }
 
