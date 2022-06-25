@@ -17,6 +17,7 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import offishell.word.Word;
+import psychopath.Locator;
 
 /**
  * @version 2016/09/07 11:05:14
@@ -24,7 +25,7 @@ import offishell.word.Word;
 public interface WordTestHelper extends AssertionHelper {
 
     public default Word expect(String name) {
-        return Word.of("src/test/resources/offishell/msoffice", name);
+        return new Word(Locator.file("src/test/resources/offishell/msoffice/" + name));
     }
 
     /**

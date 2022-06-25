@@ -16,9 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import offishell.word.Word;
 
-/**
- * @version 2018/04/02 16:52:58
- */
 public class WordParagraphTest implements WordTestHelper {
 
     @Test
@@ -32,7 +29,7 @@ public class WordParagraphTest implements WordTestHelper {
     @Test
     public void singleLine() {
         Word word = Word.blank().text("Single Line");
-        Word expected = expect("Paragraph - Single Line");
+        Word expected = expect("Paragraph - Single Line.docx");
 
         checkBody(word, expected);
     }

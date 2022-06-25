@@ -11,8 +11,10 @@ package offishell.word;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -47,12 +49,10 @@ import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
-import officeman.model.FileType;
 import offishell.Date;
 import offishell.UI;
 import offishell.expression.VariableContext;
-import psychopath.Directory;
-import psychopath.Locator;
+import psychopath.File;
 
 /**
  * @version 2016/05/28 9:53:59
@@ -63,8 +63,8 @@ public class Word {
         I.load(Date.class);
     }
 
-    /** The template file. */
-    final Path path;
+    /** The template file name. */
+    final String name;
 
     /** The culculated document. */
     XWPFDocument calculated;
@@ -95,8 +95,8 @@ public class Word {
     /**
      * 
      */
-    private Word() {
-        this.path = Locator.temporaryFile().asJavaPath();
+    private Word(String name) {
+        this.name = name;
         this.calculated = new XWPFDocument();
 
         CTSectPr sect = calculated.getDocument().getBody().getSectPr();
@@ -105,16 +105,47 @@ public class Word {
     }
 
     /**
-     * @param path
+     * Create template for word.
+     * 
+     * @param file
      */
-    protected Word(Path path) {
-        if (Files.notExists(path)) {
-            throw new Error("ファイル " + path.toAbsolutePath() + " が見つかりません。");
-        }
+    public Word(File file) {
+        this(file.absolutize().toString(), file.newInputStream());
+    }
 
+    /**
+     * Create template for word.
+     * 
+     * @param file
+     */
+    public Word(URL file) {
+        this(file.toExternalForm(), stream(file));
+    }
+
+    /**
+     * Supress error.
+     * 
+     * @param file
+     * @return
+     */
+    private static InputStream stream(URL file) {
         try {
-            this.path = path;
-            this.calculated = new XWPFDocument(Files.newInputStream(path));
+            return file.openStream();
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Create template for word.
+     * 
+     * @param name
+     * @param input
+     */
+    private Word(String name, InputStream input) {
+        try {
+            this.name = name;
+            this.calculated = new XWPFDocument(input);
 
             CTTextDirection direction = calculated.getDocument().getBody().getSectPr().getTextDirection();
 
@@ -257,7 +288,7 @@ public class Word {
 
         try {
             // calculate variables
-            context.variable = new VariableContext(path, textIsVerticalAlign, models);
+            context.variable = new VariableContext(name, textIsVerticalAlign, models);
             replace(calculated);
 
             // clear all comments
@@ -302,7 +333,7 @@ public class Word {
         calculate(models.get(0), additions);
 
         for (int i = 1; i < models.size(); i++) {
-            merge(new Word(path).calculate(models.get(i), additions));
+            merge(new Word(name).calculate(models.get(i), additions));
         }
         return this;
     }
@@ -735,27 +766,6 @@ public class Word {
     }
 
     /**
-     * @param path
-     * @return
-     */
-    public static Word of(Path path) {
-        return new Word(path);
-    }
-
-    /**
-     * @param fileName
-     */
-    public static Word of(String directoryPath, String fileName) {
-        return of(Locator.directory(directoryPath), fileName);
-    }
-
-    /**
-     */
-    public static Word of(Directory directory, String fileName) {
-        return of(directory.walkFile(fileName + "." + FileType.Word).first().to().v.asJavaPath());
-    }
-
-    /**
      * <p>
      * Create empty file.
      * </p>
@@ -763,7 +773,7 @@ public class Word {
      * @return
      */
     public static Word blank() {
-        return new Word() {
+        return new Word("empty.docx") {
 
             /**
              * {@inheritDoc}
@@ -1351,7 +1361,7 @@ public class Word {
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
                         WordHeleper.copy(para, doc
-                                .insertNewParagraph(index.newCursor()), new VariableContext(path, textIsVerticalAlign, item));
+                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, item));
                     }
                 }
 
@@ -1416,7 +1426,7 @@ public class Word {
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
                         WordHeleper.copy(para, cell
-                                .insertNewParagraph(index.newCursor()), new VariableContext(path, textIsVerticalAlign, item));
+                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, item));
                     }
                 }
 
@@ -1491,7 +1501,7 @@ public class Word {
                 for (int count = 0; count < items.size(); count++) {
                     for (int offset = 0; offset < rows.size(); offset++) {
                         WordHeleper.copy(rows.get(offset), table.insertNewTableRow(start + count * rows
-                                .size() + offset), new VariableContext(path, textIsVerticalAlign, items.get(count)));
+                                .size() + offset), new VariableContext(name, textIsVerticalAlign, items.get(count)));
                     }
                 }
 

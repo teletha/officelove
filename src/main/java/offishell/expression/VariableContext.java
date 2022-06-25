@@ -10,7 +10,6 @@
 package offishell.expression;
 
 import java.lang.reflect.Method;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -26,10 +25,7 @@ import offishell.Problem;
  */
 public class VariableContext implements UnaryOperator<String> {
 
-    /**
-     * 
-     */
-    private final Path documentPath;
+    private final String fileName;
 
     private final boolean isVertical;
 
@@ -51,14 +47,14 @@ public class VariableContext implements UnaryOperator<String> {
     /**
      * @param model
      */
-    public VariableContext(Path word, boolean isVertical, Object model) {
-        this(word, isVertical, Collections.singletonList(model));
+    public VariableContext(String fileName, boolean isVertical, Object model) {
+        this(fileName, isVertical, Collections.singletonList(model));
     }
 
     /**
      */
-    public VariableContext(Path path, boolean isVertical, List models) {
-        this.documentPath = path;
+    public VariableContext(String fileName, boolean isVertical, List models) {
+        this.fileName = fileName;
         this.isVertical = isVertical;
         if (models == null || models.size() == 0) {
             throw new Error("モデルを指定してください。");
@@ -123,7 +119,7 @@ public class VariableContext implements UnaryOperator<String> {
                 return var.apply(variable);
             }
         }
-        throw Problem.of("変数『$" + variable + "』は使用できません。 [" + documentPath + "]").solution(Variable.class + "を実装したクラスを作成してください。");
+        throw Problem.of("変数『$" + variable + "』は使用できません。 [" + fileName + "]").solution(Variable.class + "を実装したクラスを作成してください。");
     }
 
     /**
@@ -258,7 +254,7 @@ public class VariableContext implements UnaryOperator<String> {
      * @return
      */
     private Problem errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return Problem.of("文書 [" + documentPath + "] の変数 [" + String
+        return Problem.of("文書 [" + fileName + "] の変数 [" + String
                 .join(".", expressions) + "] で使われている [" + expression + "] は" + model.getClass().getSimpleName() + "クラスでは解決できません。");
     }
 
