@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 offishell Development Team
+ * Copyright (C) 2022 The OFFISHELL Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ public class Project extends bee.api.Project {
         require("javax.xml.bind", "jaxb-api");
         require("com.sun.xml.bind", "jaxb-core");
         require("com.sun.xml.bind", "jaxb-impl");
+        require("fr.opensagres.xdocreport", "org.apache.poi.xwpf.converter.core");
+        require("fr.opensagres.xdocreport", "org.apache.poi.xwpf.converter.pdf");
 
         versionControlSystem("https://github.com/teletha/offishell");
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 offishell Development Team
+ * Copyright (C) 2022 The OFFISHELL Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
@@ -9,6 +9,7 @@
  */
 package offishell.excel;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -50,9 +51,7 @@ import kiss.model.Model;
 import kiss.model.Property;
 import officeman.model.FileType;
 import offishell.Date;
-import offishell.Problem;
 import offishell.Text;
-import offishell.UI;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -232,7 +231,11 @@ public class Excel {
      * @return Chainable API
      */
     public Excel open() {
-        UI.open(path);
+        try {
+            Desktop.getDesktop().open(path.toFile());
+        } catch (Throwable e) {
+            throw I.quiet(e);
+        }
 
         // API definition
         return this;
@@ -604,7 +607,7 @@ public class Excel {
                 if (ignore404) {
                     return -1;
                 }
-                throw Problem.of(row.getSheet().getSheetName() + "には『" + name + "』という名称の列が存在しません。");
+                throw new Error(row.getSheet().getSheetName() + "には『" + name + "』という名称の列が存在しません。");
             }
             return index;
         }

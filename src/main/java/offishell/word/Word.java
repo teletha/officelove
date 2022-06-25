@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 offishell Development Team
+ * Copyright (C) 2022 The OFFISHELL Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,55 +44,41 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTextDirection;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTextDirection;
 
-import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
+import kiss.WiseSupplier;
 import offishell.Date;
-import offishell.UI;
 import offishell.expression.VariableContext;
 import psychopath.File;
+import psychopath.Locator;
 
-/**
- * @version 2016/05/28 9:53:59
- */
 public class Word {
 
     static {
         I.load(Date.class);
     }
 
-    /** The template file name. */
-    final String name;
-
     /** The culculated document. */
-    XWPFDocument calculated;
+    protected XWPFDocument calculated;
 
-    /**
-     * <p>
-     * Collect all paragraphs in this document.
-     * </p>
-     */
-    public final Signal<XWPFParagraph> paragraphs = new Signal<XWPFParagraph>((observer, disposer) -> {
-        for (IBodyElement element : calculated.getBodyElements()) {
-            collectParagraph(element, observer);
-        }
-        return Disposable.empty();
-    });
+    /** The template file name. */
+    private final String name;
 
     /** The context. */
-    private CalculationContext context = new CalculationContext();
+    private final CalculationContext context = new CalculationContext();
 
     /** The text direction. */
-    boolean textIsVerticalAlign;
+    private boolean textIsVerticalAlign;
 
     /** The next break type. */
     private BreakType breakType = BreakType.None;
 
+    /** The current section. */
     private Section section = new Section();
 
     /**
-     * 
+     * Create template for word.
      */
     private Word(String name) {
         this.name = name;
@@ -110,7 +95,7 @@ public class Word {
      * @param file
      */
     public Word(File file) {
-        this(file.absolutize().toString(), file.newInputStream());
+        this(file.absolutize().toString(), file::newInputStream);
     }
 
     /**
@@ -119,21 +104,7 @@ public class Word {
      * @param file
      */
     public Word(URL file) {
-        this(file.toString(), stream(file));
-    }
-
-    /**
-     * Supress error.
-     * 
-     * @param file
-     * @return
-     */
-    private static InputStream stream(URL file) {
-        try {
-            return file.openStream();
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        this(file.toString(), file::openStream);
     }
 
     /**
@@ -142,10 +113,10 @@ public class Word {
      * @param name
      * @param input
      */
-    private Word(String name, InputStream input) {
+    private Word(String name, WiseSupplier<InputStream> input) {
         try {
             this.name = name;
-            this.calculated = new XWPFDocument(input);
+            this.calculated = new XWPFDocument(input.get());
 
             CTTextDirection direction = calculated.getDocument().getBody().getSectPr().getTextDirection();
 
@@ -154,15 +125,13 @@ public class Word {
             } else {
                 this.textIsVerticalAlign = false;
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             throw I.quiet(e);
         }
     }
 
     /**
-     * <p>
      * Expose POI API.
-     * </p>
      * 
      * @return POI document.
      */
@@ -171,38 +140,46 @@ public class Word {
     }
 
     /**
-     * <p>
+     * Collect paragraphs.
+     * 
+     * @return
+     */
+    public Signal<XWPFParagraph> paragraphs() {
+        return new Signal<XWPFParagraph>((observer, disposer) -> {
+            for (IBodyElement element : calculated.getBodyElements()) {
+                collectParagraph(element, observer);
+            }
+            return disposer;
+        });
+    }
+
+    /**
      * Helper method to find {@link XWPFParagraph} which contains the specified text.
-     * </p>
      * 
      * @param text A text to search.
      * @return A serach result.
      */
-    public XWPFParagraph findParagraphWith(String text) {
-        List<XWPFParagraph> list = paragraphs.take(p -> p.getText().contains(text)).toList();
+    public XWPFParagraph paragraphWith(String text) {
+        List<XWPFParagraph> list = paragraphs().take(p -> p.getText().contains(text)).toList();
 
         return list.isEmpty() ? null : list.get(0);
     }
 
     /**
-     * <p>
      * Helper method to find {@link XWPFParagraph} which contains the specified text.
-     * </p>
      * 
      * @param text A text to search.
      * @param start A start position to search.
      * @return A serach result.
      */
-    public XWPFParagraph findParagraphWith(String text, XWPFParagraph start) {
-        List<XWPFParagraph> list = paragraphs.skipUntil(start::equals).take(p -> p.getText().contains(text)).toList();
+    public XWPFParagraph paragraphWith(String text, XWPFParagraph start) {
+        List<XWPFParagraph> list = paragraphs().skipUntil(start::equals).take(p -> p.getText().contains(text)).toList();
 
         return list.isEmpty() ? null : list.get(0);
     }
 
     /**
-     * <p>
      * Copy all pages.
-     * </p>
      */
     public Word copy(int number) {
         List<IBodyElement> copy = copy(calculated.getBodyElements());
@@ -214,9 +191,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Helper method to get cusor.
-     * </p>
      * 
      * @param e
      * @return
@@ -238,9 +213,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Helper method to get cusor.
-     * </p>
      * 
      * @param e
      * @return
@@ -258,9 +231,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Calculate variables by the given model.
-     * </p>
      * 
      * @param models
      * @return
@@ -274,9 +245,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Calculate variables by the given model.
-     * </p>
      * 
      * @param models
      * @return
@@ -302,9 +271,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Calculate variables by the given model list and merge them all.
-     * </p>
      * 
      * @param models
      * @return
@@ -314,9 +281,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Calculate variables by the given model list and merge them all.
-     * </p>
      * 
      * @param models
      * @return
@@ -339,9 +304,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Merge the specified {@link Word} to this document.
-     * </p>
      * 
      * @param after
      * @return
@@ -352,9 +315,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Merge the specified {@link Word} to this document.
-     * </p>
      * 
      * @param after
      * @return
@@ -401,48 +362,31 @@ public class Word {
     }
 
     /**
-     * <p>
      * Print document with the given variables.
-     * </p>
      * 
      * @return Chainable API
      */
     public Word print() {
         try {
-            return print(Files.createTempFile("calculated", ".docx"));
+            File temp = Locator.temporaryFile("calculated.docx");
+            save(temp);
+            Desktop.getDesktop().print(temp.asJavaFile());
         } catch (IOException e) {
             throw I.quiet(e);
         }
-    }
-
-    /**
-     * <p>
-     * Print document with the given variables.
-     * </p>
-     * 
-     * @return Chainable API
-     */
-    public Word print(Path path) {
-        save(path);
-
-        UI.print(path);
-
-        // API definition
         return this;
     }
 
     /**
-     * <p>
      * Open document with the given variables.
-     * </p>
      * 
      * @return
      */
     public Word open() {
         try {
-            Path temp = Files.createTempFile("calculated", ".docx");
+            File temp = Locator.temporaryFile("calculated.docx");
             save(temp);
-            Desktop.getDesktop().open(temp.toFile());
+            Desktop.getDesktop().open(temp.asJavaFile());
         } catch (IOException e) {
             throw I.quiet(e);
         }
@@ -450,28 +394,24 @@ public class Word {
     }
 
     /**
-     * <p>
      * Save this document to the specified {@link Path}.
-     * </p>
      * 
      * @param output
      * @return Chainable API.
      */
-    public Word save(Path output) {
+    public Word save(File output) {
         return save(output, true);
     }
 
     /**
-     * <p>
      * Save this document to the specified {@link Path}.
-     * </p>
      * 
      * @param output
      * @return Chainable API.
      */
-    public Word save(Path output, boolean overwrite) {
-        if (overwrite == true || Files.notExists(output)) {
-            try (OutputStream stream = Files.newOutputStream(output)) {
+    public Word save(File output, boolean overwrite) {
+        if (overwrite == true || output.isAbsent()) {
+            try (OutputStream stream = output.newOutputStream()) {
                 calculated.write(stream);
             } catch (IOException e) {
                 throw I.quiet(e);
@@ -516,6 +456,11 @@ public class Word {
         // for textbox
     }
 
+    /**
+     * Replace variable text.
+     * 
+     * @param table
+     */
     private void replace(XWPFTable table) {
         for (XWPFTableRow row : copy(table.getRows())) {
             for (XWPFTableCell cell : copy(row.getTableCells())) {
@@ -533,6 +478,8 @@ public class Word {
     }
 
     /**
+     * Replace variable text.
+     * 
      * @param para
      * @param object
      */
@@ -543,9 +490,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Helper method to collect all paragraphs in this document.
-     * </p>
      * 
      * @param observer A list of {@link XWPFParagraph}.
      */
@@ -576,9 +521,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Create header with the specified text.
-     * </p>
      * 
      * @param headerText A header text.
      */
@@ -598,9 +541,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Add new paragraph.
-     * </p>
      * 
      * @param text A paragraph text.
      * @return
@@ -615,9 +556,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Add new page without section break.
-     * </p>
      * 
      * @return
      */
@@ -626,9 +565,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Add new page.
-     * </p>
      * 
      * @return
      */
@@ -642,9 +579,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Add new page.
-     * </p>
      * 
      * @return
      */
@@ -658,9 +593,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Search {@link WordStyleManager}.
-     * </p>
      * 
      * @return
      */
@@ -671,9 +604,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Create new paragraph.
-     * </p>
      * 
      * @return
      */
@@ -682,9 +613,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Create new paragraph at the specified location.
-     * </p>
      * 
      * @param cursor A location.
      * @return
@@ -726,9 +655,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Avoid {@link ConcurrentModificationException}.
-     * </p>
      * 
      * @param list A copy list items.
      * @return A copied list.
@@ -738,9 +665,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Avoid {@link ConcurrentModificationException}.
-     * </p>
      * 
      * @param list A copy list items.
      * @return A copied list.
@@ -766,9 +691,7 @@ public class Word {
     }
 
     /**
-     * <p>
      * Create empty file.
-     * </p>
      * 
      * @return
      */
@@ -851,9 +774,7 @@ public class Word {
         }
 
         /**
-         * <p>
          * Set page orientation.
-         * </p>
          * 
          * @return Chainable API.
          */
@@ -864,9 +785,7 @@ public class Word {
         }
 
         /**
-         * <p>
          * Set page orientation.
-         * </p>
          * 
          * @return Chainable API.
          */

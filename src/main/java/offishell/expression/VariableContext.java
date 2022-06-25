@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 offishell Development Team
+ * Copyright (C) 2022 The OFFISHELL Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,25 @@ import java.util.regex.Matcher;
 import kiss.I;
 import kiss.model.Model;
 import kiss.model.Property;
-import offishell.Problem;
 
-/**
- * @version 2016/06/04 18:04:12
- */
 public class VariableContext implements UnaryOperator<String> {
 
+    /** The file name. */
     private final String fileName;
 
+    /** The context state. */
     private final boolean isVertical;
 
     /** The model object. */
     private final List models;
 
+    /** The processing state. */
     private boolean inVariable = false;
 
+    /** The buffer. */
     private StringBuilder replace = new StringBuilder();
 
+    /** The buffer. */
     private StringBuilder variable = new StringBuilder();
 
     /** Cache for {@link ExpressionResolver} */
@@ -45,6 +46,8 @@ public class VariableContext implements UnaryOperator<String> {
     private List<Variable> variables = I.find(Variable.class);
 
     /**
+     * @param fileName
+     * @param isVertical
      * @param model
      */
     public VariableContext(String fileName, boolean isVertical, Object model) {
@@ -52,12 +55,15 @@ public class VariableContext implements UnaryOperator<String> {
     }
 
     /**
+     * @param fileName
+     * @param isVertical
+     * @param models
      */
     public VariableContext(String fileName, boolean isVertical, List models) {
         this.fileName = fileName;
         this.isVertical = isVertical;
         if (models == null || models.size() == 0) {
-            throw new Error("モデルを指定してください。");
+            throw new Error("Model is not found.");
         }
         this.models = models;
     }
@@ -106,9 +112,7 @@ public class VariableContext implements UnaryOperator<String> {
     }
 
     /**
-     * <p>
      * Compute the specified built-in variable.
-     * </p>
      * 
      * @param variable
      * @return
@@ -119,13 +123,11 @@ public class VariableContext implements UnaryOperator<String> {
                 return var.apply(variable);
             }
         }
-        throw Problem.of("変数『$" + variable + "』は使用できません。 [" + fileName + "]").solution(Variable.class + "を実装したクラスを作成してください。");
+        throw new Error("ファイル[" + fileName + "]" + "で使用している変数{$" + variable + "}を解決できません。" + Variable.class + "を実装したクラスを作成してください。");
     }
 
     /**
-     * <p>
      * Compute the specified property variable.
-     * </p>
      * 
      * @param paths
      * @return
@@ -162,9 +164,7 @@ public class VariableContext implements UnaryOperator<String> {
     }
 
     /**
-     * <p>
      * Compute the specified property variable.
-     * </p>
      * 
      * @param expressions
      * @param index
@@ -196,12 +196,12 @@ public class VariableContext implements UnaryOperator<String> {
         Model model = Model.of(value);
         Property property = model.property(expression);
 
-        // プロパティから検索
+        // Search from properties
         if (property != null) {
             return resolve(expressions, index + 1, model.get(value, property));
         }
 
-        // プロパティがないのでメソッドを検索して実行する
+        // Search from methods
         try {
             int start = expression.indexOf("(");
             int end = expression.lastIndexOf(")");
@@ -239,29 +239,27 @@ public class VariableContext implements UnaryOperator<String> {
             }
             throw errorInVariableResolve(value, expressions, expression);
         } catch (Throwable e) {
-            throw errorInVariableResolve(value, expressions, expression).error(e);
+            Error error = errorInVariableResolve(value, expressions, expression);
+            error.addSuppressed(e);
+            return error;
         }
     }
 
     /**
-     * <p>
-     * エラーの詳細を記述します。
-     * </p>
+     * Describe the error in detail.
      * 
      * @param model
      * @param expressions
      * @param expression
      * @return
      */
-    private Problem errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return Problem.of("文書 [" + fileName + "] の変数 [" + String
+    private Error errorInVariableResolve(Object model, String[] expressions, String expression) {
+        return new Error("文書 [" + fileName + "] の変数 [" + String
                 .join(".", expressions) + "] で使われている [" + expression + "] は" + model.getClass().getSimpleName() + "クラスでは解決できません。");
     }
 
     /**
-     * <p>
      * Convert text for vertical alignment.
-     * </p>
      * 
      * @param replace2
      */
