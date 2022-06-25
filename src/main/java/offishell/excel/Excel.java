@@ -16,10 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +52,7 @@ import kiss.I;
 import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
-import offishell.Date;
+import offishell.expression.Variable;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -62,7 +63,7 @@ import psychopath.Locator;
 public class Excel {
 
     static {
-        I.load(Date.class);
+        I.load(Variable.class);
     }
 
     /** The cache. */
@@ -606,8 +607,8 @@ public class Excel {
         public void write(int columnIndex, Object value) {
             XSSFCell cell = row.getCell(columnIndex);
 
-            if (value instanceof Date) {
-                cell.setCellValue(java.util.Date.from(Instant.from(((Date) value).date.atTime(0, 0).toInstant(ZoneOffset.UTC))));
+            if (value instanceof LocalDate) {
+                cell.setCellValue(Date.from(((LocalDate) value).atTime(0, 0).toInstant(ZoneOffset.UTC)));
                 cell.setCellStyle(excel.dateStyle);
             } else if (value instanceof Integer) {
                 cell.setCellValue(((Integer) value).doubleValue());
@@ -770,8 +771,8 @@ public class Excel {
                 return (M) Double.valueOf(numeric);
             }
 
-            if (modelClass == Date.class) {
-                return (M) Date.of(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            if (modelClass == LocalDate.class) {
+                return (M) cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             }
 
             if (modelClass == LocalTime.class) {

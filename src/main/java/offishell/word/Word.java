@@ -48,7 +48,7 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
-import offishell.Date;
+import offishell.expression.Variable;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -56,7 +56,7 @@ import psychopath.Locator;
 public class Word {
 
     static {
-        I.load(Date.class);
+        I.load(Variable.class);
     }
 
     /** The culculated document. */
