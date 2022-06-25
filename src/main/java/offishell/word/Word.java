@@ -119,7 +119,7 @@ public class Word {
      * @param file
      */
     public Word(URL file) {
-        this(file.toExternalForm(), stream(file));
+        this(file.toString(), stream(file));
     }
 
     /**
