@@ -141,7 +141,7 @@ public class Excel {
                     XSSFCell cell = row.getCell(index);
 
                     if (cell != null) {
-                        switch (cell.getCellTypeEnum()) {
+                        switch (cell.getCellType()) {
                         case BLANK:
                             break;
 
@@ -340,7 +340,7 @@ public class Excel {
         for (; headerSize < head.getLastCellNum(); headerSize++) {
             Cell cell = head.getCell(headerSize);
 
-            if (cell == null || cell.getCellTypeEnum() == CellType.BLANK) {
+            if (cell == null || cell.getCellType() == CellType.BLANK) {
                 headerSize--;
                 break;
             }
@@ -360,7 +360,7 @@ public class Excel {
                 if (cell == null) {
                     XSSFCell created = row.createCell(j);
                     created.setCellStyle(baseStyle);
-                } else if (cell.getCellTypeEnum() != CellType.BLANK) {
+                } else if (cell.getCellType() != CellType.BLANK) {
                     continue row;
                 }
             }
@@ -671,7 +671,7 @@ public class Excel {
                 return initial(modelClass);
             }
 
-            switch (cell.getCellTypeEnum()) {
+            switch (cell.getCellType()) {
             case BLANK:
                 return blank(cell, modelClass);
 
@@ -682,7 +682,7 @@ public class Excel {
                 return numeric(cell, cell.getNumericCellValue(), modelClass);
 
             case FORMULA:
-                switch (cell.getCachedFormulaResultTypeEnum()) {
+                switch (cell.getCachedFormulaResultType()) {
                 case BLANK:
                     return blank(cell, modelClass);
 

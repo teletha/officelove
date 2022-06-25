@@ -824,8 +824,8 @@ public class Word {
             if (section != null) {
                 CTPageSz size = section.isSetPgSz() ? section.getPgSz() : section.addNewPgSz();
                 orientation = size.getOrient();
-                width = size.getW().divide(BigInteger.valueOf(20)).intValue();
-                height = size.getH().divide(BigInteger.valueOf(20)).intValue();
+                width = ((BigInteger) size.getW()).divide(BigInteger.valueOf(20)).intValue();
+                height = ((BigInteger) size.getH()).divide(BigInteger.valueOf(20)).intValue();
             }
         }
 
@@ -852,10 +852,10 @@ public class Word {
         private void getMargin(CTSectPr section) {
             if (section != null) {
                 CTPageMar margin = section.isSetPgMar() ? section.getPgMar() : section.addNewPgMar();
-                marginTop = margin.getTop().divide(BigInteger.valueOf(20)).intValue();
-                marginBottom = margin.getBottom().divide(BigInteger.valueOf(20)).intValue();
-                marginLeft = margin.getLeft().divide(BigInteger.valueOf(20)).intValue();
-                marginRight = margin.getRight().divide(BigInteger.valueOf(20)).intValue();
+                marginTop = ((BigInteger) margin.getTop()).divide(BigInteger.valueOf(20)).intValue();
+                marginBottom = ((BigInteger) margin.getBottom()).divide(BigInteger.valueOf(20)).intValue();
+                marginLeft = ((BigInteger) margin.getLeft()).divide(BigInteger.valueOf(20)).intValue();
+                marginRight = ((BigInteger) margin.getRight()).divide(BigInteger.valueOf(20)).intValue();
             }
         }
 

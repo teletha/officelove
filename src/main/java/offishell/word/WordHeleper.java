@@ -263,7 +263,7 @@ public class WordHeleper {
         out.setDoubleStrikethrough(in.isDoubleStrikeThrough());
         out.setEmbossed(in.isEmbossed());
         out.setFontFamily(in.getFontFamily());
-        out.setFontSize(in.getFontSize());
+        out.setFontSize(in.getFontSizeAsDouble());
         out.setImprinted(in.isImprinted());
         out.setItalic(in.isItalic());
         out.setKerning(in.getKerning());
@@ -280,7 +280,7 @@ public class WordHeleper {
         CTR outCTR = out.getCTR();
         CTRPr outPR = outCTR.isSetRPr() ? outCTR.getRPr() : outCTR.addNewRPr();
         outPR.set(inCTR.getRPr());
-        out.setVerticalAlignment(inPR == null || inPR.getVertAlign() == null ? "baseline" : inPR.getVertAlign().toString());
+        out.setVerticalAlignment(inPR == null || inPR.getVertAlignArray() == null ? "baseline" : inPR.getVertAlignArray(0).toString());
 
         // // copy tab
         // CTEmpty[] tabs = inCTR.getTabArray();
@@ -400,13 +400,13 @@ public class WordHeleper {
     public static void copyLayout(XWPFDocument srcDoc, XWPFDocument destDoc) {
         CTPageMar pgMar = srcDoc.getDocument().getBody().getSectPr().getPgMar();
 
-        BigInteger bottom = pgMar.getBottom();
-        BigInteger footer = pgMar.getFooter();
-        BigInteger gutter = pgMar.getGutter();
-        BigInteger header = pgMar.getHeader();
-        BigInteger left = pgMar.getLeft();
-        BigInteger right = pgMar.getRight();
-        BigInteger top = pgMar.getTop();
+        Object bottom = pgMar.getBottom();
+        Object footer = pgMar.getFooter();
+        Object gutter = pgMar.getGutter();
+        Object header = pgMar.getHeader();
+        Object left = pgMar.getLeft();
+        Object right = pgMar.getRight();
+        Object top = pgMar.getTop();
 
         CTPageMar addNewPgMar = destDoc.getDocument().getBody().addNewSectPr().addNewPgMar();
 
@@ -421,9 +421,9 @@ public class WordHeleper {
         CTPageSz pgSzSrc = srcDoc.getDocument().getBody().getSectPr().getPgSz();
 
         BigInteger code = pgSzSrc.getCode();
-        BigInteger h = pgSzSrc.getH();
+        Object h = pgSzSrc.getH();
         Enum orient = pgSzSrc.getOrient();
-        BigInteger w = pgSzSrc.getW();
+        Object w = pgSzSrc.getW();
 
         CTPageSz addNewPgSz = destDoc.getDocument().getBody().addNewSectPr().addNewPgSz();
 
