@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -51,7 +53,6 @@ import kiss.model.Model;
 import kiss.model.Property;
 import officeman.model.FileType;
 import offishell.Date;
-import offishell.Text;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -469,11 +470,77 @@ public class Excel {
     }
 
     /**
-     * <p>
-     * Enhanced {@link XSSFRow}.
-     * </p>
+     * Helper method to normalize text.
      * 
-     * @version 2016/07/28 13:08:23
+     * @param text
+     * @return
+     */
+    static String normalize(String text) {
+        if (text == null) {
+            return "";
+        }
+        text = Normalizer.normalize(text, Form.NFKC).trim();
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            char n;
+
+            switch (c) {
+            case ' ':
+                n = '　';
+                break;
+
+            case '~':
+                n = '～';
+                break;
+
+            case '-':
+            case '－':
+            case '―':
+                n = '-';
+                break;
+
+            case '[':
+                n = '［';
+                break;
+
+            case ']':
+                n = '］';
+                break;
+
+            case '{':
+                n = '｛';
+                break;
+
+            case '}':
+                n = '｝';
+                break;
+
+            case '(':
+                n = '（';
+                break;
+
+            case ')':
+                n = '）';
+                break;
+
+            case '+':
+                n = '＋';
+                break;
+
+            default:
+                n = c;
+                break;
+            }
+            builder.append(n);
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Enhanced {@link XSSFRow}.
      */
     public static class Row {
 
@@ -488,9 +555,7 @@ public class Excel {
         private final XSSFRow row;
 
         /**
-         * <p>
          * Create wrapped row.
-         * </p>
          * 
          * @param row
          */
@@ -502,9 +567,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Read the specified named cell's value and convert to the target model.
-         * </p>
          * 
          * @param columnName
          * @param model
@@ -515,9 +578,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Read the specified named cell's value and convert to the target model.
-         * </p>
          * 
          * @param columnName
          * @param model
@@ -528,9 +589,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Read the specified indexed cell's value and convert to the target model.
-         * </p>
          * 
          * @param columnIndex
          * @param modelClass
@@ -541,9 +600,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Read the specified indexed cell's value and convert to the target model.
-         * </p>
          * 
          * @param columnIndex
          * @param modelClass
@@ -567,9 +624,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Create name-index header map.
-         * </p>
          * 
          * @return
          */
@@ -593,9 +648,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Helper method to convert cell name to index.
-         * </p>
          * 
          * @param name A cell name.
          * @return A cell index.
@@ -613,9 +666,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Retrieve the cell's value.
-         * </p>
          * 
          * @param cell
          * @param modelClass
@@ -658,9 +709,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Retrieve value from the blank cell.
-         * </p>
          * 
          * @param cell
          * @param value
@@ -685,9 +734,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Retrieve value from the string cell.
-         * </p>
          * 
          * @param cell
          * @param value
@@ -706,9 +753,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Retrieve value from the numeric cell.
-         * </p>
          * 
          * @param cell
          * @param value
@@ -749,24 +794,20 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Normalize text.
-         * </p>
          * 
          * @param text
          * @return
          */
         private static String normalize(String text) {
-            text = Text.normalize(text);
+            text = normalize(text);
             text = text.replaceAll("\\s", "");
 
             return text;
         }
 
         /**
-         * <p>
          * Return the initial value for the specified type.
-         * </p>
          * 
          * @param type
          * @return
@@ -799,9 +840,7 @@ public class Excel {
         }
 
         /**
-         * <p>
          * Helper method to retrieve the cell value as {@link String}.
-         * </p>
          * 
          * @param cell
          * @return
