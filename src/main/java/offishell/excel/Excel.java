@@ -51,7 +51,6 @@ import kiss.I;
 import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
-import officeman.model.FileType;
 import offishell.Date;
 import offishell.expression.VariableContext;
 import psychopath.File;
@@ -425,12 +424,6 @@ public class Excel {
                 throw I.quiet(e);
             }
         });
-    }
-
-    /**
-     */
-    public static Excel of(Path directory, String fileName) {
-        return of(Locator.directory(directory).walkFile(fileName + "." + FileType.Excel).first().to().v.asJavaPath());
     }
 
     /**
