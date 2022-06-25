@@ -238,7 +238,7 @@ public class VariableContext implements UnaryOperator<String> {
                 }
             }
             throw errorInVariableResolve(value, expressions, expression);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             Error error = errorInVariableResolve(value, expressions, expression);
             error.addSuppressed(e);
             return error;

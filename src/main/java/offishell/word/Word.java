@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +50,7 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
-import offishell.expression.Variable;
+import offishell.OfficeLove;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -56,7 +58,7 @@ import psychopath.Locator;
 public class Word {
 
     static {
-        I.load(Variable.class);
+        I.load(OfficeLove.class);
     }
 
     /** The culculated document. */
@@ -104,7 +106,7 @@ public class Word {
      * @param file
      */
     public Word(URL file) {
-        this(file.toString(), file::openStream);
+        this(URLDecoder.decode(file.toString(), StandardCharsets.UTF_8), file::openStream);
     }
 
     /**
