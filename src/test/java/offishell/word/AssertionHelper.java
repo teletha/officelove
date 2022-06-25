@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.msoffice;
+package offishell.word;
 
 import java.util.Deque;
 import java.util.LinkedList;
