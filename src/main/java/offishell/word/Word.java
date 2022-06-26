@@ -50,6 +50,7 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
+import offishell.LibreOffice;
 import offishell.OfficeLove;
 import offishell.expression.VariableContext;
 import psychopath.File;
@@ -421,6 +422,21 @@ public class Word {
         }
 
         // API definition
+        return this;
+    }
+
+    /**
+     * Save this document as PDF format.
+     * 
+     * @param file A location to save.
+     * @return Chainable API.
+     */
+    public Word saveAsPDF(File file) {
+        if (file != null) {
+            File input = Locator.temporaryFile();
+            save(input);
+            LibreOffice.convert(input, file);
+        }
         return this;
     }
 
