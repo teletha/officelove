@@ -17,10 +17,6 @@ public class Project extends bee.api.Project {
         require("com.github.teletha", "psychopath");
         require("com.github.teletha", "antibug").atTest();
         require("org.apache.poi", "poi-ooxml");
-        require("javax.xml.bind", "jaxb-api");
-        require("com.sun.xml.bind", "jaxb-core");
-        require("com.sun.xml.bind", "jaxb-impl");
-        require("fr.opensagres.xdocreport", "fr.opensagres.poi.xwpf.converter.pdf", "2.0.3");
 
         versionControlSystem("https://github.com/teletha/offishell");
     }
