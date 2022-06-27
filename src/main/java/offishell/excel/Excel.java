@@ -52,7 +52,7 @@ import kiss.I;
 import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
-import offishell.OfficeLove;
+import offishell.LibreOffice;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -63,7 +63,7 @@ import psychopath.Locator;
 public class Excel {
 
     static {
-        I.load(OfficeLove.class);
+        I.load(LibreOffice.class);
     }
 
     /** The cache. */

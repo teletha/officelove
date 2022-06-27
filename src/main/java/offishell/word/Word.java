@@ -51,7 +51,6 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
 import offishell.LibreOffice;
-import offishell.OfficeLove;
 import offishell.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
@@ -59,7 +58,7 @@ import psychopath.Locator;
 public class Word {
 
     static {
-        I.load(OfficeLove.class);
+        I.load(LibreOffice.class);
     }
 
     /** The culculated document. */
