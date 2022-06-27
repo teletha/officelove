@@ -9,15 +9,10 @@
  */
 package offishell;
 
-import static java.nio.file.StandardOpenOption.*;
-
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import kiss.I;
@@ -30,6 +25,9 @@ public class LibreOffice {
     /** The initialization flag. */
     private static boolean initialized;
 
+    /** The path to executable office command. */
+    private static String soffice;
+
     /**
      * Convert file.
      * 
@@ -40,7 +38,7 @@ public class LibreOffice {
         String inputFilePath = input.absolutize().toString();
         Directory outputDirectory = output.absolutize().parent();
 
-        executeLibreOffice("--convert-to", output.extension(), "--outdir", outputDirectory.toString(), inputFilePath);
+        execute("--convert-to", output.extension(), "--outdir", outputDirectory.toString(), inputFilePath);
 
         outputDirectory.file(input.base()).extension(output.extension()).moveTo(output);
     }
@@ -51,7 +49,7 @@ public class LibreOffice {
      * @param input
      */
     public static void print(File input) {
-        executeLibreOffice("-p", input.absolutize().toString());
+        execute("-p", input.absolutize().toString());
     }
 
     /**
@@ -64,7 +62,7 @@ public class LibreOffice {
         if (printer == null) {
             print(input);
         } else {
-            executeLibreOffice("--pt", printer, input.absolutize().toString());
+            execute("--pt", printer, input.absolutize().toString());
         }
     }
 
@@ -73,28 +71,11 @@ public class LibreOffice {
      * 
      * @param commands
      */
-    private static synchronized void executeLibreOffice(String... commands) {
-        if (initialized == false) {
-            initialized = true;
-
-            List<String> command = new ArrayList();
-            command.add(searchLibreOffice().absolutize().toString());
-            command.add("--quickstart");
-
-            try {
-                ProcessBuilder builder = new ProcessBuilder(command);
-                builder.redirectError();
-                builder.redirectOutput();
-                builder.redirectInput();
-                Process process = builder.start();
-                process.waitFor(20, TimeUnit.MICROSECONDS);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
+    private static synchronized void execute(String... commands) {
+        wakeup();
 
         List<String> command = new ArrayList();
-        command.add(searchLibreOffice().absolutize().toString());
+        command.add(soffice.toString());
         command.add("--nolockcheck");
         command.add("--nologo");
         command.add("--headless");
@@ -115,67 +96,80 @@ public class LibreOffice {
     }
 
     /**
-     * Initialize LibreOffice.
+     * Wake up libreoffice.
      */
-    private static synchronized void initialize() {
+    private static void wakeup() {
         if (initialized == false) {
+            initialized = true;
+
+            search();
+
             try {
-                initialized = true;
-
-                FileChannel channel = FileChannel.open(Path.of(".libreoffice"), CREATE_NEW, WRITE, DELETE_ON_CLOSE);
-                FileLock lock = channel.tryLock();
-                if (lock != null) {
-                    List<String> command = new ArrayList();
-                    command.add(searchLibreOffice().absolutize().toString());
-                    command.add("--quickstart");
-
-                    try {
-                        ProcessBuilder builder = new ProcessBuilder(command);
-                        builder.redirectError();
-                        builder.redirectOutput();
-                        builder.redirectInput();
-                        Process process = builder.start();
-                        process.waitFor(20, TimeUnit.MICROSECONDS);
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (IOException e) {
-                // ignore
+                new ProcessBuilder(soffice, "--quickstart").start().waitFor(250, TimeUnit.MILLISECONDS);
+            } catch (Exception e) {
+                I.error(e);
             }
         }
     }
 
     /**
      * Search libreoffice application.
-     * 
-     * @return
      */
-    private static File searchLibreOffice() {
-        File file = Locator.file("soffice.exe");
-
-        if (file.isPresent()) {
-            return file;
+    private static void search() {
+        // search from 'path' environment variable
+        for (Entry<String, String> entry : System.getenv().entrySet()) {
+            if (entry.getKey().equalsIgnoreCase("PATH")) {
+                for (String path : entry.getValue().split(java.io.File.pathSeparator)) {
+                    if (path.contains("soffice") && check(path)) {
+                        soffice = path;
+                        return;
+                    }
+                }
+            }
         }
 
-        file = Locator.file("F:\\Application\\LibreOffice\\program\\soffice.exe");
-
-        if (file.isPresent()) {
-            return file;
+        // search from 'LibreOffice' environment variable
+        String path = I.env("LibreOffice");
+        if (check(path)) {
+            soffice = path;
+            return;
         }
 
-        file = Locator.file("D:\\Application\\LibreOffice\\program\\soffice.exe");
-
-        if (file.isPresent()) {
-            return file;
-        }
-
-        file = Locator.file("C:\\Program Files\\LibreOffice\\program\\soffice.exe");
-
-        if (file.isPresent()) {
-            return file;
+        // search from typical location
+        if (System.getProperty("os.name").contains("Windows")) {
+            String[] drives = {"C", "D", "E", "F", "G", "H", "I"};
+            String[] dirs = {"Program Files", "Application", "Program", "Software"};
+            for (String drive : drives) {
+                for (String dir : dirs) {
+                    File file = Locator.file(drive + ":/" + dir + "/LibreOffice/program/soffice.exe");
+                    if (check(file)) {
+                        soffice = file.toString();
+                        return;
+                    }
+                }
+            }
         }
 
         throw new Error("Libre Office is not found.");
+    }
+
+    /**
+     * Chech file validity.
+     * 
+     * @param path
+     * @return
+     */
+    private static boolean check(String path) {
+        return path != null && path.length() != 0 && Locator.file(path).isPresent();
+    }
+
+    /**
+     * Chech file validity.
+     * 
+     * @param path
+     * @return
+     */
+    private static boolean check(File file) {
+        return file != null && file.isPresent();
     }
 }
