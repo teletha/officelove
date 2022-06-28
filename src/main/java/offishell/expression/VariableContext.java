@@ -12,6 +12,7 @@ package offishell.expression;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 
@@ -46,6 +47,8 @@ public class VariableContext implements UnaryOperator<String> {
     private List<Variable> variables = I.find(Variable.class);
 
     /**
+     * Create new context.
+     * 
      * @param fileName
      * @param isVertical
      * @param model
@@ -55,6 +58,8 @@ public class VariableContext implements UnaryOperator<String> {
     }
 
     /**
+     * Create new context.
+     * 
      * @param fileName
      * @param isVertical
      * @param models
@@ -62,10 +67,7 @@ public class VariableContext implements UnaryOperator<String> {
     public VariableContext(String fileName, boolean isVertical, List models) {
         this.fileName = fileName;
         this.isVertical = isVertical;
-        if (models == null || models.size() == 0) {
-            throw new Error("User model is not found.");
-        }
-        this.models = models;
+        this.models = models == null ? Collections.EMPTY_LIST : models.stream().filter(Objects::nonNull).toList();
     }
 
     /**
@@ -254,8 +256,8 @@ public class VariableContext implements UnaryOperator<String> {
      * @return
      */
     private Error errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return new Error("Class [" + model.getClass().getName() + "] can't resolve the variable { " + String
-                .join(".", expressions) + "} in [" + fileName + "].");
+        return new Error("Class [" + model.getClass().getName() + "] can't resolve the variable [" + expression + "] in { " + String
+                .join(".", expressions) + "} at file [" + fileName + "].");
     }
 
     /**

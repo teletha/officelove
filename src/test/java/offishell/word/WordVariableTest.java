@@ -32,14 +32,14 @@ class WordVariableTest {
     void field() {
         Word word = new Word(base.file("variable.docx"));
         assert word.paragraphWith("value") == null;
-        assert word.calculate(new Field()).paragraphWith("value") != null;
+        assert word.evaluate(new Field()).paragraphWith("value") != null;
     }
 
     @Test
     void table() {
         Word word = new Word(base.file("variable.docx"));
         assert word.paragraphWith("table value") == null;
-        assert word.calculate(new Field()).paragraphWith("table value") != null;
+        assert word.evaluate(new Field()).paragraphWith("table value") != null;
     }
 
     static class Field {
@@ -52,7 +52,7 @@ class WordVariableTest {
     @Test
     void builtin() {
         Word word = new Word(base.file("builtinVariable.docx"));
-        assert word.calculate(new Field()).paragraphWith("built-in-value") != null;
+        assert word.evaluate(new Field()).paragraphWith("built-in-value") != null;
     }
 
     static class Builin implements Variable<String> {
@@ -76,12 +76,12 @@ class WordVariableTest {
 
     @Test
     void conditionTrue() {
-        assert new Word(base.file("condition.docx")).calculate(new Yes()).paragraphWith("show") != null;
+        assert new Word(base.file("condition.docx")).evaluate(new Yes()).paragraphWith("show") != null;
     }
 
     @Test
     void conditionFalse() {
-        assert new Word(base.file("condition.docx")).calculate(new No()).paragraphWith("show") == null;
+        assert new Word(base.file("condition.docx")).evaluate(new No()).paragraphWith("show") == null;
     }
 
     static class Yes {
@@ -96,7 +96,7 @@ class WordVariableTest {
 
     @Test
     void loop() {
-        Word word = new Word(base.file("loop.docx")).calculate(new Items());
+        Word word = new Word(base.file("loop.docx")).evaluate(new Items());
         XWPFParagraph para = word.paragraphWith("START");
         assert para != null;
         para = word.paragraphWith("title1", para);
@@ -118,7 +118,7 @@ class WordVariableTest {
 
     @Test
     void loopInTableRow() {
-        Word word = new Word(base.file("loopTable.docx")).calculate(new Items());
+        Word word = new Word(base.file("loopTable.docx")).evaluate(new Items());
         find(word, "keyTop1", "valueTop1", "keyBottom1", "valueBottom1", "keyTop2", "valueTop2", "keyBottom2", "valueBottom2", "keyTop3", "valueTop3", "keyBottom3", "valueBottom3");
     }
 

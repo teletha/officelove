@@ -235,15 +235,16 @@ public class Word {
     /**
      * Calculate variables by the given model.
      * 
-     * @param models
+     * @param model One model.
+     * @param others Other models.
      * @return
      */
-    public Word calculate(Object model, Object... models) {
+    public Word evaluate(Object model, Object... others) {
         ArrayList list = new ArrayList();
-        if (model != null) list.add(model);
-        list.addAll(Arrays.asList(models));
+        list.add(model);
+        list.addAll(Arrays.asList(others));
 
-        return calculate(list);
+        return evaluate(list);
     }
 
     /**
@@ -252,11 +253,7 @@ public class Word {
      * @param models
      * @return
      */
-    public Word calculate(List models) {
-        if (models == null) {
-            throw new Error("User model is not specified.");
-        }
-
+    public Word evaluate(List models) {
         try {
             // calculate variables
             context.variable = new VariableContext(name, textIsVerticalAlign, models);
@@ -278,8 +275,8 @@ public class Word {
      * @param models
      * @return
      */
-    public Word calculateAndMerge(Signal models, Object... additions) {
-        return calculateAndMerge(models.toList(), additions);
+    public Word evaluateAndMerge(Signal models, Object... additions) {
+        return evaluateAndMerge(models.toList(), additions);
     }
 
     /**
@@ -288,19 +285,19 @@ public class Word {
      * @param models
      * @return
      */
-    public Word calculateAndMerge(List models, Object... additions) {
+    public Word evaluateAndMerge(List models, Object... additions) {
         if (models == null || models.isEmpty()) {
             return this;
         }
 
         if (models.size() == 1) {
-            return calculate(models.get(0), additions);
+            return evaluate(models.get(0), additions);
         }
 
-        calculate(models.get(0), additions);
+        evaluate(models.get(0), additions);
 
         for (int i = 1; i < models.size(); i++) {
-            merge(new Word(name).calculate(models.get(i), additions));
+            merge(new Word(name).evaluate(models.get(i), additions));
         }
         return this;
     }
