@@ -254,8 +254,8 @@ public class VariableContext implements UnaryOperator<String> {
      * @return
      */
     private Error errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return new Error(model.getClass().getSimpleName() + " can't resolve the variable { " + String
-                .join(".", expressions) + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
+        return new Error("Class [" + model.getClass().getName() + "] can't resolve the variable { " + String
+                .join(".", expressions) + "} in [" + fileName + "].");
     }
 
     /**
