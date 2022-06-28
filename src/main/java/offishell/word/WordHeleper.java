@@ -57,9 +57,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.
 import kiss.I;
 import kiss.Variable;
 
-/**
- * @version 2016/06/04 18:15:54
- */
 public class WordHeleper {
 
     /**
@@ -263,7 +260,7 @@ public class WordHeleper {
         out.setDoubleStrikethrough(in.isDoubleStrikeThrough());
         out.setEmbossed(in.isEmbossed());
         out.setFontFamily(in.getFontFamily());
-        out.setFontSize(in.getFontSizeAsDouble());
+        if (in.getFontSizeAsDouble() != null) out.setFontSize(in.getFontSizeAsDouble());
         out.setImprinted(in.isImprinted());
         out.setItalic(in.isItalic());
         out.setKerning(in.getKerning());
@@ -280,7 +277,8 @@ public class WordHeleper {
         CTR outCTR = out.getCTR();
         CTRPr outPR = outCTR.isSetRPr() ? outCTR.getRPr() : outCTR.addNewRPr();
         outPR.set(inCTR.getRPr());
-        out.setVerticalAlignment(inPR == null || inPR.getVertAlignArray() == null ? "baseline" : inPR.getVertAlignArray(0).toString());
+        out.setVerticalAlignment(inPR == null || inPR.getVertAlignList().isEmpty() ? "baseline"
+                : inPR.getVertAlignList().get(1).toString());
 
         // // copy tab
         // CTEmpty[] tabs = inCTR.getTabArray();

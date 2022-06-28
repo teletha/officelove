@@ -16,12 +16,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-import offishell.word.Word;
 import psychopath.Locator;
 
-/**
- * @version 2016/09/07 11:05:14
- */
 public interface WordTestHelper extends AssertionHelper {
 
     public default Word expect(String name) {

@@ -63,7 +63,7 @@ public class VariableContext implements UnaryOperator<String> {
         this.fileName = fileName;
         this.isVertical = isVertical;
         if (models == null || models.size() == 0) {
-            throw new Error("Model is not found.");
+            throw new Error("User model is not found.");
         }
         this.models = models;
     }
@@ -123,7 +123,7 @@ public class VariableContext implements UnaryOperator<String> {
                 return var.apply(variable);
             }
         }
-        throw new Error("ファイル[" + fileName + "]" + "で使用している変数{$" + variable + "}を解決できません。" + Variable.class + "を実装したクラスを作成してください。");
+        throw new Error("Can't resolve the variable {$ " + variable + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
     }
 
     /**
@@ -254,8 +254,8 @@ public class VariableContext implements UnaryOperator<String> {
      * @return
      */
     private Error errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return new Error("文書 [" + fileName + "] の変数 [" + String
-                .join(".", expressions) + "] で使われている [" + expression + "] は" + model.getClass().getSimpleName() + "クラスでは解決できません。");
+        return new Error(model.getClass().getSimpleName() + " can't resolve the variable { " + String
+                .join(".", expressions) + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
     }
 
     /**

@@ -254,7 +254,7 @@ public class Word {
      */
     public Word calculate(List models) {
         if (models == null) {
-            throw new Error("ユーザーモデルが指定されていません。");
+            throw new Error("User model is not specified.");
         }
 
         try {
@@ -1043,7 +1043,6 @@ public class Word {
             try {
                 CTP context = paragraph.getCTP();
                 List<CTMarkupRange> starts = context.getCommentRangeStartList();
-
                 if (starts.size() != 0) {
                     String special = "";
                     String condition = paragraph.getDocument().getCommentByID(starts.get(0).getId().toString()).getText();
