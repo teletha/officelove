@@ -239,7 +239,9 @@ public class WordHeleper {
 
         // copy children
         for (XWPFRun inRun : in.getRuns()) {
-            copy(inRun, out.createRun(), converter);
+            if (!inRun.text().isEmpty()) {
+                copy(inRun, out.createRun(), converter);
+            }
         }
     }
 
@@ -260,7 +262,7 @@ public class WordHeleper {
         out.setDoubleStrikethrough(in.isDoubleStrikeThrough());
         out.setEmbossed(in.isEmbossed());
         out.setFontFamily(in.getFontFamily());
-        if (in.getFontSizeAsDouble() != null) out.setFontSize(in.getFontSizeAsDouble());
+        out.setFontSize(in.getFontSizeAsDouble() == null ? 10d : in.getFontSizeAsDouble());
         out.setImprinted(in.isImprinted());
         out.setItalic(in.isItalic());
         out.setKerning(in.getKerning());
@@ -356,7 +358,6 @@ public class WordHeleper {
      */
     public static void write(XWPFRun run, String text) {
         text = WordStyle.apply(run, text);
-
         String[] lines = text.split("\n");
 
         if (lines.length != 0) {

@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.function.Consumer;
 
-import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.BodyType;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -78,6 +76,13 @@ public class Word {
 
     /** The current section. */
     private Section section = new Section();
+
+    /**
+     * Create empty doument.
+     */
+    public Word() {
+        this("empty.docx");
+    }
 
     /**
      * Create template for word.
@@ -305,7 +310,11 @@ public class Word {
      * @return
      */
     public Word merge(Word after) {
-        merge(after.calculated.getBodyElements());
+        if (calculated.getBodyElements().isEmpty()) {
+            calculated = after.calculated;
+        } else {
+            merge(after.calculated.getBodyElements());
+        }
         return this;
     }
 
@@ -313,9 +322,8 @@ public class Word {
      * Merge the specified {@link Word} to this document.
      * 
      * @param after
-     * @return
      */
-    private Word merge(List<IBodyElement> elements) {
+    private void merge(List<IBodyElement> elements) {
         XmlCursor cursor = cursorLast();
 
         // copy children
@@ -353,7 +361,6 @@ public class Word {
                 cursor = cursorAfter(created);
             }
         }
-        return this;
     }
 
     /**
@@ -531,98 +538,6 @@ public class Word {
     }
 
     /**
-     * Create header with the specified text.
-     * 
-     * @param headerText A header text.
-     */
-    public Word header(String headerText) {
-        try {
-            CTSectPr section = calculated.getDocument().getBody().addNewSectPr();
-            XWPFHeaderFooterPolicy policy = new XWPFHeaderFooterPolicy(calculated, section);
-            XWPFHeader header = policy.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
-            XWPFParagraph para = header.createParagraph();
-            XWPFRun run = para.createRun();
-            run.setText(headerText);
-            styles().base().apply(run);
-        } catch (Exception e) {
-            throw I.quiet(e);
-        }
-        return this;
-    }
-
-    /**
-     * Add new paragraph.
-     * 
-     * @param text A paragraph text.
-     * @return
-     */
-    public Word text(String text) {
-        XWPFParagraph para = createParagraph();
-        XWPFRun run = para.createRun();
-        run.setText(text, 0);
-        styles().base().apply(run);
-
-        return this;
-    }
-
-    /**
-     * Add new page without section break.
-     * 
-     * @return
-     */
-    public Word page() {
-        return page(false);
-    }
-
-    /**
-     * Add new page.
-     * 
-     * @return
-     */
-    public Word page(boolean withNewSection) {
-        if (withNewSection) {
-            breakType = BreakType.Section;
-        } else {
-            breakType = BreakType.Page;
-        }
-        return this;
-    }
-
-    /**
-     * Add new page.
-     * 
-     * @return
-     */
-    public Word section(Consumer<Section> configurator) {
-        breakType = BreakType.Section;
-
-        if (configurator != null) {
-            configurator.accept(section = new Section());
-        }
-        return this;
-    }
-
-    /**
-     * Search {@link WordStyleManager}.
-     * 
-     * @return
-     */
-    private WordStyleManager styles() {
-        List<WordStyleManager> list = I.find(WordStyleManager.class);
-
-        return list.get(list.size() - 1);
-    }
-
-    /**
-     * Create new paragraph.
-     * 
-     * @return
-     */
-    private final XWPFParagraph createParagraph() {
-        return createParagraph(null);
-    }
-
-    /**
      * Create new paragraph at the specified location.
      * 
      * @param cursor A location.
@@ -698,29 +613,6 @@ public class Word {
             }
         }
         return copy;
-    }
-
-    /**
-     * Create empty file.
-     * 
-     * @return
-     */
-    public static Word blank() {
-        return new Word("empty.docx") {
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Word merge(Word after) {
-                if (calculated.getParagraphs().isEmpty()) {
-                    calculated = after.calculated;
-                } else {
-                    super.merge(after);
-                }
-                return this;
-            }
-        };
     }
 
     /**
