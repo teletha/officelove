@@ -51,17 +51,6 @@ public class VariableContext implements UnaryOperator<String> {
      * 
      * @param fileName
      * @param isVertical
-     * @param model
-     */
-    public VariableContext(String fileName, boolean isVertical, Object model) {
-        this(fileName, isVertical, Collections.singletonList(model));
-    }
-
-    /**
-     * Create new context.
-     * 
-     * @param fileName
-     * @param isVertical
      * @param models
      */
     public VariableContext(String fileName, boolean isVertical, List models) {

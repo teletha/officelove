@@ -388,7 +388,7 @@ public class Excel {
     public Excel calculate(Object model) {
         Map<CellAddress, XSSFComment> cellComments = sheet.getCellComments();
 
-        VariableContext context = new VariableContext(path.getFileName().toString(), false, model);
+        VariableContext context = new VariableContext(path.getFileName().toString(), false, List.of(model));
 
         for (Iterator<Entry<CellAddress, XSSFComment>> iterator = cellComments.entrySet().iterator(); iterator.hasNext();) {
             Entry<CellAddress, XSSFComment> entry = iterator.next();

@@ -254,19 +254,15 @@ public class Word {
      * @return
      */
     public Word evaluate(List models) {
-        try {
-            // calculate variables
-            context.variable = new VariableContext(name, textIsVerticalAlign, models);
-            replace(calculated);
+        // calculate variables
+        context.variable = new VariableContext(name, textIsVerticalAlign, models);
+        replace(calculated);
 
-            // clear all comments
-            WordHeleper.clearComment(calculated);
+        // clear all comments
+        WordHeleper.clearComment(calculated);
 
-            // API definition
-            return this;
-        } catch (Exception e) {
-            throw I.quiet(e);
-        }
+        // API definition
+        return this;
     }
 
     /**
@@ -1293,7 +1289,7 @@ public class Word {
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
                         WordHeleper.copy(para, doc
-                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, item));
+                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, List.of(item)));
                     }
                 }
 
@@ -1358,7 +1354,7 @@ public class Word {
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
                         WordHeleper.copy(para, cell
-                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, item));
+                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, List.of(item)));
                     }
                 }
 
@@ -1433,7 +1429,7 @@ public class Word {
                 for (int count = 0; count < items.size(); count++) {
                     for (int offset = 0; offset < rows.size(); offset++) {
                         WordHeleper.copy(rows.get(offset), table.insertNewTableRow(start + count * rows
-                                .size() + offset), new VariableContext(name, textIsVerticalAlign, items.get(count)));
+                                .size() + offset), new VariableContext(name, textIsVerticalAlign, List.of(items.get(count))));
                     }
                 }
 
