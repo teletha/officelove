@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Officelove API</title>
+		<base href="../"/>
+		<script async="true" src="highlight.js" type="module"></script>
+		<script src="mimic.js" type="module"></script>
+		<link href="main.css" rel="stylesheet"/>
+	</head>
+	<body class="j">
+		<header class="W">
+			<h1 class="P" date="2022-06-30" ver="1.1"><code>Officelove</code></h1>
+			<nav class="c"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#package"/>
+					</svg><code>API</code></a><a href="https://github.com//teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>Activity</a><a href="https://github.com//teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>Repository</a></nav>
+			<div class="V" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg>
+				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#moon"/>
+					</svg>
+				</a></div>
+		</header>
+		<main class="k">
+			<nav class="f">
+				<div></div>
+			</nav>
+			<article class="R" id="Article">
+				<section class="N"><code class="Q">officelove.expression</code>
+					<h2 class="Interface i"><code class="U">ExpressionResolver</code><code class="g">&#60;<code>T</code>&#62;</code></h2>
+					<div class="Z">
+						<ul class="C D">
+							<li><code>T</code></li>
+						</ul>
+						<ul class="C F">
+							<li><code>kiss.Extensible</code></li>
+						</ul>
+					</div>
+				</section>
+				<section class="N" id="match(java.lang.String)">
+					<h2 class="a"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="U">match</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">expression</code>)</code><i class="K"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>expression</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>
+ Test the specified expression.
+ </p>
+					</span></section>
+				<section class="N" id="resolve(java.util.regex.Matcher,java.lang.Object)">
+					<h2 class="a"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="U">resolve</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code class="parameterName">matcher</code>, <code>T</code> <code class="parameterName">value</code>)</code><i class="K"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code>matcher</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code>T</code> <code>value</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>
+ Resolve the specified value by the expression.
+ </p>
+					</span></section>
+				<section class="N" id="parse(java.lang.String,int)">
+					<h2 class="a"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="U">parse</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">value</code>, <code>int</code> <code class="parameterName">defalutValue</code>)</code><i class="K"><code>int</code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>value</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code>int</code> <code>defalutValue</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code>int</code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>
+ Helper method to parse value as <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html">Integer</a></code>.
+ </p>
+					</span></section>
+				<section class="N" id="parse(java.lang.String,int,java.util.function.IntPredicate)">
+					<h2 class="a"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="U">parse</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">value</code>, <code>int</code> <code class="parameterName">defalutValue</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/IntPredicate.html">IntPredicate</a></code> <code class="parameterName">restriction</code>)</code><i class="K"><code>int</code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>value</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code>int</code> <code>defalutValue</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/IntPredicate.html">IntPredicate</a></code> <code>restriction</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code>int</code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>
+ Helper method to parse value as <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html">Integer</a></code>.
+ </p>
+					</span></section>
+			</article>
+			<aside class="I" id="SubNavi">
+				<div class="h">
+					<h5 class="J">Methods</h5>
+					<ul>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.ExpressionResolver.html#match(java.lang.String)">match</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">expression</code>)</code><i class="X"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.ExpressionResolver.html#resolve(java.util.regex.Matcher,java.lang.Object)">resolve</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code class="parameterName">matcher</code>, <code>T</code> <code class="parameterName">value</code>)</code><i class="X"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.ExpressionResolver.html#parse(java.lang.String,int)">parse</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">value</code>, <code>int</code> <code class="parameterName">defalutValue</code>)</code><i class="X"><code>int</code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.ExpressionResolver.html#parse(java.lang.String,int,java.util.function.IntPredicate)">parse</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">value</code>, <code>int</code> <code class="parameterName">defalutValue</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/IntPredicate.html">IntPredicate</a></code> <code class="parameterName">restriction</code>)</code><i class="X"><code>int</code></i></li>
+					</ul>
+				</div>
+			</aside>
+		</main>
+		<script src="root.js"></script>
+		<script src="main.js" type="module"></script>
+	</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Officelove API</title>
+		<base href="../"/>
+		<script async="true" src="highlight.js" type="module"></script>
+		<script src="mimic.js" type="module"></script>
+		<link href="main.css" rel="stylesheet"/>
+	</head>
+	<body class="j">
+		<header class="W">
+			<h1 class="P" date="2022-06-30" ver="1.1"><code>Officelove</code></h1>
+			<nav class="c"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#package"/>
+					</svg><code>API</code></a><a href="https://github.com//teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>Activity</a><a href="https://github.com//teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>Repository</a></nav>
+			<div class="V" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg>
+				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#moon"/>
+					</svg>
+				</a></div>
+		</header>
+		<main class="k">
+			<nav class="f">
+				<div></div>
+			</nav>
+			<article class="R" id="Article">
+				<section class="N"><code class="Q">officelove.word</code>
+					<h2 class="Class i"><code class="U">Word</code></h2>
+					<div class="Z"></div>
+				</section>
+				<section class="N" id="calculated">
+					<h2 class="a"><i class="PROTECTED"></i><code class="U">calculated</code><i class="K"><code class="return">org.apache.poi.xwpf.usermodel.XWPFDocument</code></i></h2><span class="B"><p>The culculated document.</p>
+					</span></section>
+				<section class="N" id="Word()">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">Word</code><code class="g">()</code></h2><span class="B"><p>Create empty doument.</p>
+					</span></section>
+				<section class="N" id="Word(psychopath.File)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">Word</code><code class="g">(<code>psychopath.File</code> <code class="parameterName">file</code>)</code></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code>psychopath.File</code> <code>file</code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Create template for word.</p>
+					</span></section>
+				<section class="N" id="Word(java.net.URL)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">Word</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html">URL</a></code> <code class="parameterName">file</code>)</code></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html">URL</a></code> <code>file</code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Create template for word.</p>
+					</span></section>
+				<section class="N" id="docment()">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">docment</code><code class="g">()</code><i class="K"><code>org.apache.poi.xwpf.usermodel.XWPFDocument</code></i></h2>
+					<table class="d">
+						<tr class="b">
+							<td><code>org.apache.poi.xwpf.usermodel.XWPFDocument</code></td>
+							<td><span><p>POI document.</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Expose POI API.</p>
+					</span></section>
+				<section class="N" id="paragraphs()">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">paragraphs</code><code class="g">()</code><i class="K"><code>kiss.Signal<code class="parameters"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></code></code></i></h2>
+					<table class="d">
+						<tr class="b">
+							<td><code>kiss.Signal<code class="parameters"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></code></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Collect paragraphs.</p>
+					</span></section>
+				<section class="N" id="paragraphWith(java.lang.String)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">paragraphWith</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">text</code>)</code><i class="K"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>text</code></td>
+							<td><span><p>A text to search.</p>
+								</span></td>
+						</tr>
+						<tr class="b">
+							<td><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></td>
+							<td><span><p>A serach result.</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Helper method to find XWPFParagraph which contains the specified text.</p>
+					</span></section>
+				<section class="N" id="paragraphWith(java.lang.String,org.apache.poi.xwpf.usermodel.XWPFParagraph)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">paragraphWith</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">text</code>, <code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code> <code class="parameterName">start</code>)</code><i class="K"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>text</code></td>
+							<td><span><p>A text to search.</p>
+								</span></td>
+						</tr>
+						<tr class="O">
+							<td><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code> <code>start</code></td>
+							<td><span><p>A start position to search.</p>
+								</span></td>
+						</tr>
+						<tr class="b">
+							<td><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></td>
+							<td><span><p>A serach result.</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Helper method to find XWPFParagraph which contains the specified text.</p>
+					</span></section>
+				<section class="N" id="copy(int)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">copy</code><code class="g">(<code>int</code> <code class="parameterName">number</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code>int</code> <code>number</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Copy all pages.</p>
+					</span></section>
+				<section class="N" id="evaluate(java.lang.Object,java.lang.Object...)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">evaluate</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">model</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">others</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code>model</code></td>
+							<td><span><p>One model.</p>
+								</span></td>
+						</tr>
+						<tr class="O">
+							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code>others</code></td>
+							<td><span><p>Other models.</p>
+								</span></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Calculate variables by the given model.</p>
+					</span></section>
+				<section class="N" id="evaluate(java.util.List)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">evaluate</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html">List</a></code> <code class="parameterName">models</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html">List</a></code> <code>models</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Calculate variables by the given model.</p>
+					</span></section>
+				<section class="N" id="evaluateAndMerge(kiss.Signal,java.lang.Object...)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">evaluateAndMerge</code><code class="g">(<code>kiss.Signal</code> <code class="parameterName">models</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">additions</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code>kiss.Signal</code> <code>models</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code>additions</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Calculate variables by the given model list and merge them all.</p>
+					</span></section>
+				<section class="N" id="evaluateAndMerge(java.util.List,java.lang.Object...)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">evaluateAndMerge</code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html">List</a></code> <code class="parameterName">models</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">additions</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html">List</a></code> <code>models</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code>additions</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Calculate variables by the given model list and merge them all.</p>
+					</span></section>
+				<section class="N" id="merge(officelove.word.Word)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">merge</code><code class="g">(<code><a href="api/officelove.word.Word.html">Word</a></code> <code class="parameterName">after</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code> <code>after</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Merge the specified <code><a href="api/officelove.word.Word.html">Word</a></code> to this document.</p>
+					</span></section>
+				<section class="N" id="print()">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">print</code><code class="g">()</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td><span><p>Chainable API</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Print document with the given variables.</p>
+					</span></section>
+				<section class="N" id="open()">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">open</code><code class="g">()</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>Open document with the given variables.</p>
+					</span></section>
+				<section class="N" id="save(psychopath.File)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">save</code><code class="g">(<code>psychopath.File</code> <code class="parameterName">output</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code>psychopath.File</code> <code>output</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td><span><p>Chainable API.</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Save this document to the specified <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p>
+					</span></section>
+				<section class="N" id="save(psychopath.File,boolean)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">save</code><code class="g">(<code>psychopath.File</code> <code class="parameterName">output</code>, <code>boolean</code> <code class="parameterName">overwrite</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code>psychopath.File</code> <code>output</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code>boolean</code> <code>overwrite</code></td>
+							<td></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td><span><p>Chainable API.</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Save this document to the specified <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p>
+					</span></section>
+				<section class="N" id="saveAsPDF(psychopath.File)">
+					<h2 class="a"><i class="PUBLIC"></i><code class="U">saveAsPDF</code><code class="g">(<code>psychopath.File</code> <code class="parameterName">file</code>)</code><i class="K"><code><a href="api/officelove.word.Word.html">Word</a></code></i></h2>
+					<table class="d">
+						<tr class="O">
+							<td><code>psychopath.File</code> <code>file</code></td>
+							<td><span><p>A location to save.</p>
+								</span></td>
+						</tr>
+						<tr class="b">
+							<td><code><a href="api/officelove.word.Word.html">Word</a></code></td>
+							<td><span><p>Chainable API.</p>
+								</span></td>
+						</tr>
+					</table><span class="B"><p>Save this document as PDF format.</p>
+					</span></section>
+			</article>
+			<aside class="I" id="SubNavi">
+				<div class="h">
+					<h5 class="J">Constructors</h5>
+					<ul>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#Word()">Word</a></code><code class="g">()</code></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#Word(psychopath.File)">Word</a></code><code class="g">(<code>psychopath.File</code> <code class="parameterName">file</code>)</code></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#Word(java.net.URL)">Word</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html">URL</a></code> <code class="parameterName">file</code>)</code></li>
+					</ul>
+					<h5 class="J">Fields</h5>
+					<ul>
+						<li><i class="PROTECTED"></i><code><a href="api/officelove.word.Word.html#calculated">calculated</a></code><i class="X"><code class="return">org.apache.poi.xwpf.usermodel.XWPFDocument</code></i></li>
+					</ul>
+					<h5 class="J">Methods</h5>
+					<ul>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#docment()">docment</a></code><code class="g">()</code><i class="X"><code>org.apache.poi.xwpf.usermodel.XWPFDocument</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#paragraphs()">paragraphs</a></code><code class="g">()</code><i class="X"><code>kiss.Signal<code class="parameters"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></code></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#paragraphWith(java.lang.String)">paragraphWith</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">text</code>)</code><i class="X"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#paragraphWith(java.lang.String,org.apache.poi.xwpf.usermodel.XWPFParagraph)">paragraphWith</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">text</code>, <code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code> <code class="parameterName">start</code>)</code><i class="X"><code>org.apache.poi.xwpf.usermodel.XWPFParagraph</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#copy(int)">copy</a></code><code class="g">(<code>int</code> <code class="parameterName">number</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#evaluate(java.lang.Object,java.lang.Object...)">evaluate</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">model</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">others</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#evaluate(java.util.List)">evaluate</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html">List</a></code> <code class="parameterName">models</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#evaluateAndMerge(kiss.Signal,java.lang.Object...)">evaluateAndMerge</a></code><code class="g">(<code>kiss.Signal</code> <code class="parameterName">models</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">additions</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#evaluateAndMerge(java.util.List,java.lang.Object...)">evaluateAndMerge</a></code><code class="g">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html">List</a></code> <code class="parameterName">models</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">additions</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#merge(officelove.word.Word)">merge</a></code><code class="g">(<code><a href="api/officelove.word.Word.html">Word</a></code> <code class="parameterName">after</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#print()">print</a></code><code class="g">()</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#open()">open</a></code><code class="g">()</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#save(psychopath.File)">save</a></code><code class="g">(<code>psychopath.File</code> <code class="parameterName">output</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#save(psychopath.File,boolean)">save</a></code><code class="g">(<code>psychopath.File</code> <code class="parameterName">output</code>, <code>boolean</code> <code class="parameterName">overwrite</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.html#saveAsPDF(psychopath.File)">saveAsPDF</a></code><code class="g">(<code>psychopath.File</code> <code class="parameterName">file</code>)</code><i class="X"><code><a href="api/officelove.word.Word.html">Word</a></code></i></li>
+					</ul>
+				</div>
+			</aside>
+		</main>
+		<script src="root.js"></script>
+		<script src="main.js" type="module"></script>
+	</body>
+</html>
