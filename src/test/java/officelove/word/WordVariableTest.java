@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 import kiss.I;
 import officelove.expression.Variable;
-import officelove.word.Word;
 import psychopath.Directory;
 import psychopath.Locator;
 
@@ -27,7 +26,7 @@ class WordVariableTest {
         I.load(WordVariableTest.class);
     }
 
-    private static Directory base = Locator.directory("src/test/resources/offishell/word");
+    private static Directory base = Locator.directory("src/test/resources/officelove/word");
 
     @Test
     void field() {
