@@ -31,6 +31,11 @@ class TemplateTest extends WordTestSupport {
         return verifyAllDocx("loop/style", new ListLoop(new Text("item1"), new Text("item2"), new Text("item3")));
     }
 
+    @TestFactory
+    List<DynamicTest> loop() {
+        return verifyAllDocx("loop", new ListLoop(new Text("1"), new Text("2"), new Text("3")));
+    }
+
     /**
      * Simple text value.
      */

@@ -14,6 +14,7 @@ public class Project extends bee.api.Project {
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "psychopath");
+        require("com.github.teletha", "conjure");
         require("org.apache.poi", "poi-ooxml");
         require("com.github.teletha", "antibug").atTest();
 

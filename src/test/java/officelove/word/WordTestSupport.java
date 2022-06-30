@@ -19,6 +19,9 @@ import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.junit.jupiter.api.DynamicTest;
 
 import psychopath.Locator;
@@ -85,8 +88,19 @@ public class WordTestSupport {
             assert value.of(elements.size());
 
             for (IBodyElement element : elements) {
-                if (element instanceof XWPFParagraph) {
-                    assert value.of((XWPFParagraph) element, this::verifyParagraph);
+                if (element instanceof XWPFParagraph para) {
+                    assert value.of(para, this::verifyParagraph);
+                } else if (element instanceof XWPFTable table) {
+                    assert value.of(table.getNumberOfRows());
+                    for (XWPFTableRow row : table.getRows()) {
+                        assert value.of(row.getTableCells().size());
+                        for (XWPFTableCell cell : row.getTableCells()) {
+                            assert value.of(cell.getParagraphs().size());
+                            for (XWPFParagraph para : cell.getParagraphs()) {
+                                assert value.of(para, this::verifyParagraph);
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -178,7 +192,9 @@ public class WordTestSupport {
             if (collectMode) {
                 return values.add(expected);
             } else {
-                return Objects.equals(latest = values.pop(), expected);
+                latest = values.pop();
+                assert Objects.equals(latest, expected);
+                return true;
             }
         }
 
