@@ -10,7 +10,7 @@
 public class Project extends bee.api.Project {
 
     {
-        product("com.github.teletha", "offishell", "1.0");
+        product("com.github.teletha", "officelove", "1.0");
         repository("https://oss.sonatype.org/content/repositories/snapshots");
 
         require("com.github.teletha", "sinobu");

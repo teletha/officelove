@@ -7,7 +7,7 @@
  *
  *          http://opensource.org/licenses/mit-license.php
  */
-package offishell.word;
+package officelove.word;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,8 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.junit.jupiter.api.Test;
 
 import kiss.I;
-import offishell.expression.Variable;
+import officelove.expression.Variable;
+import officelove.word.Word;
 import psychopath.Directory;
 import psychopath.Locator;
 

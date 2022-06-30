@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.word;
+package officelove.word;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -48,8 +48,8 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
-import offishell.LibreOffice;
-import offishell.expression.VariableContext;
+import officelove.LibreOffice;
+import officelove.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
 

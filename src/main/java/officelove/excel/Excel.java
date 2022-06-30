@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.excel;
+package officelove.excel;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -52,8 +52,8 @@ import kiss.I;
 import kiss.Signal;
 import kiss.model.Model;
 import kiss.model.Property;
-import offishell.LibreOffice;
-import offishell.expression.VariableContext;
+import officelove.LibreOffice;
+import officelove.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
 

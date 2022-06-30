@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.word;
+package officelove.word;
 
 import java.util.HashMap;
 import java.util.Map;

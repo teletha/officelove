@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.word;
+package officelove.word;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -21,6 +21,7 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.jupiter.api.DynamicTest;
 
+import officelove.word.Word;
 import psychopath.Locator;
 
 public class WordTestSupport {

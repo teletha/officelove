@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.excel;
+package officelove.excel;
 
 import kiss.Extensible;
 

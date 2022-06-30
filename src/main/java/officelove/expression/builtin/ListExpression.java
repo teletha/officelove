@@ -7,21 +7,21 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.expression.builtin;
+package officelove.expression.builtin;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import offishell.expression.ExpressionResolver;
+import officelove.expression.ExpressionResolver;
 
 /**
  * @version 2016/06/17 15:35:07
  */
-class ListRangeExpression implements ExpressionResolver<List> {
+class ListExpression implements ExpressionResolver<List> {
 
     /** The range format. */
-    private static final Pattern range = Pattern.compile("(\\d+)?[~～](\\d+)?");
+    private static final Pattern range = Pattern.compile("(\\d+)");
 
     /**
      * {@inheritDoc}
@@ -36,9 +36,8 @@ class ListRangeExpression implements ExpressionResolver<List> {
      */
     @Override
     public Object resolve(Matcher matcher, List list) {
-        int start = parse(matcher.group(1), 0, v -> 0 <= v);
-        int end = parse(matcher.group(2), list.size() - 1, v -> v < list.size());
+        int index = parse(matcher.group(1), 1, v -> 1 <= v);
 
-        return list.subList(start, end + 1);
+        return list.size() < index ? null : list.get(index - 1);
     }
 }

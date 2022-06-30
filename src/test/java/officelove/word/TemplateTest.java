@@ -7,7 +7,7 @@
  *
  *          http://opensource.org/licenses/mit-license.php
  */
-package offishell.word;
+package officelove.word;
 
 import java.util.List;
 

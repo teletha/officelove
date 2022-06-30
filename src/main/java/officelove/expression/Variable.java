@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package offishell.expression;
+package officelove.expression;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
