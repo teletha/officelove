@@ -95,28 +95,6 @@ class WordVariableTest {
     }
 
     @Test
-    void loop() {
-        Word word = new Word(base.file("loop.docx")).evaluate(new Items());
-        XWPFParagraph para = word.paragraphWith("START");
-        assert para != null;
-        para = word.paragraphWith("title1", para);
-        assert para != null;
-        para = word.paragraphWith("text1", para);
-        assert para != null;
-        para = word.paragraphWith("title2", para);
-        assert para != null;
-        para = word.paragraphWith("text2", para);
-        assert para != null;
-        para = word.paragraphWith("title3", para);
-        assert para != null;
-        para = word.paragraphWith("text3", para);
-        assert para != null;
-        para = word.paragraphWith("END", para);
-        assert para != null;
-        assert word.paragraphWith("text{id}") == null;
-    }
-
-    @Test
     void loopInTableRow() {
         Word word = new Word(base.file("loopTable.docx")).evaluate(new Items());
         find(word, "keyTop1", "valueTop1", "keyBottom1", "valueBottom1", "keyTop2", "valueTop2", "keyBottom2", "valueBottom2", "keyTop3", "valueTop3", "keyBottom3", "valueBottom3");

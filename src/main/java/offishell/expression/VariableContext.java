@@ -114,7 +114,7 @@ public class VariableContext implements UnaryOperator<String> {
                 return var.apply(variable);
             }
         }
-        throw new Error("Can't resolve the variable {$ " + variable + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
+        throw new Error("Can't resolve the variable {$" + variable + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
     }
 
     /**
@@ -245,7 +245,7 @@ public class VariableContext implements UnaryOperator<String> {
      * @return
      */
     private Error errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return new Error("Class [" + model.getClass().getName() + "] can't resolve the variable [" + expression + "] in { " + String
+        return new Error("Class [" + model.getClass().getName() + "] can't resolve the variable [" + expression + "] in {" + String
                 .join(".", expressions) + "} at file [" + fileName + "].");
     }
 

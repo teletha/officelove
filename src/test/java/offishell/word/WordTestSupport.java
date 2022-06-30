@@ -19,10 +19,11 @@ import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.junit.jupiter.api.DynamicTest;
 
 import psychopath.Locator;
 
-public interface WordTestSupport {
+public class WordTestSupport {
 
     /**
      * Create tester file.
@@ -30,19 +31,52 @@ public interface WordTestSupport {
      * @param fileName
      * @return
      */
-    public default Word word(String fileName) {
+    public Word word(String fileName) {
         return new Word(Locator.file("src/test/resources/offishell/word/" + fileName + ".docx"));
     }
 
     /**
-     * <p>
      * Assertion helper.
-     * </p>
+     */
+    public List<DynamicTest> verifyAllDocx(String directoryName, Object... context) {
+        return verifyAllDocx(directoryName, context, false);
+    }
+
+    /**
+     * Assertion helper.
+     */
+    public List<DynamicTest> verifyAllDocxReportable(String directoryName, Object... context) {
+        return verifyAllDocx(directoryName, context, true);
+    }
+
+    /**
+     * Assertion helper.
+     */
+    private List<DynamicTest> verifyAllDocx(String directoryName, Object[] context, boolean openErrorDoc) {
+        return Locator.directory("src/test/resources/offishell/word/" + directoryName).walkFile("*.docx", "!*.expected.docx").map(file -> {
+            return DynamicTest.dynamicTest(file.base(), () -> {
+                assert verifyDocx(directoryName + "/" + file.base(), context);
+            });
+        }).toList();
+    }
+
+    /**
+     * Assertion helper.
+     * 
+     * @param fileName
+     * @param context
+     */
+    public boolean verifyDocx(String fileName, Object... context) {
+        return verifyBody(word(fileName).evaluate(null, context), word(fileName.concat(".expected")));
+    }
+
+    /**
+     * Assertion helper.
      * 
      * @param actual
      * @param expected
      */
-    public default boolean verifyBody(Word actual, Word expected) {
+    public boolean verifyBody(Word actual, Word expected) {
         return assertion(actual, expected, (w, value) -> {
             XWPFDocument document = w.docment();
             List<IBodyElement> elements = document.getBodyElements();
@@ -83,7 +117,7 @@ public interface WordTestSupport {
     private void verifyRun(XWPFRun run, Assertion value) {
         assert value.of(run.text());
         assert value.of(run.getFontFamily());
-        // assert value.of(run.getFontSizeAsDouble());
+        assert value.of(run.getFontSizeAsDouble());
         assert value.of(run.isBold());
         assert value.of(run.isCapitalized());
         assert value.of(run.isDoubleStrikeThrough());
