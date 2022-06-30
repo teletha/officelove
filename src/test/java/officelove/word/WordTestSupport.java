@@ -21,7 +21,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.jupiter.api.DynamicTest;
 
-import officelove.word.Word;
 import psychopath.Locator;
 
 public class WordTestSupport {
@@ -33,7 +32,7 @@ public class WordTestSupport {
      * @return
      */
     public Word word(String fileName) {
-        return new Word(Locator.file("src/test/resources/offishell/word/" + fileName + ".docx"));
+        return new Word(Locator.file("src/test/resources/officelove/word/" + fileName + ".docx"));
     }
 
     /**
@@ -54,7 +53,7 @@ public class WordTestSupport {
      * Assertion helper.
      */
     private List<DynamicTest> verifyAllDocx(String directoryName, Object[] context, boolean openErrorDoc) {
-        return Locator.directory("src/test/resources/offishell/word/" + directoryName).walkFile("*.docx", "!*.expected.docx").map(file -> {
+        return Locator.directory("src/test/resources/officelove/word/" + directoryName).walkFile("*.docx", "!*.expected.docx").map(file -> {
             return DynamicTest.dynamicTest(file.base(), () -> {
                 assert verifyDocx(directoryName + "/" + file.base(), context);
             });
