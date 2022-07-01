@@ -9,10 +9,6 @@
  */
 package officelove.word;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.junit.jupiter.api.Test;
 
 import kiss.I;
@@ -92,69 +88,5 @@ class WordVariableTest {
     static class No {
 
         public boolean condition = false;
-    }
-
-    @Test
-    void loopInTableRow() {
-        Word word = new Word(base.file("loopTable.docx")).evaluate(new Items());
-        find(word, "keyTop1", "valueTop1", "keyBottom1", "valueBottom1", "keyTop2", "valueTop2", "keyBottom2", "valueBottom2", "keyTop3", "valueTop3", "keyBottom3", "valueBottom3");
-    }
-
-    /**
-     * <p>
-     * Helper method to find paragraph sequencially.
-     * </p>
-     * 
-     * @param word
-     * @param texts
-     */
-    private static XWPFParagraph find(Word word, String... texts) {
-        return find(word, word.paragraphs().take(1).to().get(), texts);
-    }
-
-    /**
-     * <p>
-     * Helper method to find paragraph sequencially.
-     * </p>
-     * 
-     * @param word
-     * @param texts
-     */
-    private static XWPFParagraph find(Word word, XWPFParagraph start, String... texts) {
-        for (String text : texts) {
-            start = word.paragraphWith(text, start);
-            assert start != null;
-        }
-        return start;
-    }
-
-    /**
-     * @version 2016/06/04 14:19:39
-     */
-    private static class Items {
-
-        public List<Item> items = new ArrayList();
-
-        private Items() {
-            items.add(new Item(1));
-            items.add(new Item(2));
-            items.add(new Item(3));
-        }
-    }
-
-    /**
-     * @version 2016/06/04 10:15:18
-     */
-    @SuppressWarnings("unused")
-    private static class Item {
-
-        public int id;
-
-        /**
-         * @param id
-         */
-        private Item(int id) {
-            this.id = id;
-        }
     }
 }
