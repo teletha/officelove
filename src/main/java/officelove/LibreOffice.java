@@ -28,6 +28,9 @@ public class LibreOffice {
     /** The path to executable office command. */
     private static String soffice;
 
+    /** The program cache. */
+    private static boolean cached;
+
     /**
      * Convert file.
      * 
@@ -72,7 +75,7 @@ public class LibreOffice {
      * @param commands
      */
     private static synchronized void execute(String... commands) {
-        wakeup();
+        search();
 
         List<String> command = new ArrayList();
         command.add(soffice.toString());
@@ -87,28 +90,19 @@ public class LibreOffice {
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.redirectError();
             builder.redirectOutput();
+            builder.start().waitFor();
 
-            Process process = builder.start();
-            process.waitFor();
+            // There is a reason why Quick Start mode is not activated before the first run of
+            // Libereoffice. If another task (e.g., converting to PDF) is executed immediately after
+            // Quick Start mode is launched, the task's exit signal will be notified first and all
+            // processes will be forced to terminate. So we avoid this by running the quick start
+            // mode after the task is finished.
+            if (cached == false) {
+                cached = true;
+                new ProcessBuilder(soffice, "--quickstart").start().waitFor(250, TimeUnit.MILLISECONDS);
+            }
         } catch (Exception e) {
             throw I.quiet(e);
-        }
-    }
-
-    /**
-     * Wake up libreoffice.
-     */
-    private static void wakeup() {
-        if (initialized == false) {
-            initialized = true;
-
-            search();
-
-            try {
-                new ProcessBuilder(soffice, "--quickstart").start().waitFor(250, TimeUnit.MILLISECONDS);
-            } catch (Exception e) {
-                I.error(e);
-            }
         }
     }
 
@@ -116,41 +110,45 @@ public class LibreOffice {
      * Search libreoffice application.
      */
     private static void search() {
-        // search from 'path' environment variable
-        for (Entry<String, String> entry : System.getenv().entrySet()) {
-            if (entry.getKey().equalsIgnoreCase("PATH")) {
-                for (String path : entry.getValue().split(java.io.File.pathSeparator)) {
-                    if (path.contains("soffice") && check(path)) {
-                        soffice = path;
-                        return;
+        if (initialized == false) {
+            initialized = true;
+
+            // search from 'path' environment variable
+            for (Entry<String, String> entry : System.getenv().entrySet()) {
+                if (entry.getKey().equalsIgnoreCase("PATH")) {
+                    for (String path : entry.getValue().split(java.io.File.pathSeparator)) {
+                        if (path.contains("soffice") && check(path)) {
+                            soffice = path;
+                            return;
+                        }
                     }
                 }
             }
-        }
 
-        // search from 'LibreOffice' environment variable
-        String path = I.env("LibreOffice");
-        if (check(path)) {
-            soffice = path;
-            return;
-        }
+            // search from 'LibreOffice' environment variable
+            String path = I.env("LibreOffice");
+            if (check(path)) {
+                soffice = path;
+                return;
+            }
 
-        // search from typical location
-        if (System.getProperty("os.name").contains("Windows")) {
-            String[] drives = {"C", "D", "E", "F", "G", "H", "I"};
-            String[] dirs = {"Program Files", "Application", "Program", "Software"};
-            for (String drive : drives) {
-                for (String dir : dirs) {
-                    File file = Locator.file(drive + ":/" + dir + "/LibreOffice/program/soffice.exe");
-                    if (check(file)) {
-                        soffice = file.toString();
-                        return;
+            // search from typical location
+            if (System.getProperty("os.name").contains("Windows")) {
+                String[] drives = {"C", "D", "E", "F", "G", "H", "I"};
+                String[] dirs = {"Program Files", "Application", "Program", "Software"};
+                for (String drive : drives) {
+                    for (String dir : dirs) {
+                        File file = Locator.file(drive + ":/" + dir + "/LibreOffice/program/soffice.exe");
+                        if (check(file)) {
+                            soffice = file.toString();
+                            return;
+                        }
                     }
                 }
             }
-        }
 
-        throw new Error("Libre Office is not found.");
+            throw new Error("Libre Office is not found.");
+        }
     }
 
     /**
