@@ -11,9 +11,6 @@ package officelove.excel;
 
 import java.awt.Desktop;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.LocalDate;
@@ -57,26 +54,14 @@ import officelove.expression.VariableContext;
 import psychopath.File;
 import psychopath.Locator;
 
-/**
- * @version 2016/07/16 14:38:19
- */
 public class Excel {
 
     static {
         I.load(LibreOffice.class);
     }
 
-    /** The cache. */
-    private static final Map<Path, Excel> byPath = new HashMap();
-
-    /** The cache. */
-    private static final Map<XSSFWorkbook, Path> byBook = new HashMap();
-
     /** The actual file path. */
-    public final Path path;
-
-    /** The actual file. */
-    public final File excel;
+    public final File file;
 
     /** The main excel file. */
     public final XSSFWorkbook book;
@@ -91,41 +76,39 @@ public class Excel {
     private final CellStyle dateStyle;
 
     /**
-     * <p>
      * Create {@link Excel} wrapper.
-     * </p>
      * 
-     * @param path
-     * @param book
+     * @param file
      */
-    private Excel(Path path, XSSFWorkbook book) {
-        this.path = path;
-        this.book = book;
-        this.excel = Locator.file(path);
-        this.sheet = book.getSheetAt(0);
-        this.baseStyle = book.createCellStyle();
-        this.dateStyle = book.createCellStyle();
+    public Excel(File file) {
+        try {
+            this.file = file;
+            this.book = new XSSFWorkbook(file.newInputStream());
+            this.sheet = book.getSheetAt(0);
+            this.baseStyle = book.createCellStyle();
+            this.dateStyle = book.createCellStyle();
 
-        CreationHelper helper = book.getCreationHelper();
-        DataFormat dateFormat = helper.createDataFormat();
+            CreationHelper helper = book.getCreationHelper();
+            DataFormat dateFormat = helper.createDataFormat();
 
-        Font font = book.createFont();
-        font.setFontName("游ゴシック Medium");
-        font.setFontHeightInPoints((short) 10);
-        baseStyle.setFont(font);
-        baseStyle.setAlignment(HorizontalAlignment.CENTER);
-        baseStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        baseStyle.setShrinkToFit(true);
-        baseStyle.setWrapText(true);
+            Font font = book.createFont();
+            font.setFontName("游ゴシック Medium");
+            font.setFontHeightInPoints((short) 10);
+            baseStyle.setFont(font);
+            baseStyle.setAlignment(HorizontalAlignment.CENTER);
+            baseStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            baseStyle.setShrinkToFit(true);
+            baseStyle.setWrapText(true);
 
-        dateStyle.cloneStyleFrom(baseStyle);
-        dateStyle.setDataFormat(dateFormat.getFormat("yyyy/mm/dd"));
+            dateStyle.cloneStyleFrom(baseStyle);
+            dateStyle.setDataFormat(dateFormat.getFormat("yyyy/mm/dd"));
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
-     * <p>
      * 指定したセルが空でない行を全て列挙します。
-     * </p>
      * 
      * @param cellName 列名
      * @return
@@ -166,9 +149,7 @@ public class Excel {
     }
 
     /**
-     * <p>
      * ヘッダを除いた行を全て返します。
-     * </p>
      * 
      * @return
      */
@@ -177,9 +158,7 @@ public class Excel {
     }
 
     /**
-     * <p>
      * 指定した位置番号のセルにデータが入っている行を全て返します。
-     * </p>
      * 
      * @param columnIndex zero-based index.
      * @return
@@ -225,15 +204,13 @@ public class Excel {
     }
 
     /**
-     * <p>
      * Open excel file.
-     * </p>
      * 
      * @return Chainable API
      */
     public Excel open() {
         try {
-            Desktop.getDesktop().open(path.toFile());
+            Desktop.getDesktop().open(file.asJavaFile());
         } catch (Throwable e) {
             throw I.quiet(e);
         }
@@ -243,9 +220,7 @@ public class Excel {
     }
 
     /**
-     * <p>
      * 指定のモデルに対応する行への操作を記述します。
-     * </p>
      * 
      * @param models
      * @param operation
@@ -263,9 +238,7 @@ public class Excel {
     }
 
     /**
-     * <p>
      * 指定のモデルに対応する行を更新します。
-     * </p>
      * 
      * @param models
      * @return
@@ -275,9 +248,7 @@ public class Excel {
     }
 
     /**
-     * <p>
      * 指定のモデルに対応する行を更新します。
-     * </p>
      * 
      * @param models
      * @return
@@ -313,22 +284,18 @@ public class Excel {
     }
 
     public Excel save() {
-        save(path);
+        save(file);
 
         return this;
     }
 
-    public Excel save(Path path) {
+    public Excel save(File file) {
         try {
-            book.write(Files.newOutputStream(path));
+            book.write(file.newOutputStream());
         } catch (IOException e) {
             throw I.quiet(e);
         }
-        return of(path);
-    }
-
-    public Excel save(String name) {
-        return save(path.resolveSibling(Locator.file(name).base() + "." + excel.extension()));
+        return this;
     }
 
     private XSSFRow findFirstBlankRow() {
@@ -388,7 +355,7 @@ public class Excel {
     public Excel calculate(Object model) {
         Map<CellAddress, XSSFComment> cellComments = sheet.getCellComments();
 
-        VariableContext context = new VariableContext(path.getFileName().toString(), false, List.of(model));
+        VariableContext context = new VariableContext(file.name(), false, List.of(model));
 
         for (Iterator<Entry<CellAddress, XSSFComment>> iterator = cellComments.entrySet().iterator(); iterator.hasNext();) {
             Entry<CellAddress, XSSFComment> entry = iterator.next();
@@ -402,65 +369,7 @@ public class Excel {
             cell.setCellValue(context.apply(comment));
             cell.removeCellComment();
         }
-
-        try {
-            return save(Files.createTempFile("calculated", ".xlsx"));
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
-     * @param path
-     * @return
-     */
-    public static Excel of(Path path) {
-        return byPath.computeIfAbsent(path, key -> {
-            try (InputStream input = Files.newInputStream(path)) {
-                XSSFWorkbook book = new XSSFWorkbook(input);
-                byBook.put(book, path);
-
-                return new Excel(path, book);
-            } catch (Exception e) {
-                throw I.quiet(e);
-            }
-        });
-    }
-
-    /**
-     * <p>
-     * Retrieve {@link Excel} object for the specified {@link XSSFWorkbook}.
-     * </p>
-     * 
-     * @param book
-     * @return
-     */
-    private static Excel of(XSSFWorkbook book) {
-        return Objects.requireNonNull(byPath.get(byBook.get(book)));
-    }
-
-    /**
-     * <p>
-     * Retrieve {@link Excel} object for the specified {@link XSSFSheet}.
-     * </p>
-     * 
-     * @param model A target excel model.
-     * @return An associated {@link Excel} instance.
-     */
-    private static Excel of(XSSFSheet model) {
-        return of(Objects.requireNonNull(model).getWorkbook());
-    }
-
-    /**
-     * <p>
-     * Retrieve {@link Excel} object for the specified {@link XSSFRow}.
-     * </p>
-     * 
-     * @param model A target excel model.
-     * @return An associated {@link Excel} instance.
-     */
-    private static Excel of(XSSFRow model) {
-        return of(Objects.requireNonNull(model).getSheet());
+        return save(Locator.temporaryFile("calculated.xlsx"));
     }
 
     /**
@@ -536,14 +445,11 @@ public class Excel {
     /**
      * Enhanced {@link XSSFRow}.
      */
-    public static class Row {
+    public class Row {
 
         private static final Map<Object, Row> rows = new HashMap();
 
         private static final Map<XSSFSheet, Map<String, Integer>> nameToIndex = new HashMap();
-
-        /** The source. */
-        private final Excel excel;
 
         /** The actual row. */
         private final XSSFRow row;
@@ -556,7 +462,6 @@ public class Excel {
         private Row(XSSFRow row) {
             Objects.requireNonNull(row);
 
-            this.excel = Excel.of(row);
             this.row = row;
         }
 
@@ -609,7 +514,7 @@ public class Excel {
 
             if (value instanceof LocalDate) {
                 cell.setCellValue(Date.from(((LocalDate) value).atTime(0, 0).toInstant(ZoneOffset.UTC)));
-                cell.setCellStyle(excel.dateStyle);
+                cell.setCellStyle(dateStyle);
             } else if (value instanceof Integer) {
                 cell.setCellValue(((Integer) value).doubleValue());
             } else {
