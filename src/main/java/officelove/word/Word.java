@@ -413,29 +413,20 @@ public class Word {
      */
     public Word save(File output, boolean overwrite) {
         if (overwrite == true || output.isAbsent()) {
-            try (OutputStream stream = output.newOutputStream()) {
-                calculated.write(stream);
-            } catch (IOException e) {
-                throw I.quiet(e);
+            String extension = output.extension();
+            if (extension.equals("pdf")) {
+                File input = Locator.temporaryFile();
+                save(input);
+                LibreOffice.convert(input, output);
+            } else {
+                try (OutputStream stream = output.newOutputStream()) {
+                    calculated.write(stream);
+                } catch (IOException e) {
+                    throw I.quiet(e);
+                }
             }
         }
 
-        // API definition
-        return this;
-    }
-
-    /**
-     * Save this document as PDF format.
-     * 
-     * @param file A location to save.
-     * @return Chainable API.
-     */
-    public Word saveAsPDF(File file) {
-        if (file != null) {
-            File input = Locator.temporaryFile();
-            save(input);
-            LibreOffice.convert(input, file);
-        }
         return this;
     }
 
