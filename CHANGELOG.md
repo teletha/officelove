@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/teletha/officelove/compare/v1.0.0...v1.0.1) (2022-07-15)
+
+
+### Bug Fixes
+
+* Can apply multiple table styles. ([d6ed535](https://www.github.com/teletha/officelove/commit/d6ed535d52d659ea94058c4bff820fb11a5ca2e3))
+* LibreOffice can activate quickstart mode correctly. ([5dc135d](https://www.github.com/teletha/officelove/commit/5dc135d48b1a5af039382096ddc5e381406d34f5))
+
 ## 1.0.0 (2022-06-30)
 
 
