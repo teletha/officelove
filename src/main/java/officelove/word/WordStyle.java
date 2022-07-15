@@ -68,7 +68,7 @@ public class WordStyle {
      * @return
      */
     static String apply(XWPFRun run, String text) {
-        if (text.startsWith(PREFIX)) {
+        while (text.startsWith(PREFIX)) {
             String id = text.substring(0, PREFIX.length() + 6);
             text = text.substring(PREFIX.length() + 6);
             styles.get(id).styling.accept(run);
