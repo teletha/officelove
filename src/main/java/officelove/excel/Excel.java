@@ -47,6 +47,8 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTPhoneticRun;
 import kiss.Disposable;
 import kiss.I;
 import kiss.Signal;
+import kiss.WiseBiConsumer;
+import kiss.WiseSupplier;
 import kiss.model.Model;
 import kiss.model.Property;
 import officelove.LibreOffice;
@@ -76,35 +78,49 @@ public class Excel {
     private final CellStyle dateStyle;
 
     /**
+     * Create empty {@link Excel}.
+     */
+    public Excel() {
+        this(Locator.temporaryFile(), () -> new XSSFWorkbook());
+    }
+
+    /**
      * Create {@link Excel} wrapper.
      * 
      * @param file
      */
     public Excel(File file) {
-        try {
-            this.file = file;
-            this.book = new XSSFWorkbook(file.newInputStream());
-            this.sheet = book.getSheetAt(0);
-            this.baseStyle = book.createCellStyle();
-            this.dateStyle = book.createCellStyle();
+        this(file, () -> new XSSFWorkbook(file.newInputStream()));
+    }
 
-            CreationHelper helper = book.getCreationHelper();
-            DataFormat dateFormat = helper.createDataFormat();
+    /**
+     * Actual constructor.
+     * 
+     * @param file
+     * @param bookSupplier
+     */
+    private Excel(File file, WiseSupplier<XSSFWorkbook> bookSupplier) {
+        this.file = file;
+        this.book = bookSupplier.get();
 
-            Font font = book.createFont();
-            font.setFontName("游ゴシック Medium");
-            font.setFontHeightInPoints((short) 10);
-            baseStyle.setFont(font);
-            baseStyle.setAlignment(HorizontalAlignment.CENTER);
-            baseStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            baseStyle.setShrinkToFit(true);
-            baseStyle.setWrapText(true);
+        this.sheet = book.getNumberOfSheets() == 0 ? book.createSheet() : book.getSheetAt(0);
+        this.baseStyle = book.createCellStyle();
+        this.dateStyle = book.createCellStyle();
 
-            dateStyle.cloneStyleFrom(baseStyle);
-            dateStyle.setDataFormat(dateFormat.getFormat("yyyy/mm/dd"));
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        CreationHelper helper = book.getCreationHelper();
+        DataFormat dateFormat = helper.createDataFormat();
+
+        Font font = book.createFont();
+        font.setFontName("游ゴシック Medium");
+        font.setFontHeightInPoints((short) 10);
+        baseStyle.setFont(font);
+        baseStyle.setAlignment(HorizontalAlignment.CENTER);
+        baseStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        baseStyle.setShrinkToFit(true);
+        baseStyle.setWrapText(true);
+
+        dateStyle.cloneStyleFrom(baseStyle);
+        dateStyle.setDataFormat(dateFormat.getFormat("yyyy/mm/dd"));
     }
 
     /**
@@ -304,12 +320,14 @@ public class Excel {
         // compute head size
         int headerSize = 0;
 
-        for (; headerSize < head.getLastCellNum(); headerSize++) {
-            Cell cell = head.getCell(headerSize);
+        if (head != null) {
+            for (; headerSize < head.getLastCellNum(); headerSize++) {
+                Cell cell = head.getCell(headerSize);
 
-            if (cell == null || cell.getCellType() == CellType.BLANK) {
-                headerSize--;
-                break;
+                if (cell == null || cell.getCellType() == CellType.BLANK) {
+                    headerSize--;
+                    break;
+                }
             }
         }
 
@@ -337,7 +355,9 @@ public class Excel {
         XSSFRow row = sheet.getRow(sheet.getLastRowNum());
 
         if (row == null) {
-            row = sheet.createRow(sheet.getLastRowNum());
+            int last = sheet.getPhysicalNumberOfRows();
+            System.out.println(last);
+            row = sheet.createRow(last);
             row.setHeightInPoints(30f);
         }
 
@@ -511,6 +531,9 @@ public class Excel {
 
         public void write(int columnIndex, Object value) {
             XSSFCell cell = row.getCell(columnIndex);
+            if (cell == null) {
+                cell = row.createCell(columnIndex);
+            }
 
             if (value instanceof LocalDate) {
                 cell.setCellValue(Date.from(((LocalDate) value).atTime(0, 0).toInstant(ZoneOffset.UTC)));
@@ -753,6 +776,69 @@ public class Excel {
                 builder.append(run.getT());
             }
             return builder.toString();
+        }
+    }
+
+    /**
+     * Write out the new excel file.
+     * 
+     * @param <T>
+     * @param output
+     * @param items
+     * @param writer
+     */
+    public static <T> void write(File output, List<T> items, WiseBiConsumer<RowWriter, T> writer) {
+        XSSFWorkbook book = new XSSFWorkbook();
+        XSSFSheet sheet = book.createSheet();
+
+        try {
+            int count = 0;
+            for (int i = 0; i < items.size(); i++) {
+                T item = items.get(i);
+                if (item != null) {
+                    writer.accept(new RowWriter(sheet.createRow(count++)), item);
+                }
+            }
+
+            book.write(output.newOutputStream());
+        } catch (Exception e) {
+            throw I.quiet(e);
+        } finally {
+            try {
+                book.close();
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+    }
+
+    /**
+     * 
+     */
+    public static class RowWriter {
+
+        private final XSSFRow row;
+
+        private int count;
+
+        /**
+         * @param row
+         */
+        private RowWriter(XSSFRow row) {
+            this.row = row;
+        }
+
+        /**
+         * Write the new cell.
+         * 
+         * @param value
+         * @return
+         */
+        public RowWriter add(String value) {
+            XSSFCell cell = row.createCell(count++);
+            cell.setCellValue(value);
+
+            return this;
         }
     }
 }
