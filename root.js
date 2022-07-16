@@ -32,6 +32,13 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "Excel.RowWriter",
+			"packageName": "officelove.excel",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "ExpressionResolver",
 			"packageName": "officelove.expression",
 			"type": "Interface"
