@@ -81,7 +81,7 @@ public class Excel {
      * Create empty {@link Excel}.
      */
     public Excel() {
-        this(Locator.temporaryFile(), () -> new XSSFWorkbook());
+        this(Locator.temporaryFile(), null, () -> new XSSFWorkbook());
     }
 
     /**
@@ -90,7 +90,16 @@ public class Excel {
      * @param file
      */
     public Excel(File file) {
-        this(file, () -> new XSSFWorkbook(file.newInputStream()));
+        this(file, null, () -> new XSSFWorkbook(file.newInputStream()));
+    }
+
+    /**
+     * Create {@link Excel} wrapper.
+     * 
+     * @param file
+     */
+    public Excel(File file, String sheetName) {
+        this(file, sheetName, () -> new XSSFWorkbook(file.newInputStream()));
     }
 
     /**
@@ -99,11 +108,11 @@ public class Excel {
      * @param file
      * @param bookSupplier
      */
-    private Excel(File file, WiseSupplier<XSSFWorkbook> bookSupplier) {
+    private Excel(File file, String name, WiseSupplier<XSSFWorkbook> bookSupplier) {
         this.file = file;
         this.book = bookSupplier.get();
 
-        this.sheet = book.getNumberOfSheets() == 0 ? book.createSheet() : book.getSheetAt(0);
+        this.sheet = book.getNumberOfSheets() == 0 ? book.createSheet() : book.getSheetAt(name == null ? 0 : book.getSheetIndex(name));
         this.baseStyle = book.createCellStyle();
         this.dateStyle = book.createCellStyle();
 
