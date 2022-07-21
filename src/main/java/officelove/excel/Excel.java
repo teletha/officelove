@@ -11,6 +11,7 @@ package officelove.excel;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.LocalDate;
@@ -848,6 +849,313 @@ public class Excel {
             cell.setCellValue(value);
 
             return this;
+        }
+    }
+
+    /**
+     * Read data for each row.
+     */
+    public static Signal<RowReader> read(File file, String sheetName, String headerName) {
+        if (file == null || file.isAbsent()) {
+            throw new IllegalArgumentException("Excel file is unknown, please specify the valid file.");
+        }
+
+        if (sheetName == null || sheetName.isBlank()) {
+            throw new IllegalArgumentException("Sheet name is unknown, please specify the valid name.");
+        }
+
+        if (headerName == null || headerName.isBlank()) {
+            throw new IllegalArgumentException("Header name is unknown, please specify the valid name.");
+        }
+
+        return new Signal<>((observer, disposer) -> {
+            XSSFWorkbook book = null;
+            try {
+                book = new XSSFWorkbook(file.asJavaFile());
+                XSSFSheet sheet = book.getSheet(sheetName);
+
+                if (sheet == null) {
+                    throw new IllegalArgumentException("Sheet name is unknown, please specify the valid name.");
+                }
+
+                // create header mapping
+                Map<String, Integer> mapping = new HashMap();
+                for (Cell header : sheet.getRow(0)) {
+                    mapping.put(header.getStringCellValue(), header.getColumnIndex());
+                }
+
+                // specify the target header
+                int index = mapping.getOrDefault(headerName, -1);
+                if (index == -1) {
+                    throw new IllegalArgumentException("Header name is unknown, please specify the valid name.");
+                }
+
+                // process for each rows
+                for (int i = 1; i < sheet.getLastRowNum(); i++) {
+                    XSSFRow row = sheet.getRow(i);
+
+                    if (row != null) {
+                        XSSFCell cell = row.getCell(index);
+
+                        if (cell != null) {
+                            switch (cell.getCellType()) {
+                            case BLANK:
+                                break;
+
+                            case STRING:
+                                String value = cell.getStringCellValue();
+
+                                if (value != null && !value.isBlank()) {
+                                    observer.accept(new RowReader(row, mapping));
+                                }
+                                break;
+
+                            default:
+                                observer.accept(new RowReader(row, mapping));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                observer.complete();
+            } catch (Throwable e) {
+                observer.error(e);
+            } finally {
+                if (book != null) {
+                    try {
+                        book.close();
+                    } catch (IOException e) {
+                        observer.error(e);
+                    }
+                }
+            }
+            return disposer;
+        });
+    }
+
+    /**
+     * 
+     */
+    public static class RowReader {
+
+        /** The actual row. */
+        private final XSSFRow row;
+
+        /** The header mapping. */
+        private final Map<String, Integer> mapping;
+
+        /**
+         * @param row
+         */
+        private RowReader(XSSFRow row, Map<String, Integer> mapping) {
+            this.row = row;
+            this.mapping = mapping;
+        }
+
+        /**
+         * Read the value as text.
+         * 
+         * @param headerName
+         * @return
+         */
+        public String text(String headerName) {
+            return value(headerName, String.class);
+        }
+
+        /**
+         * Read the value as integral number.
+         * 
+         * @param headerName
+         * @return
+         */
+        public int integer(String headerName) {
+            return value(headerName, int.class);
+        }
+
+        /**
+         * Read the value as decimal number.
+         * 
+         * @param headerName
+         * @return
+         */
+        public BigDecimal decimal(String headerName) {
+            return value(headerName, BigDecimal.class);
+        }
+
+        /**
+         * Read the value as {@link LocalDate}.
+         * 
+         * @param headerName
+         * @return
+         */
+        public LocalDate date(String headerName) {
+            return value(headerName, LocalDate.class);
+        }
+
+        /**
+         * Read the value.
+         * 
+         * @param cell
+         * @param type
+         * @return
+         */
+        private <M> M value(String headerName, Class<M> type) {
+            return value(row.getCell(mapping.get(headerName)), type);
+        }
+
+        /**
+         * Read the value.
+         * 
+         * @param cell
+         * @param type
+         * @return
+         */
+        private static <M> M value(XSSFCell cell, Class<M> type) {
+            if (cell == null) {
+                return initial(type);
+            }
+
+            switch (cell.getCellType()) {
+            case BLANK:
+                return blank(cell, type);
+
+            case STRING:
+                return string(cell, cell.getStringCellValue(), type);
+
+            case NUMERIC:
+                return numeric(cell, cell.getNumericCellValue(), type);
+
+            case FORMULA:
+                switch (cell.getCachedFormulaResultType()) {
+                case BLANK:
+                    return blank(cell, type);
+
+                case STRING:
+                    return string(cell, cell.getStringCellValue(), type);
+
+                case NUMERIC:
+                    return numeric(cell, cell.getNumericCellValue(), type);
+
+                default:
+                    break;
+                }
+
+            default:
+                break;
+            }
+            return initial(type);
+        }
+
+        /**
+         * Retrieve value from the blank cell.
+         * 
+         * @param cell
+         * @param value
+         * @param modelClass
+         * @return
+         */
+        private static <M> M blank(XSSFCell cell, Class<M> modelClass) {
+            int rowIndex = cell.getRowIndex();
+            int columnIndex = cell.getColumnIndex();
+
+            XSSFSheet sheet = cell.getSheet();
+            int size = sheet.getNumMergedRegions();
+
+            for (int i = 0; i < size; i++) {
+                CellRangeAddress range = sheet.getMergedRegion(i);
+
+                if (range.isInRange(rowIndex, columnIndex)) {
+                    return value(sheet.getRow(range.getFirstRow()).getCell(range.getFirstColumn()), modelClass);
+                }
+            }
+            return initial(modelClass);
+        }
+
+        /**
+         * Retrieve value from the string cell.
+         * 
+         * @param cell
+         * @param value
+         * @param modelClass
+         * @return
+         */
+        private static <M> M string(XSSFCell cell, String value, Class<M> modelClass) {
+            return I.transform(value, modelClass);
+        }
+
+        /**
+         * Retrieve value from the numeric cell.
+         * 
+         * @param cell
+         * @param value
+         * @param modelClass
+         * @return
+         */
+        private static <M> M numeric(XSSFCell cell, double numeric, Class<M> modelClass) {
+            if (modelClass == int.class || modelClass == Integer.class) {
+                return (M) Integer.valueOf((int) numeric);
+            }
+
+            if (modelClass == long.class || modelClass == Long.class) {
+                return (M) Long.valueOf((long) numeric);
+            }
+
+            if (modelClass == float.class || modelClass == Float.class) {
+                return (M) Float.valueOf((float) numeric);
+            }
+
+            if (modelClass == double.class || modelClass == Double.class) {
+                return (M) Double.valueOf(numeric);
+            }
+
+            if (modelClass == LocalDate.class) {
+                return (M) cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            }
+
+            if (modelClass == LocalTime.class) {
+                return (M) cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+            }
+
+            String numericText = String.valueOf(numeric);
+
+            if (numericText.endsWith(".0")) {
+                numericText = numericText.substring(0, numericText.length() - 2);
+            }
+            return I.transform(numericText, modelClass);
+        }
+
+        /**
+         * Return the initial value for the specified type.
+         * 
+         * @param type
+         * @return
+         */
+        private static <T> T initial(Class<T> type) {
+            if (type == int.class || type == Integer.class) {
+                return (T) Integer.valueOf(0);
+            }
+
+            if (type == double.class || type == Double.class) {
+                return (T) Double.valueOf(0);
+            }
+
+            if (type == long.class || type == Long.class) {
+                return (T) Long.valueOf(0);
+            }
+
+            if (type == float.class || type == Float.class) {
+                return (T) Float.valueOf(0);
+            }
+
+            if (type == boolean.class || type == Boolean.class) {
+                return (T) Boolean.FALSE;
+            }
+
+            if (type == String.class) {
+                return (T) "";
+            }
+            return null;
         }
     }
 }
