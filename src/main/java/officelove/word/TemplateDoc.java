@@ -86,7 +86,7 @@ public class TemplateDoc {
         for (XML start : root.find("office|annotation")) {
             String name = start.attr("office:name");
             System.out.println(name);
-            XML end = root.find("office|annotation-end[office|name=\"" + name + "\"]");
+            XML end = root.find("office|annotation-end[office:name=\"" + name + "\"]");
             System.out.println(end);
             System.out.println(start.parent().equals(end.parent()));
         }
