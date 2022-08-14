@@ -11,6 +11,9 @@ public class Project extends bee.api.Project {
 
     {
         product("com.github.teletha", "officelove", ref("version.txt"));
+        describe("""
+                General DAO for various database.
+                """);
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "psychopath");
