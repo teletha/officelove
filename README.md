@@ -8,7 +8,7 @@
 
 
 ## Summary
-General DAO for various database.
+
 <p align="right"><a href="#top">back to top</a></p>
 
 
