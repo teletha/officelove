@@ -7,7 +7,12 @@
 </p>
 
 
-## About The Project
+## Summary
+General DAO for various database.
+<p align="right"><a href="#top">back to top</a></p>
+
+
+## Usage
 
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -23,7 +28,7 @@ OpenJDK 64-Bit Server VM (build 16+36-2231, mixed mode, sharing)
 ```
 <p align="right"><a href="#top">back to top</a></p>
 
-## Using in your build
+## Install
 For any code snippet below, please substitute the version given with the version of Officelove you wish to use.
 #### [Maven](https://maven.apache.org/)
 Add JitPack repository at the end of repositories element in your build.xml:
@@ -38,20 +43,18 @@ Add it into in the dependencies element like so:
 <dependency>
     <groupId>com.github.teletha</groupId>
     <artifactId>officelove</artifactId>
-    <version>1.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 #### [Gradle](https://gradle.org/)
 Add JitPack repository at the end of repositories in your build.gradle:
 ```gradle
-repositories {
-    maven { url "https://jitpack.io" }
+repositories } url "https://jitpack.io" }
 }
 ```
 Add it into the dependencies section like so:
 ```gradle
-dependencies {
-    implementation 'com.github.teletha:officelove:1.1'
+dependencies :officelove:1.0.0'
 }
 ```
 #### [SBT](https://www.scala-sbt.org/)
@@ -61,7 +64,7 @@ resolvers += "jitpack" at "https://jitpack.io"
 ```
 Add it into the libraryDependencies section like so:
 ```scala
-libraryDependencies += "com.github.teletha" % "officelove" % "1.1"
+libraryDependencies += "com.github.teletha" % "officelove" % "1.0.0"
 ```
 #### [Leiningen](https://leiningen.org/)
 Add JitPack repository at the end of repositories in your project.clj:
@@ -70,12 +73,12 @@ Add JitPack repository at the end of repositories in your project.clj:
 ```
 Add it into the dependencies section like so:
 ```clj
-:dependencies [[com.github.teletha/officelove "1.1"]]
+:dependencies [[com.github.teletha/officelove "1.0.0"]]
 ```
 #### [Bee](https://teletha.github.io/bee)
 Add it into your project definition class like so:
 ```java
-require("com.github.teletha", "officelove", "1.1");
+require("com.github.teletha", "officelove", "1.0.0");
 ```
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -101,7 +104,7 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 <p align="right"><a href="#top">back to top</a></p>
 
 
-## Built with
+## Dependency
 Officelove depends on the following products on runtime.
 * [SparseBitSet-1.2](https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet/1.2)
 * [commons-codec-1.15](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.15)
@@ -109,27 +112,15 @@ Officelove depends on the following products on runtime.
 * [commons-compress-1.21](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.21)
 * [commons-io-2.11.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.11.0)
 * [commons-math3-3.6.1](https://mvnrepository.com/artifact/org.apache.commons/commons-math3/3.6.1)
+* [conjure-1.0](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.0)
 * [curvesapi-1.07](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.07)
 * [log4j-api-2.17.2](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.17.2)
 * [poi-5.2.2](https://mvnrepository.com/artifact/org.apache.poi/poi/5.2.2)
 * [poi-ooxml-5.2.2](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.2.2)
 * [poi-ooxml-lite-5.2.2](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.2.2)
 * [psychopath-1.6.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/1.6.0)
-* [sinobu-2.16.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/2.16.0)
+* [sinobu-2.20.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/2.20.0)
 * [xmlbeans-5.0.3](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.0.3)
-
-Officelove depends on the following products on test.
-* [antibug-1.3.0](https://mvnrepository.com/artifact/com.github.teletha/antibug/1.3.0)
-* [apiguardian-api-1.1.2](https://mvnrepository.com/artifact/org.apiguardian/apiguardian-api/1.1.2)
-* [byte-buddy-1.12.12](https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy/1.12.12)
-* [byte-buddy-agent-1.12.12](https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy-agent/1.12.12)
-* [junit-jupiter-api-5.9.0-M1](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api/5.9.0-M1)
-* [junit-jupiter-engine-5.9.0-M1](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine/5.9.0-M1)
-* [junit-jupiter-params-5.9.0-M1](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params/5.9.0-M1)
-* [junit-platform-commons-1.9.0-M1](https://mvnrepository.com/artifact/org.junit.platform/junit-platform-commons/1.9.0-M1)
-* [junit-platform-engine-1.9.0-M1](https://mvnrepository.com/artifact/org.junit.platform/junit-platform-engine/1.9.0-M1)
-* [junit-platform-launcher-1.9.0-M1](https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher/1.9.0-M1)
-* [opentest4j-1.2.0](https://mvnrepository.com/artifact/org.opentest4j/opentest4j/1.2.0)
 <p align="right"><a href="#top">back to top</a></p>
 
 
