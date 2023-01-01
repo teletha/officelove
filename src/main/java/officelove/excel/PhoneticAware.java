@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The OFFISHELL Development Team
+ * Copyright (C) 2023 The OFFICELOVE Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
