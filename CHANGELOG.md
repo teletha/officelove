@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/teletha/officelove/compare/v1.0.0...v1.1.0) (2023-01-01)
+
+
+### Features
+
+* Add excel writer. ([085c433](https://github.com/teletha/officelove/commit/085c4334df7954e9c35dab1b8011fe8e80e21127))
+* Excel can accepts sheet name. ([4728ab0](https://github.com/teletha/officelove/commit/4728ab0a5509b4d593cf65d59290bb70535029c8))
+
+
+### Bug Fixes
+
+* Can apply multiple table styles. ([d6ed535](https://github.com/teletha/officelove/commit/d6ed535d52d659ea94058c4bff820fb11a5ca2e3))
+* LibreOffice can activate quickstart mode correctly. ([5dc135d](https://github.com/teletha/officelove/commit/5dc135d48b1a5af039382096ddc5e381406d34f5))
+
 ## 1.0.0 (2022-06-30)
 
 
