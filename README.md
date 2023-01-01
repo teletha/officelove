@@ -49,12 +49,14 @@ Add it into in the dependencies element like so:
 #### [Gradle](https://gradle.org/)
 Add JitPack repository at the end of repositories in your build.gradle:
 ```gradle
-repositories } url "https://jitpack.io" }
+repositories {
+    maven { url "https://jitpack.io" }
 }
 ```
 Add it into the dependencies section like so:
 ```gradle
-dependencies :officelove:1.0.0'
+dependencies {
+    implementation 'com.github.teletha:officelove:1.0.0'
 }
 ```
 #### [SBT](https://www.scala-sbt.org/)
@@ -112,20 +114,20 @@ Officelove depends on the following products on runtime.
 * [commons-compress-1.21](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.21)
 * [commons-io-2.11.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.11.0)
 * [commons-math3-3.6.1](https://mvnrepository.com/artifact/org.apache.commons/commons-math3/3.6.1)
-* [conjure-1.0](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.0)
+* [conjure-1.0.0](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.0.0)
 * [curvesapi-1.07](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.07)
-* [log4j-api-2.17.2](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.17.2)
-* [poi-5.2.2](https://mvnrepository.com/artifact/org.apache.poi/poi/5.2.2)
-* [poi-ooxml-5.2.2](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.2.2)
-* [poi-ooxml-lite-5.2.2](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.2.2)
+* [log4j-api-2.18.0](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.18.0)
+* [poi-5.2.3](https://mvnrepository.com/artifact/org.apache.poi/poi/5.2.3)
+* [poi-ooxml-5.2.3](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.2.3)
+* [poi-ooxml-lite-5.2.3](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.2.3)
 * [psychopath-1.6.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/1.6.0)
-* [sinobu-2.20.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/2.20.0)
-* [xmlbeans-5.0.3](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.0.3)
+* [sinobu-3.0.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/3.0.0)
+* [xmlbeans-5.1.1](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.1.1)
 <p align="right"><a href="#top">back to top</a></p>
 
 
 ## License
-Copyright (C) 2022 The OFFICELOVE Development Team
+Copyright (C) 2023 The OFFICELOVE Development Team
 
 MIT License
 
