@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/teletha/officelove/compare/v1.1.0...v1.2.0) (2023-04-20)
+
+
+### Features
+
+* Excel can read all sheet. ([16a8e3b](https://github.com/teletha/officelove/commit/16a8e3ba637591666f49e614a06ffc4a09d95c7e))
+
 ## [1.1.0](https://github.com/teletha/officelove/compare/v1.0.0...v1.1.0) (2023-01-01)
 
 
