@@ -853,6 +853,101 @@ public class Excel {
     }
 
     /**
+     * Read data from sheet.
+     * 
+     * @param file
+     * @return
+     */
+    public static Signal<SheetReader> read(File file) {
+        if (file == null || file.isAbsent()) {
+            throw new IllegalArgumentException("Excel file is unknown, please specify the valid file.");
+        }
+        return I.signal(file).map(x -> new XSSFWorkbook(file.asJavaFile())).flatIterable(x -> x).as(XSSFSheet.class).map(SheetReader::new);
+    }
+
+    public static class SheetReader {
+
+        private final XSSFSheet sheet;
+
+        /**
+         * @param x
+         */
+        private SheetReader(XSSFSheet sheet) {
+            this.sheet = sheet;
+        }
+
+        /**
+         * Get the sheet name.
+         * 
+         * @return
+         */
+        public String name() {
+            return sheet.getSheetName();
+        }
+
+        /**
+         * Read data from row.
+         * 
+         * @param headerName
+         * @return
+         */
+        public Signal<RowReader> read(String headerName) {
+            if (headerName == null || headerName.isBlank()) {
+                throw new IllegalArgumentException("Header name is unknown, please specify the valid name.");
+            }
+
+            return new Signal<>((observer, disposer) -> {
+                try {
+                    // create header mapping
+                    Map<String, Integer> mapping = new HashMap();
+                    for (Cell header : sheet.getRow(0)) {
+                        mapping.put(header.getStringCellValue(), header.getColumnIndex());
+                    }
+
+                    // specify the target header
+                    int index = mapping.getOrDefault(headerName, -1);
+                    if (index == -1) {
+                        throw new IllegalArgumentException("Header name is unknown, please specify the valid name.");
+                    }
+
+                    // process for each rows
+                    for (int i = 1; i < sheet.getLastRowNum(); i++) {
+                        XSSFRow row = sheet.getRow(i);
+
+                        if (row != null) {
+                            XSSFCell cell = row.getCell(index);
+
+                            if (cell != null) {
+                                switch (cell.getCellType()) {
+                                case BLANK:
+                                    break;
+
+                                case STRING:
+                                    String value = cell.getStringCellValue();
+
+                                    if (value != null && !value.isBlank()) {
+                                        observer.accept(new RowReader(row, mapping));
+                                    }
+                                    break;
+
+                                default:
+                                    observer.accept(new RowReader(row, mapping));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    observer.complete();
+                } catch (Throwable e) {
+                    observer.error(e);
+                }
+                return disposer;
+            });
+        }
+    }
+
+    /**
      * Read data for each row.
      */
     public static Signal<RowReader> read(File file, String sheetName, String headerName) {
