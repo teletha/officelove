@@ -32,6 +32,13 @@ public class LibreOffice {
     private static boolean cached;
 
     /**
+     * Get the location of LibreOffice.
+     */
+    public static String location() {
+        return soffice;
+    }
+
+    /**
      * Convert file.
      * 
      * @param input
@@ -125,13 +132,6 @@ public class LibreOffice {
                 }
             }
 
-            // search from 'LibreOffice' environment variable
-            String path = I.env("LibreOffice");
-            if (check(path)) {
-                soffice = path;
-                return;
-            }
-
             // search from typical location
             if (System.getProperty("os.name").contains("Windows")) {
                 String[] drives = {"C", "D", "E", "F", "G", "H", "I"};
@@ -141,10 +141,18 @@ public class LibreOffice {
                         File file = Locator.file(drive + ":/" + dir + "/LibreOffice/program/soffice.exe");
                         if (check(file)) {
                             soffice = file.toString();
+                            System.out.println(file);
                             return;
                         }
                     }
                 }
+            }
+
+            // search from 'LibreOffice' environment variable
+            String user = I.env("LibreOffice");
+            if (check(user)) {
+                soffice = user;
+                return;
             }
 
             throw new Error("Libre Office is not found.");
