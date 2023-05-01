@@ -141,7 +141,6 @@ public class LibreOffice {
                         File file = Locator.file(drive + ":/" + dir + "/LibreOffice/program/soffice.exe");
                         if (check(file)) {
                             soffice = file.toString();
-                            System.out.println(file);
                             return;
                         }
                     }
