@@ -996,18 +996,41 @@ public class Word {
          */
         private class Normal implements Block {
 
+            private void ruby() {
+
+            }
+
             /**
              * {@inheritDoc}
              */
             @Override
             public void process(XWPFParagraph paragraph) {
-                for (XWPFRun run : paragraph.getRuns()) {
+                for (int i = 0; i < paragraph.getRuns().size(); i++) {
+                    XWPFRun run = paragraph.getRuns().get(i);
+
                     try {
                         String text = variable.apply(run.getText(0));
                         text = WordCellStyle.apply(context.cell, text);
+
+                        int start = 0;
+                        int end = 0;
+                        while ((start = text.indexOf('｛', start)) != -1 && (end = text.indexOf('｝', start)) != -1) {
+                            String before = text.substring(0, start);
+                            String ruby = text.substring(start + 1, end);
+                            text = text.substring(end + 1);
+
+                            WordHeleper.copy(run, paragraph.insertNewRun(i++), x -> before);
+
+                            XWPFRun rubys = paragraph.insertNewRun(i++);
+                            WordHeleper.copy(run, rubys, x -> ruby);
+                            rubys.setFontSize(7);
+                            rubys.setColor("989898");
+                            rubys.setTextPosition(2);
+                        }
                         WordHeleper.write(run, text);
-                    } catch (XmlValueDisconnectedException e) {
+                    } catch (Throwable e) {
                         // ignore
+                        e.printStackTrace();
                     }
                 }
             }
