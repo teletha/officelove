@@ -74,6 +74,13 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemplateDoc",
+			"packageName": "officelove.word",
+			"type": "AbstractClass"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "Variable",
 			"packageName": "officelove.expression",
 			"type": "Interface"
