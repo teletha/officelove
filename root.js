@@ -5,6 +5,7 @@ const root = {
 		"officelove",
 		"officelove.excel",
 		"officelove.expression",
+		"officelove.expression.builtin",
 		"officelove.word"
 	],
 	"types": [
@@ -77,6 +78,13 @@ const root = {
 			"name": "TemplateDoc",
 			"packageName": "officelove.word",
 			"type": "AbstractClass"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemporalExpression",
+			"packageName": "officelove.expression.builtin",
+			"type": "Class"
 		},
 		{
 			"modifiers": {
