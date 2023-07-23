@@ -18,13 +18,6 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "DocExpression",
-			"packageName": "officelove.word",
-			"type": "Class"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "Excel",
 			"packageName": "officelove.excel",
 			"type": "Class"
@@ -77,13 +70,6 @@ const root = {
 			"name": "PhoneticAware",
 			"packageName": "officelove.excel",
 			"type": "Functional"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDoc",
-			"packageName": "officelove.word",
-			"type": "Class"
 		},
 		{
 			"modifiers": {
