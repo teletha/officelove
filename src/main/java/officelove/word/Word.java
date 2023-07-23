@@ -261,13 +261,19 @@ public class Word {
     public Word evaluate(List models) {
         // calculate variables
         context.variable = new VariableContext(name, textIsVerticalAlign, models);
-        replace(calculated);
 
-        // clear all comments
-        WordHeleper.clearComment(calculated);
+        try {
+            replace(calculated);
 
-        // API definition
-        return this;
+            // clear all comments
+            WordHeleper.clearComment(calculated);
+
+            // API definition
+            return this;
+        } catch (Throwable e) {
+            I.error(e);
+            throw e;
+        }
     }
 
     /**
@@ -922,7 +928,6 @@ public class Word {
                 if (starts.size() != 0) {
                     String special = "";
                     String condition = paragraph.getDocument().getCommentByID(starts.get(0).getId().toString()).getText();
-
                     int index = condition.indexOf("#");
 
                     if (index != -1) {
@@ -956,8 +961,7 @@ public class Word {
 
                         default:
                             // If this exception will be thrown, it is bug of this program. So we
-                            // must
-                            // rethrow the wrapped error in here.
+                            // must rethrow the wrapped error in here.
                             throw new Error();
                         }
                     } else {
