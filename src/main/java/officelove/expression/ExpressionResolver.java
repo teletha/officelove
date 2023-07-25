@@ -14,15 +14,10 @@ import java.util.regex.Matcher;
 
 import kiss.Extensible;
 
-/**
- * @version 2016/06/17 15:32:28
- */
 public interface ExpressionResolver<T> extends Extensible {
 
     /**
-     * <p>
      * Test the specified expression.
-     * </p>
      * 
      * @param expression
      * @return
@@ -30,9 +25,7 @@ public interface ExpressionResolver<T> extends Extensible {
     Matcher match(String expression);
 
     /**
-     * <p>
      * Resolve the specified value by the expression.
-     * </p>
      * 
      * @param matcher
      * @param value
@@ -41,9 +34,7 @@ public interface ExpressionResolver<T> extends Extensible {
     Object resolve(Matcher matcher, T value);
 
     /**
-     * <p>
      * Helper method to parse value as {@link Integer}.
-     * </p>
      * 
      * @param value
      * @param defalutValue
@@ -54,9 +45,7 @@ public interface ExpressionResolver<T> extends Extensible {
     }
 
     /**
-     * <p>
      * Helper method to parse value as {@link Integer}.
-     * </p>
      * 
      * @param value
      * @param defalutValue

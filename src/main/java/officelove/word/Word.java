@@ -146,6 +146,13 @@ public class Word {
         return calculated;
     }
 
+    public void validate(List<Class> models) {
+        // validate variables
+        context.variable = new VariableContext(name, models);
+
+        replace(calculated);
+    }
+
     /**
      * Collect paragraphs.
      * 

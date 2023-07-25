@@ -31,6 +31,9 @@ public class VariableContext implements UnaryOperator<String> {
     /** The model object. */
     private final List models;
 
+    /** The extractor. */
+    private final Extractor extractor;
+
     /** The processing state. */
     private boolean inVariable = false;
 
@@ -47,6 +50,18 @@ public class VariableContext implements UnaryOperator<String> {
     private List<Variable> variables = I.find(Variable.class);
 
     /**
+     * Create new context with validation mode.
+     * 
+     * @param fileName
+     */
+    public VariableContext(String fileName, List<Class> models) {
+        this.fileName = fileName;
+        this.isVertical = false;
+        this.models = models == null ? Collections.EMPTY_LIST : models.stream().map(Model::of).toList();
+        this.extractor = new ModelExtractor();
+    }
+
+    /**
      * Create new context.
      * 
      * @param fileName
@@ -57,6 +72,7 @@ public class VariableContext implements UnaryOperator<String> {
         this.fileName = fileName;
         this.isVertical = isVertical;
         this.models = models == null ? Collections.EMPTY_LIST : models.stream().filter(Objects::nonNull).toList();
+        this.extractor = new ValueExtractor();
     }
 
     /**
@@ -105,16 +121,16 @@ public class VariableContext implements UnaryOperator<String> {
     /**
      * Compute the specified built-in variable.
      * 
-     * @param variable
+     * @param name A variable name.
      * @return
      */
-    private Object resolveBuiltinVariable(String variable) {
+    private Object resolveBuiltinVariable(String name) {
         for (Variable var : variables) {
-            if (var.test(variable)) {
-                return var.apply(variable);
+            if (var.test(name)) {
+                return extractor.extract(var, name);
             }
         }
-        throw new Error("Can't resolve the variable {$" + variable + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
+        throw new Error("Can't resolve the variable {$" + name + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
     }
 
     /**
@@ -180,16 +196,16 @@ public class VariableContext implements UnaryOperator<String> {
             Matcher matcher = resolver.match(expression);
 
             if (matcher.matches()) {
-                return resolve(expressions, index + 1, resolver.resolve(matcher, value));
+                return resolve(expressions, index + 1, extractor.extract(resolver, matcher, value));
             }
         }
 
-        Model model = Model.of(value);
+        Model model = extractor.model(value);
         Property property = model.property(expression);
 
         // Search from properties
         if (property != null) {
-            return resolve(expressions, index + 1, model.get(value, property));
+            return resolve(expressions, index + 1, extractor.extract(model, property, value));
         }
 
         // Search from methods
@@ -225,7 +241,7 @@ public class VariableContext implements UnaryOperator<String> {
                         params[i] = I.transform(parametersText[i], method.getParameterTypes()[i]);
                     }
                     method.setAccessible(true);
-                    return resolve(expressions, index + 1, method.invoke(value, params));
+                    return resolve(expressions, index + 1, extractor.extract(method, params, value));
                 }
             }
             throw errorInVariableResolve(value, expressions, expression);
