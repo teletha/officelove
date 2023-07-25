@@ -61,6 +61,13 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "Extractor",
+			"packageName": "officelove.expression",
+			"type": "Interface"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "LibreOffice",
 			"packageName": "officelove",
 			"type": "Class"
