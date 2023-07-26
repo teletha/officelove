@@ -20,9 +20,7 @@ import kiss.I;
 public interface ConstantVariable extends Variable<Object> {
 
     /**
-     * <p>
      * Retrieve the constant value.
-     * </p>
      * 
      * @param name A value name.
      * @return A constant value.
@@ -40,9 +38,7 @@ public interface ConstantVariable extends Variable<Object> {
     }
 
     /**
-     * <p>
      * Retrieve the constant value.
-     * </p>
      * 
      * @param name A value name.
      * @return A constant value.

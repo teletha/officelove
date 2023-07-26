@@ -49,7 +49,7 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
 import officelove.LibreOffice;
-import officelove.expression.VariableContext;
+import officelove.expression.Parser;
 import psychopath.File;
 import psychopath.Locator;
 
@@ -146,11 +146,12 @@ public class Word {
         return calculated;
     }
 
-    public void validate(List<Class> models) {
-        // validate variables
-        context.variable = new VariableContext(name, models);
+    public boolean validate(List<Class> models) {
+        context.parser = new Parser(name, models);
 
         replace(calculated);
+
+        return true;
     }
 
     /**
@@ -267,7 +268,7 @@ public class Word {
      */
     public Word evaluate(List models) {
         // calculate variables
-        context.variable = new VariableContext(name, textIsVerticalAlign, models);
+        context.parser = new Parser(name, textIsVerticalAlign, models);
 
         try {
             replace(calculated);
@@ -920,7 +921,7 @@ public class Word {
         private Block block = new Normal();
 
         /** The variable context. */
-        private VariableContext variable;
+        private Parser parser;
 
         /** The current processing cell. */
         private XWPFTableCell cell;
@@ -942,7 +943,7 @@ public class Word {
                         condition = condition.substring(0, index);
                     }
 
-                    Object value = variable.resolve(condition);
+                    Object value = parser.resolve(condition);
 
                     if (value instanceof Signal) {
                         value = ((Signal) value).toList();
@@ -1020,7 +1021,7 @@ public class Word {
                     XWPFRun run = paragraph.getRuns().get(i);
 
                     try {
-                        String text = variable.apply(run.getText(0));
+                        String text = parser.apply(run.getText(0));
                         text = WordCellStyle.apply(context.cell, text);
 
                         int start = 0;
@@ -1148,7 +1149,7 @@ public class Word {
 
                     for (XWPFParagraph para : copy(doc.getParagraphs(), start, end)) {
                         for (XWPFRun run : para.getRuns()) {
-                            WordHeleper.write(run, variable.apply(run.getText(0)));
+                            WordHeleper.write(run, parser.apply(run.getText(0)));
                         }
                     }
                 }
@@ -1206,7 +1207,7 @@ public class Word {
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
                         WordHeleper.copy(para, doc
-                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, List.of(item)));
+                                .insertNewParagraph(index.newCursor()), new Parser(name, textIsVerticalAlign, List.of(item)));
                     }
                 }
 
@@ -1271,7 +1272,7 @@ public class Word {
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
                         WordHeleper.copy(para, cell
-                                .insertNewParagraph(index.newCursor()), new VariableContext(name, textIsVerticalAlign, List.of(item)));
+                                .insertNewParagraph(index.newCursor()), new Parser(name, textIsVerticalAlign, List.of(item)));
                     }
                 }
 
@@ -1346,7 +1347,7 @@ public class Word {
                 for (int count = 0; count < items.size(); count++) {
                     for (int offset = 0; offset < rows.size(); offset++) {
                         WordHeleper.copy(rows.get(offset), table.insertNewTableRow(start + count * rows
-                                .size() + offset), new VariableContext(name, textIsVerticalAlign, List.of(items.get(count))));
+                                .size() + offset), new Parser(name, textIsVerticalAlign, List.of(items.get(count))));
                     }
                 }
 

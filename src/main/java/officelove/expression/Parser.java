@@ -10,9 +10,12 @@
 package officelove.expression;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 
@@ -20,7 +23,10 @@ import kiss.I;
 import kiss.model.Model;
 import kiss.model.Property;
 
-public class VariableContext implements UnaryOperator<String> {
+/**
+ * Parser for the expression language.
+ */
+public class Parser implements UnaryOperator<String> {
 
     /** The file name. */
     private final String fileName;
@@ -49,12 +55,16 @@ public class VariableContext implements UnaryOperator<String> {
     /** Cache for {@link Variable} */
     private List<Variable> variables = I.find(Variable.class);
 
+    public Parser(Object... models) {
+        this(null, false, List.of(models));
+    }
+
     /**
      * Create new context with validation mode.
      * 
      * @param fileName
      */
-    public VariableContext(String fileName, List<Class> models) {
+    public Parser(String fileName, List<Class> models) {
         this.fileName = fileName;
         this.isVertical = false;
         this.models = models == null ? Collections.EMPTY_LIST : models.stream().map(Model::of).toList();
@@ -68,7 +78,7 @@ public class VariableContext implements UnaryOperator<String> {
      * @param isVertical
      * @param models
      */
-    public VariableContext(String fileName, boolean isVertical, List models) {
+    public Parser(String fileName, boolean isVertical, List models) {
         this.fileName = fileName;
         this.isVertical = isVertical;
         this.models = models == null ? Collections.EMPTY_LIST : models.stream().filter(Objects::nonNull).toList();
@@ -136,38 +146,47 @@ public class VariableContext implements UnaryOperator<String> {
     /**
      * Compute the specified property variable.
      * 
-     * @param paths
+     * @param expression
      * @return
      */
-    public Object resolve(String paths) {
-        Error error = null;
+    public Object resolve(String expression) {
+        Set<String> errors = new HashSet();
 
-        boolean optional = paths.endsWith("?");
-
+        boolean optional = expression.endsWith("?");
         if (optional) {
-            paths = paths.substring(0, paths.length() - 1);
+            expression = expression.substring(0, expression.length() - 1);
         }
 
-        for (Object value : models) {
+        List<String> expressions = Arrays.stream(expression.split("\\.")).map(x -> x.strip()).toList();
+        if (expressions.isEmpty()) {
+            return "";
+        }
+
+        if (expressions.get(0).charAt(0) == '$') {
+            return resolve(expressions, 1, resolveBuiltinVariable(expression.substring(1)));
+        }
+
+        // resolve value from various sources
+        for (int i = 0; i < models.size(); i++) {
             try {
-                return resolve(paths.split("\\."), 0, value);
-            } catch (Error e) {
-                if (error == null) {
-                    error = e;
-                } else {
-                    error.addSuppressed(e);
+                return resolve(expressions, 0, models.get(i));
+            } catch (ExpressionException e) {
+                if (!optional) {
+                    errors.add(e.getMessage());
                 }
             }
         }
 
-        if (optional) {
-            return "";
+        if (errors.isEmpty()) {
+            return ""; // optional
+        } else {
+            StringBuilder builder = new StringBuilder();
+            builder.append("There are several problems with this expression. {" + expression + "}");
+            for (String error : errors) {
+                builder.append("\n\t").append(error);
+            }
+            throw new ExpressionException(builder.toString());
         }
-
-        if (error == null) {
-            error = new Error();
-        }
-        throw error;
     }
 
     /**
@@ -178,19 +197,16 @@ public class VariableContext implements UnaryOperator<String> {
      * @param value
      * @return
      */
-    private Object resolve(String[] expressions, int index, Object value) {
+    private Object resolve(List<String> expressions, int index, Object value) {
         if (value == null || value == "") {
             return "";
         }
 
-        if (expressions.length == index) {
+        if (expressions.size() == index) {
             return value;
         }
 
-        String expression = expressions[index];
-        if (expression.charAt(0) == '$') {
-            return resolve(expressions, index + 1, resolveBuiltinVariable(expression.substring(1)));
-        }
+        String expression = expressions.get(index);
 
         for (ExpressionResolver resolver : expressionResolvers) {
             Matcher matcher = resolver.match(expression);
@@ -245,8 +261,10 @@ public class VariableContext implements UnaryOperator<String> {
                 }
             }
             throw errorInVariableResolve(value, expressions, expression);
+        } catch (ExpressionException e) {
+            throw e;
         } catch (Exception e) {
-            Error error = errorInVariableResolve(value, expressions, expression);
+            ExpressionException error = errorInVariableResolve(value, expressions, expression);
             error.addSuppressed(e);
             return error;
         }
@@ -260,9 +278,10 @@ public class VariableContext implements UnaryOperator<String> {
      * @param expression
      * @return
      */
-    private Error errorInVariableResolve(Object model, String[] expressions, String expression) {
-        return new Error("Class [" + model.getClass().getName() + "] can't resolve the variable [" + expression + "] in {" + String
-                .join(".", expressions) + "} at file [" + fileName + "].");
+    private ExpressionException errorInVariableResolve(Object model, List<String> expressions, String expression) {
+        return new ExpressionException("Class [" + model.getClass()
+                .getName() + "] can't resolve the variable [" + expression + "] in {" + String
+                        .join(".", expressions) + "} at file [" + fileName + "].");
     }
 
     /**

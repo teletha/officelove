@@ -8,7 +8,6 @@
  */
 package officelove.word;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -151,12 +150,8 @@ public abstract class TemplateDoc<M1, M2, M3, M4, M5> {
      * 
      * @return
      */
-    public final List<String> validate() {
-        List<String> result = new ArrayList();
-        Word word = new Word(file());
-        word.validate(types());
-
-        return result;
+    public final boolean validate() {
+        return new Word(file()).validate(types());
     }
 
     /**
