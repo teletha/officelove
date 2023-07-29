@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 import officelove.expression.ExpressionResolver;
 
-public class TemporalExpression implements ExpressionResolver<Temporal> {
+public class TemporalResolver implements ExpressionResolver<Temporal> {
 
     /** The range format. */
     private static final Pattern PATTERN = Pattern.compile("([+-]\\d+)(year|month|day|hour|min|sec|年|月|日|時間|時|分|秒)");

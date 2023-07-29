@@ -10,6 +10,7 @@
 package officelove.expression;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,6 +29,15 @@ import kiss.model.Property;
  */
 public class Parser implements UnaryOperator<String> {
 
+    /** Cache for {@link ExpressionResolver} */
+    private static List<ExpressionResolver> resolvers = I.find(ExpressionResolver.class);
+
+    /** The target type of {@link ExpressionResolver}. */
+    private static List<Class> resolverTypes = I.signal(resolvers)
+            .map(x -> Model.collectParameters(x.getClass(), ExpressionResolver.class)[0])
+            .as(Class.class)
+            .toList();
+
     /** The file name. */
     private final String fileName;
 
@@ -39,18 +49,6 @@ public class Parser implements UnaryOperator<String> {
 
     /** The extractor. */
     private final Extractor extractor;
-
-    /** The processing state. */
-    private boolean inVariable = false;
-
-    /** The buffer. */
-    private StringBuilder replace = new StringBuilder();
-
-    /** The buffer. */
-    private StringBuilder variable = new StringBuilder();
-
-    /** Cache for {@link ExpressionResolver} */
-    private List<ExpressionResolver> expressionResolvers = I.find(ExpressionResolver.class);
 
     /** Cache for {@link Variable} */
     private List<Variable> variables = I.find(Variable.class);
@@ -90,28 +88,25 @@ public class Parser implements UnaryOperator<String> {
      */
     @Override
     public String apply(String text) {
+        StringBuilder replace = new StringBuilder();
+        int start = -1;
+
         if (text != null) {
-            for (int i = 0; i < text.length(); i++) {
+            for (int i = 0, length = text.length(); i < length; i++) {
                 char c = text.charAt(i);
 
                 switch (c) {
                 case '{':
-                    inVariable = true;
+                    start = i + 1;
                     break;
 
                 case '}':
-                    inVariable = false;
-
-                    replace.append(I.transform(resolve(variable.toString()), String.class));
-
-                    // clear variable info
-                    variable = new StringBuilder();
+                    replace.append(I.transform(resolve(text.substring(start, i)), String.class));
+                    start = -1;
                     break;
 
                 default:
-                    if (inVariable) {
-                        variable.append(c);
-                    } else {
+                    if (start == -1) {
                         replace.append(c);
                     }
                     break;
@@ -120,12 +115,9 @@ public class Parser implements UnaryOperator<String> {
         }
 
         if (isVertical) {
-            convertForVerticalText(replace);
+            verticalize(replace);
         }
-
-        String replaced = replace.toString();
-        replace = new StringBuilder();
-        return replaced;
+        return replace.toString();
     }
 
     /**
@@ -157,7 +149,7 @@ public class Parser implements UnaryOperator<String> {
             expression = expression.substring(0, expression.length() - 1);
         }
 
-        List<String> expressions = Arrays.stream(expression.split("\\.")).map(x -> x.strip()).toList();
+        List<String> expressions = parse(expression);
         if (expressions.isEmpty()) {
             return "";
         }
@@ -190,6 +182,84 @@ public class Parser implements UnaryOperator<String> {
     }
 
     /**
+     * Parse the expression.
+     * 
+     * @param expression
+     * @return
+     */
+    private List<String> parse(String expression) {
+        List<String> parts = new ArrayList();
+        boolean sequencial = false;
+        StringBuilder part = new StringBuilder();
+
+        for (int i = 0, length = expression.length(); i < length; i++) {
+            char c = expression.charAt(i);
+            switch (c) {
+            case ' ':
+            case '\t':
+            case '\r':
+            case '\n':
+                sequencial = false;
+                break; // ignore space
+
+            case '.':
+                sequencial = false;
+                if (i + 1 != length && Character.isDigit(expression.charAt(i + 1))) {
+                    part.append(c);
+                } else {
+                    parts.add(part.toString());
+                    part.setLength(0);
+                }
+                break;
+
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '%':
+            case '#':
+            case '&':
+            case '!':
+            case '=':
+            case '<':
+            case '>':
+            case '?':
+            case '@':
+                if (sequencial) {
+                    // do nothing
+                } else {
+                    sequencial = true;
+                    parts.add(part.toString());
+                    part.setLength(0);
+                }
+                part.append(c);
+                break;
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                sequencial = false;
+                part.append(c);
+                break;
+
+            default:
+                sequencial = false;
+                part.append(c);
+                break;
+            }
+        }
+        parts.add(part.toString());
+        return parts;
+    }
+
+    /**
      * Compute the specified property variable.
      * 
      * @param expressions
@@ -208,11 +278,14 @@ public class Parser implements UnaryOperator<String> {
 
         String expression = expressions.get(index);
 
-        for (ExpressionResolver resolver : expressionResolvers) {
-            Matcher matcher = resolver.match(expression);
+        for (int i = 0; i < resolvers.size(); i++) {
+            if (resolverTypes.get(i).isInstance(value)) {
+                ExpressionResolver resolver = resolvers.get(i);
+                Matcher matcher = resolver.match(expression);
 
-            if (matcher.matches()) {
-                return resolve(expressions, index + 1, extractor.extract(resolver, matcher, value));
+                if (matcher.matches()) {
+                    return resolve(expressions, index + 1, extractor.extract(resolver, matcher, value));
+                }
             }
         }
 
@@ -230,16 +303,16 @@ public class Parser implements UnaryOperator<String> {
             int end = expression.lastIndexOf(")");
 
             String name;
-            String[] parametersText;
+            List<String> parametersText;
 
             if (start == -1 && end == -1) {
                 // without parameter
                 name = expression;
-                parametersText = new String[0];
+                parametersText = Collections.EMPTY_LIST;
             } else if (start != -1 && end != -1) {
                 // with parameter
                 name = expression.substring(0, start);
-                parametersText = expression.substring(start + 1, end).split(",");
+                parametersText = Arrays.stream(expression.substring(start + 1, end).split(",")).map(String::strip).toList();
             } else {
                 throw errorInVariableResolve(value, expressions, expression);
             }
@@ -250,11 +323,11 @@ public class Parser implements UnaryOperator<String> {
                     continue;
                 }
 
-                if (method.getName().equals(name) && method.getParameterCount() == parametersText.length) {
-                    Object[] params = new Object[parametersText.length];
+                if (method.getName().equals(name) && method.getParameterCount() == parametersText.size()) {
+                    Object[] params = new Object[parametersText.size()];
 
-                    for (int i = 0; i < parametersText.length; i++) {
-                        params[i] = I.transform(parametersText[i], method.getParameterTypes()[i]);
+                    for (int i = 0; i < parametersText.size(); i++) {
+                        params[i] = I.transform(parametersText.get(i), method.getParameterTypes()[i]);
                     }
                     method.setAccessible(true);
                     return resolve(expressions, index + 1, extractor.extract(method, params, value));
@@ -287,50 +360,50 @@ public class Parser implements UnaryOperator<String> {
     /**
      * Convert text for vertical alignment.
      * 
-     * @param replace2
+     * @param text
      */
-    private void convertForVerticalText(StringBuilder builder) {
-        for (int i = 0; i < builder.length(); i++) {
-            switch (builder.charAt(i)) {
+    static void verticalize(StringBuilder text) {
+        for (int i = 0; i < text.length(); i++) {
+            switch (text.charAt(i)) {
             case '1':
             case '１':
-                builder.setCharAt(i, '一');
+                text.setCharAt(i, '一');
                 break;
             case '2':
             case '２':
-                builder.setCharAt(i, '二');
+                text.setCharAt(i, '二');
                 break;
             case '3':
             case '３':
-                builder.setCharAt(i, '三');
+                text.setCharAt(i, '三');
                 break;
             case '4':
             case '４':
-                builder.setCharAt(i, '四');
+                text.setCharAt(i, '四');
                 break;
             case '5':
             case '５':
-                builder.setCharAt(i, '五');
+                text.setCharAt(i, '五');
                 break;
             case '6':
             case '６':
-                builder.setCharAt(i, '六');
+                text.setCharAt(i, '六');
                 break;
             case '7':
             case '７':
-                builder.setCharAt(i, '七');
+                text.setCharAt(i, '七');
                 break;
             case '8':
             case '８':
-                builder.setCharAt(i, '八');
+                text.setCharAt(i, '八');
                 break;
             case '9':
             case '９':
-                builder.setCharAt(i, '九');
+                text.setCharAt(i, '九');
                 break;
             case '0':
             case '０':
-                builder.setCharAt(i, '〇');
+                text.setCharAt(i, '〇');
                 break;
             }
         }

@@ -9,7 +9,6 @@
  */
 package officelove.expression;
 
-import java.util.function.IntPredicate;
 import java.util.regex.Matcher;
 
 import kiss.Extensible;
@@ -32,33 +31,4 @@ public interface ExpressionResolver<T> extends Extensible {
      * @return
      */
     Object resolve(Matcher matcher, T value);
-
-    /**
-     * Helper method to parse value as {@link Integer}.
-     * 
-     * @param value
-     * @param defalutValue
-     * @return
-     */
-    default int parse(String value, int defalutValue) {
-        return parse(value, defalutValue, v -> true);
-    }
-
-    /**
-     * Helper method to parse value as {@link Integer}.
-     * 
-     * @param value
-     * @param defalutValue
-     * @param restriction
-     * @return
-     */
-    default int parse(String value, int defalutValue, IntPredicate restriction) {
-        try {
-            int parsed = Integer.parseInt(value);
-
-            return restriction.test(parsed) ? parsed : defalutValue;
-        } catch (NumberFormatException e) {
-            return defalutValue;
-        }
-    }
 }

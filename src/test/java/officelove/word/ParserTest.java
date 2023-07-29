@@ -9,6 +9,8 @@
  */
 package officelove.word;
 
+import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +25,7 @@ class ParserTest {
 
     static {
         I.load(ParserTest.class);
+        I.load(Parser.class);
     }
 
     @Test
@@ -40,7 +43,7 @@ class ParserTest {
     }
 
     @Test
-    void notFound() {
+    void none() {
         Parser parser = new Parser(new Person("one", 1));
         Assertions.assertThrows(ExpressionException.class, () -> parser.resolve("none"));
     }
@@ -61,6 +64,43 @@ class ParserTest {
     void variable() {
         Parser parser = new Parser();
         assert parser.resolve("$var").equals("variable");
+    }
+
+    @Test
+    void method() {
+        Parser parser = new Parser(new MethodCall());
+        assert parser.resolve("text").equals("text");
+        assert parser.resolve("text(World)").equals("Hello World");
+        assert parser.resolve("sum(1,2)").equals(3);
+        assert parser.resolve("sum(1, 2)").equals(3);
+        assert parser.resolve("sum( 1 , 2 )").equals(3);
+    }
+
+    @Test
+    void intResolver() {
+        Parser parser = new Parser(new Person("one", 10));
+        assert parser.resolve("age + 1").equals(BigDecimal.valueOf(11));
+        assert parser.resolve("age - 1").equals(BigDecimal.valueOf(9));
+        assert parser.resolve("age * 10").equals(BigDecimal.valueOf(100));
+        assert parser.resolve("age / 2").equals(BigDecimal.valueOf(5));
+        assert parser.resolve("age % 3").equals(BigDecimal.valueOf(1));
+
+        assert parser.resolve("age + 1 * 10").equals(BigDecimal.valueOf(110));
+    }
+
+    @Test
+    void decimalResolver() {
+        Parser parser = new Parser(new Person("one", 10));
+        assert parser.resolve("age + 1.1").equals(BigDecimal.valueOf(11.1));
+        assert parser.resolve("age - 1.1").equals(BigDecimal.valueOf(8.9));
+        assert parser.resolve("age * 1.1").equals(BigDecimal.valueOf(11d));
+        assert parser.resolve("age / 0.5").equals(BigDecimal.valueOf(20));
+    }
+
+    @Test
+    void temporalResolver() {
+        Parser parser = new Parser(new TemporalValue(LocalTime.of(10, 30)));
+        assert parser.resolve("time - 10min").equals(LocalTime.of(10, 20));
     }
 
     /**
@@ -91,7 +131,10 @@ class ParserTest {
         }
     }
 
-    public static class Var implements Variable<String> {
+    /**
+     * Test model.
+     */
+    static class Var implements Variable<String> {
 
         /**
          * {@inheritDoc}
@@ -107,6 +150,39 @@ class ParserTest {
         @Override
         public boolean test(String expression) {
             return expression.equals("var");
+        }
+    }
+
+    /**
+     * Test model.
+     */
+    static class MethodCall {
+
+        public String text() {
+            return "text";
+        }
+
+        public String text(String name) {
+            return "Hello " + name;
+        }
+
+        public int sum(int first, int second) {
+            return first + second;
+        }
+    }
+
+    /**
+     * Test model.
+     */
+    static class TemporalValue {
+
+        public LocalTime time;
+
+        /**
+         * @param time
+         */
+        TemporalValue(LocalTime time) {
+            this.time = time;
         }
     }
 }
