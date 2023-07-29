@@ -59,12 +59,8 @@ public class Parser implements UnaryOperator<String> {
             .as(Class.class)
             .toList();
 
-    public Parser(Object... models) {
-        this(false, List.of(models));
-    }
-
     /**
-     * Create new context with validation mode.
+     * Create parser by validation mode.
      */
     public Parser(List<Class> models) {
         this.isVertical = false;
@@ -73,12 +69,21 @@ public class Parser implements UnaryOperator<String> {
     }
 
     /**
-     * Create new context.
+     * Create parser with context models.
      * 
-     * @param isVertical
      * @param models
      */
-    public Parser(boolean isVertical, List models) {
+    public Parser(Object... models) {
+        this(List.of(models), false);
+    }
+
+    /**
+     * Create parser with context models.
+     * 
+     * @param models
+     * @param isVertical
+     */
+    public Parser(List models, boolean isVertical) {
         this.isVertical = isVertical;
         this.models = models == null ? Collections.EMPTY_LIST : models.stream().filter(Objects::nonNull).toList();
         this.extractor = new ValueExtractor();

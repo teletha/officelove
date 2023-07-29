@@ -7,7 +7,7 @@
  *
  *          http://opensource.org/licenses/mit-license.php
  */
-package officelove.word;
+package officelove.expression;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -17,9 +17,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import kiss.I;
-import officelove.expression.ExpressionException;
-import officelove.expression.Parser;
-import officelove.expression.Variable;
 
 class ParserTest {
 

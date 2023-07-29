@@ -268,7 +268,7 @@ public class Word {
      */
     public Word evaluate(List models) {
         // calculate variables
-        context.parser = new Parser(textIsVerticalAlign, models);
+        context.parser = new Parser(models, textIsVerticalAlign);
 
         try {
             replace(calculated);
@@ -1008,10 +1008,6 @@ public class Word {
          */
         private class Normal implements Block {
 
-            private void ruby() {
-
-            }
-
             /**
              * {@inheritDoc}
              */
@@ -1206,7 +1202,7 @@ public class Word {
 
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
-                        WordHeleper.copy(para, doc.insertNewParagraph(index.newCursor()), new Parser(textIsVerticalAlign, List.of(item)));
+                        WordHeleper.copy(para, doc.insertNewParagraph(index.newCursor()), new Parser(List.of(item), textIsVerticalAlign));
                     }
                 }
 
@@ -1270,7 +1266,7 @@ public class Word {
 
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
-                        WordHeleper.copy(para, cell.insertNewParagraph(index.newCursor()), new Parser(textIsVerticalAlign, List.of(item)));
+                        WordHeleper.copy(para, cell.insertNewParagraph(index.newCursor()), new Parser(List.of(item), textIsVerticalAlign));
                     }
                 }
 
@@ -1345,8 +1341,8 @@ public class Word {
                 for (int count = 0; count < items.size(); count++) {
                     for (int offset = 0; offset < rows.size(); offset++) {
                         WordHeleper.copy(rows.get(offset), table
-                                .insertNewTableRow(start + count * rows.size() + offset), new Parser(textIsVerticalAlign, List
-                                        .of(items.get(count))));
+                                .insertNewTableRow(start + count * rows.size() + offset), new Parser(List
+                                        .of(items.get(count)), textIsVerticalAlign));
                     }
                 }
 
