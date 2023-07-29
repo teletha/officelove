@@ -29,12 +29,6 @@ import kiss.model.Property;
  */
 public class Parser implements UnaryOperator<String> {
 
-    /** Cache for {@link ExpressionResolver} */
-    private static List<ExpressionResolver> resolvers;
-
-    /** The target type of {@link ExpressionResolver}. */
-    private static List<Class> resolverTypes;
-
     /** The context state. */
     private final boolean isVertical;
 
@@ -44,8 +38,26 @@ public class Parser implements UnaryOperator<String> {
     /** The extractor. */
     private final Extractor extractor;
 
+    /** The processing state. */
+    private boolean inVariable = false;
+
+    /** The buffer. */
+    private StringBuilder replace = new StringBuilder();
+
+    /** The buffer. */
+    private StringBuilder variable = new StringBuilder();
+
     /** Cache for {@link Variable} */
     private List<Variable> variables = I.find(Variable.class);
+
+    /** Cache for {@link ExpressionResolver} */
+    private List<ExpressionResolver> resolvers = I.find(ExpressionResolver.class);
+
+    /** The target type of {@link ExpressionResolver}. */
+    private List<Class> resolverTypes = I.signal(resolvers)
+            .map(x -> Model.collectParameters(x.getClass(), ExpressionResolver.class)[0])
+            .as(Class.class)
+            .toList();
 
     public Parser(Object... models) {
         this(false, List.of(models));
@@ -77,29 +89,28 @@ public class Parser implements UnaryOperator<String> {
      */
     @Override
     public String apply(String text) {
-        StringBuilder replace = new StringBuilder();
-        int start = -1;
-
         if (text != null) {
-            for (int i = 0, length = text.length(); i < length; i++) {
+            for (int i = 0; i < text.length(); i++) {
                 char c = text.charAt(i);
 
                 switch (c) {
                 case '{':
-                    start = i + 1;
+                    inVariable = true;
                     break;
 
                 case '}':
-                    if (start != -1) {
-                        replace.append(I.transform(resolve(text.substring(start, i)), String.class));
-                        start = -1;
-                    } else {
-                        replace.append(c);
-                    }
+                    inVariable = false;
+
+                    replace.append(I.transform(resolve(variable.toString()), String.class));
+
+                    // clear variable info
+                    variable = new StringBuilder();
                     break;
 
                 default:
-                    if (start == -1) {
+                    if (inVariable) {
+                        variable.append(c);
+                    } else {
                         replace.append(c);
                     }
                     break;
@@ -110,7 +121,10 @@ public class Parser implements UnaryOperator<String> {
         if (isVertical) {
             verticalize(replace);
         }
-        return replace.toString();
+
+        String replaced = replace.toString();
+        replace = new StringBuilder();
+        return replaced;
     }
 
     /**
@@ -125,7 +139,7 @@ public class Parser implements UnaryOperator<String> {
                 return extractor.extract(var, name);
             }
         }
-        throw new ExpressionException("Can't resolve the variable {$" + name + "}. Please implement the custom " + Variable.class + " class.");
+        throw new Error("Can't resolve the variable {$" + name + "}. Please implement the custom " + Variable.class + " class.");
     }
 
     /**
@@ -145,10 +159,6 @@ public class Parser implements UnaryOperator<String> {
         List<String> expressions = parse(expression);
         if (expressions.isEmpty()) {
             return "";
-        }
-
-        if (expressions.get(0).charAt(0) == '$') {
-            return resolve(expressions, 1, resolveBuiltinVariable(expression.substring(1)));
         }
 
         // resolve value from various sources
@@ -257,13 +267,8 @@ public class Parser implements UnaryOperator<String> {
 
         String expression = expressions.get(index);
 
-        // lazy initialization
-        if (resolvers == null) {
-            resolvers = I.find(ExpressionResolver.class);
-            resolverTypes = I.signal(resolvers)
-                    .map(x -> Model.collectParameters(x.getClass(), ExpressionResolver.class)[0])
-                    .as(Class.class)
-                    .toList();
+        if (index == 0 && expression.charAt(0) == '$') {
+            return resolve(expressions, 1, resolveBuiltinVariable(expression.substring(1)));
         }
 
         for (int i = 0; i < resolvers.size(); i++) {

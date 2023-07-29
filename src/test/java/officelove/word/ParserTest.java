@@ -62,7 +62,7 @@ class ParserTest {
 
     @Test
     void variable() {
-        Parser parser = new Parser();
+        Parser parser = new Parser(new Person("one", 1));
         assert parser.resolve("$var").equals("variable");
     }
 
