@@ -54,6 +54,13 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "ExpressionException",
+			"packageName": "officelove.expression",
+			"type": "Exception"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "ExpressionResolver",
 			"packageName": "officelove.expression",
 			"type": "Interface"
@@ -75,6 +82,20 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "NumberResolver",
+			"packageName": "officelove.expression.builtin",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "Parser",
+			"packageName": "officelove.expression",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "PhoneticAware",
 			"packageName": "officelove.excel",
 			"type": "Functional"
@@ -89,7 +110,7 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemporalExpression",
+			"name": "TemporalResolver",
 			"packageName": "officelove.expression.builtin",
 			"type": "Class"
 		},
@@ -99,13 +120,6 @@ const root = {
 			"name": "Variable",
 			"packageName": "officelove.expression",
 			"type": "Interface"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "VariableContext",
-			"packageName": "officelove.expression",
-			"type": "Class"
 		},
 		{
 			"modifiers": {
