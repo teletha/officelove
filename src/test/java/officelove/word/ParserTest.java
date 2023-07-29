@@ -24,8 +24,8 @@ import officelove.expression.Variable;
 class ParserTest {
 
     static {
-        I.load(ParserTest.class);
         I.load(Parser.class);
+        I.load(ParserTest.class);
     }
 
     @Test

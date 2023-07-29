@@ -30,16 +30,10 @@ import kiss.model.Property;
 public class Parser implements UnaryOperator<String> {
 
     /** Cache for {@link ExpressionResolver} */
-    private static List<ExpressionResolver> resolvers = I.find(ExpressionResolver.class);
+    private static List<ExpressionResolver> resolvers;
 
     /** The target type of {@link ExpressionResolver}. */
-    private static List<Class> resolverTypes = I.signal(resolvers)
-            .map(x -> Model.collectParameters(x.getClass(), ExpressionResolver.class)[0])
-            .as(Class.class)
-            .toList();
-
-    /** The file name. */
-    private final String fileName;
+    private static List<Class> resolverTypes;
 
     /** The context state. */
     private final boolean isVertical;
@@ -54,16 +48,13 @@ public class Parser implements UnaryOperator<String> {
     private List<Variable> variables = I.find(Variable.class);
 
     public Parser(Object... models) {
-        this(null, false, List.of(models));
+        this(false, List.of(models));
     }
 
     /**
      * Create new context with validation mode.
-     * 
-     * @param fileName
      */
-    public Parser(String fileName, List<Class> models) {
-        this.fileName = fileName;
+    public Parser(List<Class> models) {
         this.isVertical = false;
         this.models = models == null ? Collections.EMPTY_LIST : models.stream().map(Model::of).toList();
         this.extractor = new ModelExtractor();
@@ -72,12 +63,10 @@ public class Parser implements UnaryOperator<String> {
     /**
      * Create new context.
      * 
-     * @param fileName
      * @param isVertical
      * @param models
      */
-    public Parser(String fileName, boolean isVertical, List models) {
-        this.fileName = fileName;
+    public Parser(boolean isVertical, List models) {
         this.isVertical = isVertical;
         this.models = models == null ? Collections.EMPTY_LIST : models.stream().filter(Objects::nonNull).toList();
         this.extractor = new ValueExtractor();
@@ -101,8 +90,12 @@ public class Parser implements UnaryOperator<String> {
                     break;
 
                 case '}':
-                    replace.append(I.transform(resolve(text.substring(start, i)), String.class));
-                    start = -1;
+                    if (start != -1) {
+                        replace.append(I.transform(resolve(text.substring(start, i)), String.class));
+                        start = -1;
+                    } else {
+                        replace.append(c);
+                    }
                     break;
 
                 default:
@@ -132,7 +125,7 @@ public class Parser implements UnaryOperator<String> {
                 return extractor.extract(var, name);
             }
         }
-        throw new Error("Can't resolve the variable {$" + name + "} in [" + fileName + "]. Please implement the custom " + Variable.class + " class.");
+        throw new ExpressionException("Can't resolve the variable {$" + name + "}. Please implement the custom " + Variable.class + " class.");
     }
 
     /**
@@ -235,20 +228,6 @@ public class Parser implements UnaryOperator<String> {
                 part.append(c);
                 break;
 
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                sequencial = false;
-                part.append(c);
-                break;
-
             default:
                 sequencial = false;
                 part.append(c);
@@ -277,6 +256,15 @@ public class Parser implements UnaryOperator<String> {
         }
 
         String expression = expressions.get(index);
+
+        // lazy initialization
+        if (resolvers == null) {
+            resolvers = I.find(ExpressionResolver.class);
+            resolverTypes = I.signal(resolvers)
+                    .map(x -> Model.collectParameters(x.getClass(), ExpressionResolver.class)[0])
+                    .as(Class.class)
+                    .toList();
+        }
 
         for (int i = 0; i < resolvers.size(); i++) {
             if (resolverTypes.get(i).isInstance(value)) {
@@ -314,7 +302,7 @@ public class Parser implements UnaryOperator<String> {
                 name = expression.substring(0, start);
                 parametersText = Arrays.stream(expression.substring(start + 1, end).split(",")).map(String::strip).toList();
             } else {
-                throw errorInVariableResolve(value, expressions, expression);
+                throw errorInVariableResolve(value, expression);
             }
 
             for (Method method : model.type.getMethods()) {
@@ -333,11 +321,11 @@ public class Parser implements UnaryOperator<String> {
                     return resolve(expressions, index + 1, extractor.extract(method, params, value));
                 }
             }
-            throw errorInVariableResolve(value, expressions, expression);
+            throw errorInVariableResolve(value, expression);
         } catch (ExpressionException e) {
             throw e;
         } catch (Exception e) {
-            ExpressionException error = errorInVariableResolve(value, expressions, expression);
+            ExpressionException error = errorInVariableResolve(value, expression);
             error.addSuppressed(e);
             return error;
         }
@@ -347,14 +335,11 @@ public class Parser implements UnaryOperator<String> {
      * Describe the error in detail.
      * 
      * @param model
-     * @param expressions
      * @param expression
      * @return
      */
-    private ExpressionException errorInVariableResolve(Object model, List<String> expressions, String expression) {
-        return new ExpressionException("Class [" + model.getClass()
-                .getName() + "] can't resolve the variable [" + expression + "] in {" + String
-                        .join(".", expressions) + "} at file [" + fileName + "].");
+    private ExpressionException errorInVariableResolve(Object model, String expression) {
+        return new ExpressionException("Class [" + model.getClass().getName() + "] can't resolve the expression [" + expression + "].");
     }
 
     /**

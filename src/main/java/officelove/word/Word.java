@@ -147,7 +147,7 @@ public class Word {
     }
 
     public boolean validate(List<Class> models) {
-        context.parser = new Parser(name, models);
+        context.parser = new Parser(models);
 
         replace(calculated);
 
@@ -268,7 +268,7 @@ public class Word {
      */
     public Word evaluate(List models) {
         // calculate variables
-        context.parser = new Parser(name, textIsVerticalAlign, models);
+        context.parser = new Parser(textIsVerticalAlign, models);
 
         try {
             replace(calculated);
@@ -1206,8 +1206,7 @@ public class Word {
 
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
-                        WordHeleper.copy(para, doc
-                                .insertNewParagraph(index.newCursor()), new Parser(name, textIsVerticalAlign, List.of(item)));
+                        WordHeleper.copy(para, doc.insertNewParagraph(index.newCursor()), new Parser(textIsVerticalAlign, List.of(item)));
                     }
                 }
 
@@ -1271,8 +1270,7 @@ public class Word {
 
                 for (Object item : items) {
                     for (XWPFParagraph para : paragraphs) {
-                        WordHeleper.copy(para, cell
-                                .insertNewParagraph(index.newCursor()), new Parser(name, textIsVerticalAlign, List.of(item)));
+                        WordHeleper.copy(para, cell.insertNewParagraph(index.newCursor()), new Parser(textIsVerticalAlign, List.of(item)));
                     }
                 }
 
@@ -1346,8 +1344,9 @@ public class Word {
 
                 for (int count = 0; count < items.size(); count++) {
                     for (int offset = 0; offset < rows.size(); offset++) {
-                        WordHeleper.copy(rows.get(offset), table.insertNewTableRow(start + count * rows
-                                .size() + offset), new Parser(name, textIsVerticalAlign, List.of(items.get(count))));
+                        WordHeleper.copy(rows.get(offset), table
+                                .insertNewTableRow(start + count * rows.size() + offset), new Parser(textIsVerticalAlign, List
+                                        .of(items.get(count))));
                     }
                 }
 

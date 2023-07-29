@@ -385,7 +385,7 @@ public class Excel {
     public Excel calculate(Object model) {
         Map<CellAddress, XSSFComment> cellComments = sheet.getCellComments();
 
-        Parser context = new Parser(file.name(), false, List.of(model));
+        Parser context = new Parser(false, List.of(model));
 
         for (Iterator<Entry<CellAddress, XSSFComment>> iterator = cellComments.entrySet().iterator(); iterator.hasNext();) {
             Entry<CellAddress, XSSFComment> entry = iterator.next();
