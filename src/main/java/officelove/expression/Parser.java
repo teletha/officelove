@@ -106,10 +106,12 @@ public class Parser implements UnaryOperator<String> {
                 case '}':
                     inVariable = false;
 
-                    replace.append(I.transform(resolve(variable.toString()), String.class));
-
-                    // clear variable info
-                    variable = new StringBuilder();
+                    try {
+                        replace.append(I.transform(resolve(variable.toString()), String.class));
+                    } finally {
+                        // clear variable info
+                        variable = new StringBuilder();
+                    }
                     break;
 
                 default:
@@ -212,7 +214,8 @@ public class Parser implements UnaryOperator<String> {
 
             case '.':
                 sequencial = false;
-                if (i + 1 != length && Character.isDigit(expression.charAt(i + 1))) {
+                if (i + 1 != length && Character
+                        .isDigit(expression.charAt(i + 1)) && (0 <= i - 1 && Character.isDigit(expression.charAt(i - 1)))) {
                     part.append(c);
                 } else {
                     parts.add(part.toString());
