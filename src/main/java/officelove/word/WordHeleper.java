@@ -66,9 +66,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to remove all comments from the specified document.
-     * </p>
      * 
      * @param document A target document.
      */
@@ -90,9 +88,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to remove all comments from the specified paragraph.
-     * </p>
      * 
      * @param paragraph A target paragraph.
      */
@@ -119,9 +115,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to remove all text from the specified paragraph.
-     * </p>
      * 
      * @param paragraph A target paragraph.
      */
@@ -134,9 +128,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to clone {@link XWPFTable}.
-     * </p>
      * 
      * @param in
      * @param out
@@ -156,9 +148,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to clone {@link XWPFTableRow}.
-     * </p>
      * 
      * @param in
      * @param out
@@ -177,9 +167,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to clone {@link XWPFTableCell}.
-     * </p>
      * 
      * @param in
      * @param out
@@ -203,9 +191,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to clone {@link XWPFFooter}.
-     * </p>
      * 
      * @param in
      * @param out
@@ -223,9 +209,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to clone {@link XWPFParagraph}.
-     * </p>
      * 
      * @param in
      * @param out
@@ -246,9 +230,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to clone {@link XWPFRun}.
-     * </p>
      * 
      * @param in
      * @param out
@@ -323,9 +305,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Select node by XPath.
-     * </p>
      * 
      * @param type
      * @param node
@@ -349,9 +329,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Write the text.
-     * </p>
      * 
      * @param run
      * @param text
@@ -371,9 +349,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to retrieve {@link CTPPr}.
-     * </p>
      * 
      * @param paragraph
      */
@@ -384,9 +360,7 @@ public class WordHeleper {
     }
 
     /**
-     * <p>
      * Helper method to retrieve {@link CTSectPr}.
-     * </p>
      * 
      * @param document
      */

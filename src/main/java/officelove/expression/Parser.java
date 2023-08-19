@@ -280,7 +280,7 @@ public class Parser implements UnaryOperator<String> {
         }
 
         for (int i = 0; i < resolvers.size(); i++) {
-            if (resolverTypes.get(i).isInstance(value)) {
+            if (resolverTypes.get(i).isInstance(value) || value instanceof Model) {
                 ExpressionResolver resolver = resolvers.get(i);
                 Matcher matcher = resolver.match(expression);
 

@@ -149,9 +149,12 @@ public class Word {
     public boolean validate(List<Class> models) {
         context.parser = new Parser(models);
 
-        replace(calculated);
-
-        return true;
+        try {
+            replace(calculated);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     /**
@@ -1340,9 +1343,8 @@ public class Word {
 
                 for (int count = 0; count < items.size(); count++) {
                     for (int offset = 0; offset < rows.size(); offset++) {
-                        WordHeleper.copy(rows.get(offset), table
-                                .insertNewTableRow(start + count * rows.size() + offset), new Parser(List
-                                        .of(items.get(count)), textIsVerticalAlign));
+                        WordHeleper.copy(rows.get(offset), table.insertNewTableRow(start + count * rows.size() + offset), new Parser(List
+                                .of(items.get(count)), textIsVerticalAlign));
                     }
                 }
 
