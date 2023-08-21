@@ -49,6 +49,7 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseSupplier;
 import officelove.LibreOffice;
+import officelove.expression.ExpressionException;
 import officelove.expression.Parser;
 import psychopath.File;
 import psychopath.Locator;
@@ -147,13 +148,13 @@ public class Word {
     }
 
     public boolean validate(List<Class> models) {
-        context.parser = new Parser(models);
-
         try {
+            context.parser = new Parser(models);
+
             replace(calculated);
             return true;
-        } catch (Throwable e) {
-            return false;
+        } catch (ExpressionException e) {
+            throw e.location(name);
         }
     }
 
@@ -1019,30 +1020,25 @@ public class Word {
                 for (int i = 0; i < paragraph.getRuns().size(); i++) {
                     XWPFRun run = paragraph.getRuns().get(i);
 
-                    try {
-                        String text = parser.apply(run.getText(0));
-                        text = WordCellStyle.apply(context.cell, text);
+                    String text = parser.apply(run.getText(0));
+                    text = WordCellStyle.apply(context.cell, text);
 
-                        int start = 0;
-                        int end = 0;
-                        while ((start = text.indexOf('｛', start)) != -1 && (end = text.indexOf('｝', start)) != -1) {
-                            String before = text.substring(0, start);
-                            String ruby = text.substring(start + 1, end);
-                            text = text.substring(end + 1);
+                    int start = 0;
+                    int end = 0;
+                    while ((start = text.indexOf('｛', start)) != -1 && (end = text.indexOf('｝', start)) != -1) {
+                        String before = text.substring(0, start);
+                        String ruby = text.substring(start + 1, end);
+                        text = text.substring(end + 1);
 
-                            WordHeleper.copy(run, paragraph.insertNewRun(i++), x -> before);
+                        WordHeleper.copy(run, paragraph.insertNewRun(i++), x -> before);
 
-                            XWPFRun rubys = paragraph.insertNewRun(i++);
-                            WordHeleper.copy(run, rubys, x -> ruby);
-                            rubys.setFontSize(7);
-                            rubys.setColor("989898");
-                            rubys.setTextPosition(2);
-                        }
-                        WordHeleper.write(run, text);
-                    } catch (Throwable e) {
-                        // ignore
-                        e.printStackTrace();
+                        XWPFRun rubys = paragraph.insertNewRun(i++);
+                        WordHeleper.copy(run, rubys, x -> ruby);
+                        rubys.setFontSize(7);
+                        rubys.setColor("989898");
+                        rubys.setTextPosition(2);
                     }
+                    WordHeleper.write(run, text);
                 }
             }
         }

@@ -9,8 +9,13 @@
  */
 package officelove.expression;
 
+import java.util.Objects;
+
 @SuppressWarnings("serial")
 public class ExpressionException extends RuntimeException {
+
+    /** The file location. */
+    private String location;
 
     /**
      * Build exception for expression.
@@ -19,5 +24,26 @@ public class ExpressionException extends RuntimeException {
      */
     public ExpressionException(String error) {
         super(error);
+    }
+
+    /**
+     * Set the location of invalid file.
+     */
+    public ExpressionException location(String location) {
+        this.location = Objects.requireNonNull(location);
+
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getMessage() {
+        if (location == null) {
+            return super.getMessage();
+        } else {
+            return location + "\n" + super.getMessage();
+        }
     }
 }

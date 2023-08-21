@@ -149,6 +149,14 @@ public abstract class TemplateDefinitions {
         public final boolean validate() {
             return new Word(file()).validate(types());
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return name();
+        }
     }
 
     /**
