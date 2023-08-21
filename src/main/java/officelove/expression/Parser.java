@@ -352,7 +352,9 @@ public class Parser implements UnaryOperator<String> {
      * @return
      */
     private ExpressionException errorInVariableResolve(Object model, String expression) {
-        return new ExpressionException("Class [" + model.getClass().getName() + "] can't resolve the expression [" + expression + "].");
+        Class type = model instanceof Model m ? m.type : model.getClass();
+
+        return new ExpressionException("Class [" + type.getName() + "] can't resolve the expression [" + expression + "].");
     }
 
     /**
