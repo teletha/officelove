@@ -12,8 +12,8 @@ package officelove.expression;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
-import kiss.model.Model;
-import kiss.model.Property;
+import kiss.Model;
+import kiss.Property;
 
 class ModelExtractor implements Extractor<Model> {
 

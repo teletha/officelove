@@ -47,11 +47,11 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTPhoneticRun;
 
 import kiss.Disposable;
 import kiss.I;
+import kiss.Model;
+import kiss.Property;
 import kiss.Signal;
 import kiss.WiseBiConsumer;
 import kiss.WiseSupplier;
-import kiss.model.Model;
-import kiss.model.Property;
 import officelove.LibreOffice;
 import officelove.expression.Parser;
 import psychopath.File;

@@ -21,8 +21,8 @@ import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 
 import kiss.I;
-import kiss.model.Model;
-import kiss.model.Property;
+import kiss.Model;
+import kiss.Property;
 
 /**
  * Parser for the expression language.

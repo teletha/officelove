@@ -16,9 +16,9 @@ import java.util.List;
 
 import kiss.I;
 import kiss.Managed;
+import kiss.Model;
 import kiss.Signal;
 import kiss.Singleton;
-import kiss.model.Model;
 import officelove.LibreOffice;
 import psychopath.Directory;
 import psychopath.File;
