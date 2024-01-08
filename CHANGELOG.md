@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/teletha/officelove/compare/v1.3.0...v1.3.1) (2024-01-08)
+
+
+### Bug Fixes
+
+* update ci process ([780a719](https://github.com/teletha/officelove/commit/780a719674fc7ff38ef62f406d93b6fe92b60e2e))
+* update license ([173e56f](https://github.com/teletha/officelove/commit/173e56f315e2c1fb51d023f53ac037487df81f2b))
+
 ## [1.3.0](https://github.com/teletha/officelove/compare/v1.2.0...v1.3.0) (2023-08-26)
 
 
