@@ -110,7 +110,42 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDefinitions.Templatable",
+			"name": "TemplateDefinitions",
+			"packageName": "officelove.word",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemplateDefinitions",
+			"packageName": "officelove.word",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemplateDefinitions",
+			"packageName": "officelove.word",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemplateDefinitions",
+			"packageName": "officelove.word",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemplateDefinitions",
+			"packageName": "officelove.word",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "TemplateDefinitions",
 			"packageName": "officelove.word",
 			"type": "AbstractClass"
 		},
@@ -118,41 +153,6 @@ const root = {
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "TemplateDefinitions.Template",
-			"packageName": "officelove.word",
-			"type": "Class"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDefinitions.Template1",
-			"packageName": "officelove.word",
-			"type": "Class"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDefinitions.Template2",
-			"packageName": "officelove.word",
-			"type": "Class"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDefinitions.Template3",
-			"packageName": "officelove.word",
-			"type": "Class"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDefinitions.Template4",
-			"packageName": "officelove.word",
-			"type": "Class"
-		},
-		{
-			"modifiers": {
-				"#": "java.util.Collections$UnmodifiableSet",},
-			"name": "TemplateDefinitions.Template5",
 			"packageName": "officelove.word",
 			"type": "Class"
 		},
