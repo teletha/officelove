@@ -73,14 +73,14 @@
 	</issueManagement>
 	<developers>
 		<developer>
-			<name>teletha</name>
-			<email/>
-			<url>https://github.com/teletha</url>
-		</developer>
-		<developer>
 			<name/>
 			<email/>
 			<url>https://github.com/apps/github-actions</url>
+		</developer>
+		<developer>
+			<name>teletha</name>
+			<email/>
+			<url>https://github.com/teletha</url>
 		</developer>
 	</developers>
 	<build>
