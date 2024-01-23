@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/teletha/officelove/compare/v1.3.0...v1.4.0) (2024-01-23)
+
+
+### Features
+
+* Enhance TemplateDefinitions. ([ec51eeb](https://github.com/teletha/officelove/commit/ec51eeb34bbf6d36e55a7fa94fc57f36c68ff77a))
+* TemplateDefinitions can bind user data. ([4c96ae0](https://github.com/teletha/officelove/commit/4c96ae071102a43d138f5b4387eb802d2f09dee1))
+
+
+### Bug Fixes
+
+* update ci process ([780a719](https://github.com/teletha/officelove/commit/780a719674fc7ff38ef62f406d93b6fe92b60e2e))
+* update license ([173e56f](https://github.com/teletha/officelove/commit/173e56f315e2c1fb51d023f53ac037487df81f2b))
+
 ## [1.3.0](https://github.com/teletha/officelove/compare/v1.2.0...v1.3.0) (2023-08-26)
 
 
