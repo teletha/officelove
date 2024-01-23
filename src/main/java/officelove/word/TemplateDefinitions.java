@@ -19,13 +19,14 @@ import kiss.Managed;
 import kiss.Model;
 import kiss.Signal;
 import kiss.Singleton;
+import kiss.Variable;
 import officelove.LibreOffice;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.Locator;
 
 @Managed(Singleton.class)
-public abstract class TemplateDefinitions {
+public abstract class TemplateDefinitions<T> {
 
     /**
      * Locate template directory.
@@ -73,13 +74,16 @@ public abstract class TemplateDefinitions {
     /**
      * Template API.
      */
-    public abstract class Templatable {
+    public abstract class Templatable<Self> {
 
         /** The template name. */
         private String name;
 
         /** The context types. */
         private List<Class> types;
+
+        /** The associated user data. */
+        T data;
 
         /**
          * Find the template field.
@@ -98,6 +102,19 @@ public abstract class TemplateDefinitions {
                         }
                     })
                     .first();
+        }
+
+        /**
+         * Build without user data.
+         */
+        protected Templatable() {
+        }
+
+        /**
+         * Build with user data.
+         */
+        protected Templatable(T data) {
+            this.data = data;
         }
 
         /**
@@ -151,6 +168,26 @@ public abstract class TemplateDefinitions {
         }
 
         /**
+         * Bind the user data.
+         * 
+         * @param data
+         * @return
+         */
+        public final Self data(T data) {
+            this.data = data;
+            return (Self) this;
+        }
+
+        /**
+         * Get the user data.
+         * 
+         * @return
+         */
+        public final Variable<T> data() {
+            return Variable.of(data);
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -162,7 +199,21 @@ public abstract class TemplateDefinitions {
     /**
      * Template without context.
      */
-    public class Template extends Templatable {
+    public class Template extends Templatable<Template> {
+
+        /**
+         * Build without user data.
+         */
+        public Template() {
+            super();
+        }
+
+        /**
+         * Build with user data.
+         */
+        public Template(T data) {
+            super(data);
+        }
 
         /**
          * Print the evaluated document.
@@ -184,7 +235,21 @@ public abstract class TemplateDefinitions {
     /**
      * Template with context.
      */
-    public class Template1<C1> extends Templatable {
+    public class Template1<C1> extends Templatable<Template1<C1>> {
+
+        /**
+         * Build without user data.
+         */
+        public Template1() {
+            super();
+        }
+
+        /**
+         * Build with user data.
+         */
+        public Template1(T data) {
+            super(data);
+        }
 
         /**
          * Print the evaluated document.
@@ -206,7 +271,21 @@ public abstract class TemplateDefinitions {
     /**
      * Template with context.
      */
-    public class Template2<C1, C2> extends Templatable {
+    public class Template2<C1, C2> extends Templatable<Template2<C1, C2>> {
+
+        /**
+         * Build without user data.
+         */
+        public Template2() {
+            super();
+        }
+
+        /**
+         * Build with user data.
+         */
+        public Template2(T data) {
+            super(data);
+        }
 
         /**
          * Print the evaluated document.
@@ -228,7 +307,21 @@ public abstract class TemplateDefinitions {
     /**
      * Template with context.
      */
-    public class Template3<C1, C2, C3> extends Templatable {
+    public class Template3<C1, C2, C3> extends Templatable<Template3<C1, C2, C3>> {
+
+        /**
+         * Build without user data.
+         */
+        public Template3() {
+            super();
+        }
+
+        /**
+         * Build with user data.
+         */
+        public Template3(T data) {
+            super(data);
+        }
 
         /**
          * Print the evaluated document.
@@ -250,7 +343,22 @@ public abstract class TemplateDefinitions {
     /**
      * Template with context.
      */
-    public class Template4<C1, C2, C3, C4> extends Templatable {
+    public class Template4<C1, C2, C3, C4> extends Templatable<Template4<C1, C2, C3, C4>> {
+
+        /**
+         * Build without user data.
+         */
+        public Template4() {
+            super();
+        }
+
+        /**
+         * Build with user data.
+         */
+        public Template4(T data) {
+            super(data);
+        }
+
         /**
          * Print the evaluated document.
          */
@@ -271,7 +379,21 @@ public abstract class TemplateDefinitions {
     /**
      * Template with context.
      */
-    public class Template5<C1, C2, C3, C4, C5> extends Templatable {
+    public class Template5<C1, C2, C3, C4, C5> extends Templatable<Template5<C1, C2, C3, C4, C5>> {
+
+        /**
+         * Build without user data.
+         */
+        public Template5() {
+            super();
+        }
+
+        /**
+         * Build with user data.
+         */
+        public Template5(T data) {
+            super(data);
+        }
 
         /**
          * Print the evaluated document.

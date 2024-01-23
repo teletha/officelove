@@ -33,7 +33,7 @@ class TemplateDefinitionTest extends WordTestSupport {
     /**
      * For test.
      */
-    private class Definitions extends TemplateDefinitions {
+    private class Definitions extends TemplateDefinitions<Object> {
 
         public final Template NoContext = new Template();
 
