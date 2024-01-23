@@ -11,7 +11,7 @@ package officelove.word;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import kiss.I;
@@ -19,7 +19,6 @@ import kiss.Managed;
 import kiss.Model;
 import kiss.Signal;
 import kiss.Singleton;
-import kiss.Variable;
 import officelove.LibreOffice;
 import psychopath.Directory;
 import psychopath.File;
@@ -52,7 +51,7 @@ public abstract class TemplateDefinitions<T> {
     /**
      * Print the evaluated document.
      */
-    private void printDoc(Templatable templatable, String printer, List context) {
+    protected void printDoc(Templatable templatable, String printer, List context, T data) {
         File temp = Locator.temporaryFile();
 
         // evaluate template
@@ -67,8 +66,18 @@ public abstract class TemplateDefinitions<T> {
      * 
      * @param file
      */
-    private void publishDoc(Templatable templatable, File file, List context) {
+    protected void publishDoc(Templatable templatable, File file, List context, T data) {
         new Word(templatable.file()).evaluate(context).save(file);
+    }
+
+    /**
+     * Select the default printer.
+     * 
+     * @param info
+     * @return
+     */
+    protected String selectPrinter(T info) {
+        return null;
     }
 
     /**
@@ -154,7 +163,7 @@ public abstract class TemplateDefinitions<T> {
             return type;
         }
 
-        private File file() {
+        public final File file() {
             return locate().file(name() + ".docx");
         }
 
@@ -165,26 +174,6 @@ public abstract class TemplateDefinitions<T> {
          */
         public final boolean validate() {
             return new Word(file()).validate(types());
-        }
-
-        /**
-         * Bind the user data.
-         * 
-         * @param data
-         * @return
-         */
-        public final Self data(T data) {
-            this.data = data;
-            return (Self) this;
-        }
-
-        /**
-         * Get the user data.
-         * 
-         * @return
-         */
-        public final Variable<T> data() {
-            return Variable.of(data);
         }
 
         /**
@@ -218,8 +207,15 @@ public abstract class TemplateDefinitions<T> {
         /**
          * Print the evaluated document.
          */
+        public void print() {
+            printDoc(this, selectPrinter(data), new ArrayList(), data);
+        }
+
+        /**
+         * Print the evaluated document.
+         */
         public void print(String printer) {
-            printDoc(this, printer, Collections.EMPTY_LIST);
+            printDoc(this, printer, new ArrayList(), data);
         }
 
         /**
@@ -228,7 +224,7 @@ public abstract class TemplateDefinitions<T> {
          * @param file
          */
         public void publish(File file) {
-            publishDoc(this, file, Collections.EMPTY_LIST);
+            publishDoc(this, file, new ArrayList(), data);
         }
     }
 
@@ -254,8 +250,15 @@ public abstract class TemplateDefinitions<T> {
         /**
          * Print the evaluated document.
          */
+        public void print(C1 context1) {
+            printDoc(this, selectPrinter(data), I.list(context1), data);
+        }
+
+        /**
+         * Print the evaluated document.
+         */
         public void print(String printer, C1 context1) {
-            printDoc(this, printer, List.of(context1));
+            printDoc(this, printer, I.list(context1), data);
         }
 
         /**
@@ -264,7 +267,7 @@ public abstract class TemplateDefinitions<T> {
          * @param file
          */
         public void publish(File file, C1 context1) {
-            publishDoc(this, file, List.of(context1));
+            publishDoc(this, file, I.list(context1), data);
         }
     }
 
@@ -290,8 +293,15 @@ public abstract class TemplateDefinitions<T> {
         /**
          * Print the evaluated document.
          */
+        public void print(C1 context1, C2 context2) {
+            printDoc(this, selectPrinter(data), I.list(context1, context2), data);
+        }
+
+        /**
+         * Print the evaluated document.
+         */
         public void print(String printer, C1 context1, C2 context2) {
-            printDoc(this, printer, List.of(context1, context2));
+            printDoc(this, printer, I.list(context1, context2), data);
         }
 
         /**
@@ -300,7 +310,7 @@ public abstract class TemplateDefinitions<T> {
          * @param file
          */
         public void publish(File file, C1 context1, C2 context2) {
-            publishDoc(this, file, List.of(context1, context2));
+            publishDoc(this, file, I.list(context1, context2), data);
         }
     }
 
@@ -326,8 +336,15 @@ public abstract class TemplateDefinitions<T> {
         /**
          * Print the evaluated document.
          */
+        public void print(C1 context1, C2 context2, C3 context3) {
+            printDoc(this, selectPrinter(data), I.list(context1, context2, context3), data);
+        }
+
+        /**
+         * Print the evaluated document.
+         */
         public void print(String printer, C1 context1, C2 context2, C3 context3) {
-            printDoc(this, printer, List.of(context1, context2, context3));
+            printDoc(this, printer, I.list(context1, context2, context3), data);
         }
 
         /**
@@ -336,7 +353,7 @@ public abstract class TemplateDefinitions<T> {
          * @param file
          */
         public void publish(File file, C1 context1, C2 context2, C3 context3) {
-            publishDoc(this, file, List.of(context1, context2, context3));
+            publishDoc(this, file, I.list(context1, context2, context3), data);
         }
     }
 
@@ -362,8 +379,15 @@ public abstract class TemplateDefinitions<T> {
         /**
          * Print the evaluated document.
          */
+        public void print(C1 context1, C2 context2, C3 context3, C4 context4) {
+            printDoc(this, selectPrinter(data), I.list(context1, context2, context3, context4), data);
+        }
+
+        /**
+         * Print the evaluated document.
+         */
         public void print(String printer, C1 context1, C2 context2, C3 context3, C4 context4) {
-            printDoc(this, printer, List.of(context1, context2, context3, context4));
+            printDoc(this, printer, I.list(context1, context2, context3, context4), data);
         }
 
         /**
@@ -372,7 +396,7 @@ public abstract class TemplateDefinitions<T> {
          * @param file
          */
         public void publish(File file, C1 context1, C2 context2, C3 context3, C4 context4) {
-            publishDoc(this, file, List.of(context1, context2, context3, context4));
+            publishDoc(this, file, I.list(context1, context2, context3, context4), data);
         }
     }
 
@@ -398,8 +422,15 @@ public abstract class TemplateDefinitions<T> {
         /**
          * Print the evaluated document.
          */
+        public void print(C1 context1, C2 context2, C3 context3, C4 context4, C5 context5) {
+            printDoc(this, selectPrinter(data), I.list(context1, context2, context3, context4, context5), data);
+        }
+
+        /**
+         * Print the evaluated document.
+         */
         public void print(String printer, C1 context1, C2 context2, C3 context3, C4 context4, C5 context5) {
-            printDoc(this, printer, List.of(context1, context2, context3, context4, context5));
+            printDoc(this, printer, I.list(context1, context2, context3, context4, context5), data);
         }
 
         /**
@@ -408,7 +439,7 @@ public abstract class TemplateDefinitions<T> {
          * @param file
          */
         public void publish(File file, C1 context1, C2 context2, C3 context3, C4 context4, C5 context5) {
-            publishDoc(this, file, List.of(context1, context2, context3, context4, context5));
+            publishDoc(this, file, I.list(context1, context2, context3, context4, context5), data);
         }
     }
 }
