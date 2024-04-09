@@ -89,8 +89,12 @@ public class Word {
      * Create template for word.
      */
     private Word(String name) {
-        this.name = name;
-        this.calculated = new XWPFDocument();
+        try {
+            this.name = name;
+            this.calculated = new XWPFDocument(Locator.file(name).newInputStream());
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
 
         CTSectPr sect = calculated.getDocument().getBody().getSectPr();
         section.getSize(sect);
@@ -347,7 +351,6 @@ public class Word {
         // copy children
         for (int i = 0; i < elements.size(); i++) {
             IBodyElement element = elements.get(i);
-
             if (element instanceof XWPFParagraph) {
                 XWPFParagraph para = (XWPFParagraph) element;
                 XWPFParagraph created = createParagraph(cursor);
