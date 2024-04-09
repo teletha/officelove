@@ -55,7 +55,7 @@ public abstract class TemplateDefinitions<T> {
         File temp = Locator.temporaryFile();
 
         // evaluate template
-        new Word(templatable.file()).evaluate(context).save(temp);
+        evaluate(templatable, context).save(temp);
 
         // print
         LibreOffice.print(temp, printer);
@@ -67,7 +67,34 @@ public abstract class TemplateDefinitions<T> {
      * @param file
      */
     protected void publishDoc(Templatable templatable, File file, List context, T data) {
-        new Word(templatable.file()).evaluate(context).save(file);
+        evaluate(templatable, context).save(file);
+    }
+
+    /**
+     * Evaluate the template and create document.
+     * 
+     * @param templatable
+     * @param context
+     * @return
+     */
+    protected final Word evaluate(Templatable templatable, List context) {
+        MergeableList mergeable = checkMergeable(context);
+        Word word = new Word(templatable.file());
+        if (mergeable == null) {
+            word.evaluate(context);
+        } else {
+            word.evaluateAndMerge(mergeable, context.toArray());
+        }
+        return word;
+    }
+
+    private MergeableList checkMergeable(List context) {
+        if (context.get(0) instanceof MergeableList m) {
+            context.remove(0);
+            return m;
+        } else {
+            return null;
+        }
     }
 
     /**
