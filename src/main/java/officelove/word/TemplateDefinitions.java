@@ -11,6 +11,7 @@ package officelove.word;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,18 +79,18 @@ public abstract class TemplateDefinitions<T> {
      * @return
      */
     protected final Word evaluate(Templatable templatable, List context) {
-        MergeableList mergeable = checkMergeable(context);
+        Mergeable mergeable = checkMergeable(context);
         Word word = new Word(templatable.file());
         if (mergeable == null) {
             word.evaluate(context);
         } else {
-            word.evaluateAndMerge(mergeable, context.toArray());
+            word.evaluateAndMerge(I.signal(mergeable), context.toArray());
         }
         return word;
     }
 
-    private MergeableList checkMergeable(List context) {
-        if (context.get(0) instanceof MergeableList m) {
+    private Mergeable checkMergeable(List context) {
+        if (context.get(0) instanceof Mergeable m) {
             context.remove(0);
             return m;
         } else {
@@ -172,7 +173,13 @@ public abstract class TemplateDefinitions<T> {
          */
         List<Class> types() {
             if (types == null) {
-                types = field().flatArray(f -> Model.collectParameters(f.getGenericType(), templateType())).as(Class.class).toList();
+                types = field().flatArray(f -> Model.collectParameters(f.getGenericType(), templateType())).map(type -> {
+                    if (type instanceof ParameterizedType para && Mergeable.class.isAssignableFrom((Class) para.getRawType())) {
+                        return para.getActualTypeArguments()[0];
+                    } else {
+                        return type;
+                    }
+                }).as(Class.class).toList();
             }
             return types;
         }

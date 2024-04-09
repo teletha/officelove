@@ -9,6 +9,8 @@
  */
 package officelove.word;
 
+import java.util.Locale;
+
 import org.junit.jupiter.api.Test;
 
 import psychopath.Directory;
@@ -25,9 +27,21 @@ class TemplateDefinitionTest extends WordTestSupport {
     }
 
     @Test
-    void types() {
+    void type() {
         assert defs.NoContext.types().isEmpty();
         assert defs.OneContext.types().get(0) == String.class;
+    }
+
+    @Test
+    void types() {
+        assert defs.TwoContexts.types().get(0) == String.class;
+        assert defs.TwoContexts.types().get(1) == Locale.class;
+    }
+
+    @Test
+    void mergeable() {
+        assert defs.MergeableContext.types().get(0) == String.class;
+        assert defs.MergeableContext.types().get(1) == Locale.class;
     }
 
     /**
@@ -38,6 +52,10 @@ class TemplateDefinitionTest extends WordTestSupport {
         public final Template NoContext = new Template();
 
         public final Template1<String> OneContext = new Template1();
+
+        public final Template2<String, Locale> TwoContexts = new Template2();
+
+        public final Template2<Mergeable<String>, Locale> MergeableContext = new Template2();
 
         /**
          * {@inheritDoc}
