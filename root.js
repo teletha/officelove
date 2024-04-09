@@ -82,6 +82,13 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "MergeableList",
+			"packageName": "officelove.word",
+			"type": "Class"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "NumberResolver",
 			"packageName": "officelove.expression.builtin",
 			"type": "Class"
