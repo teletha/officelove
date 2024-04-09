@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
+		<meta content="width=device-width, initial-scale=1" name="viewport"/>
+		<meta content="Explains how to use Officelove and its API. " name="description"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
 		<title>Officelove API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
-	<body class="Q">
-		<header class="W">
-			<h1 class="U" date="Use saved searches to filter your results more quickly" ver="1.3.0"><code>Officelove</code></h1>
-			<nav class="J"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+	<body class="M">
+		<header class="T">
+			<h1 class="g" date="2023-08-26" ver="1.3.0"><code>Officelove</code></h1>
+			<nav class="d"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
 					</svg><code>API</code></a><a href="https://github.com/teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#user"/>
@@ -19,7 +23,7 @@
 					</svg>Activity</a><a href="https://github.com/teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#github"/>
 					</svg>Repository</a></nav>
-			<div class="d" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
+			<div class="i" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#sun"/>
 					</svg>
 				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
@@ -27,125 +31,125 @@
 					</svg>
 				</a></div>
 		</header>
-		<main class="k">
-			<nav class="R">
+		<main class="e">
+			<nav class="Y">
 				<div></div>
 			</nav>
-			<article class="I" id="Article">
-				<section class="T"><code class="P">officelove.expression</code>
-					<h2 class="Interface Z"><code class="a">Extractor</code><code class="V">&#60;<code>R</code>&#62;</code></h2>
-					<div class="N">
+			<article class="W" id="Article">
+				<section class="Q"><code class="L">officelove.expression</code>
+					<h2 class="Interface U"><code class="a">Extractor</code><code class="l">&#60;<code>R</code>&#62;</code></h2>
+					<div class="J">
 						<ul class="C D">
 							<li><code>R</code></li>
 						</ul>
 					</div>
 				</section>
-				<section class="T" id="model(java.lang.Object)">
-					<h2 class="Y"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">model</code><code class="V">(<code>R</code> <code class="parameterName">object</code>)</code><i class="X"><code>kiss.Model</code></i></h2>
-					<table class="K">
-						<tr class="h">
+				<section class="Q" id="model(java.lang.Object)">
+					<h2 class="N"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">model</code><code class="l">(<code>R</code> <code class="parameterName">object</code>)</code><i class="b"><code>kiss.Model</code></i></h2>
+					<table class="H">
+						<tr class="I">
 							<td><code>R</code> <code>object</code></td>
 							<td></td>
 						</tr>
-						<tr class="g">
+						<tr class="P">
 							<td><code>kiss.Model</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Model extractor.</p>
-					</span></section>
-				<section class="T" id="extract(kiss.Model,kiss.Property,java.lang.Object)">
-					<h2 class="Y"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="V">(<code>kiss.Model</code> <code class="parameterName">model</code>, <code>kiss.Property</code> <code class="parameterName">property</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="X"><code>R</code></i></h2>
-					<table class="K">
-						<tr class="h">
+</span></section>
+				<section class="Q" id="extract(kiss.Model,kiss.Property,java.lang.Object)">
+					<h2 class="N"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="l">(<code>kiss.Model</code> <code class="parameterName">model</code>, <code>kiss.Property</code> <code class="parameterName">property</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="b"><code>R</code></i></h2>
+					<table class="H">
+						<tr class="I">
 							<td><code>kiss.Model</code> <code>model</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code>kiss.Property</code> <code>property</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code>R</code> <code>object</code></td>
 							<td></td>
 						</tr>
-						<tr class="g">
+						<tr class="P">
 							<td><code>R</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Property based value extractor.</p>
-					</span></section>
-				<section class="T" id="extract(officelove.expression.Variable,java.lang.String)">
-					<h2 class="Y"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="V">(<code><a href="api/officelove.expression.Variable.html">Variable</a></code> <code class="parameterName">variable</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">name</code>)</code><i class="X"><code>R</code></i></h2>
-					<table class="K">
-						<tr class="h">
+</span></section>
+				<section class="Q" id="extract(officelove.expression.Variable,java.lang.String)">
+					<h2 class="N"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="l">(<code><a href="api/officelove.expression.Variable.html">Variable</a></code> <code class="parameterName">variable</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">name</code>)</code><i class="b"><code>R</code></i></h2>
+					<table class="H">
+						<tr class="I">
 							<td><code><a href="api/officelove.expression.Variable.html">Variable</a></code> <code>variable</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>name</code></td>
 							<td></td>
 						</tr>
-						<tr class="g">
+						<tr class="P">
 							<td><code>R</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Builtin variable based value extractor.</p>
-					</span></section>
-				<section class="T" id="extract(officelove.expression.ExpressionResolver,java.util.regex.Matcher,java.lang.Object)">
-					<h2 class="Y"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="V">(<code><a href="api/officelove.expression.ExpressionResolver.html">ExpressionResolver</a></code> <code class="parameterName">resolver</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code class="parameterName">matcher</code>, <code>R</code> <code class="parameterName">value</code>)</code><i class="X"><code>R</code></i></h2>
-					<table class="K">
-						<tr class="h">
+</span></section>
+				<section class="Q" id="extract(officelove.expression.ExpressionResolver,java.util.regex.Matcher,java.lang.Object)">
+					<h2 class="N"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="l">(<code><a href="api/officelove.expression.ExpressionResolver.html">ExpressionResolver</a></code> <code class="parameterName">resolver</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code class="parameterName">matcher</code>, <code>R</code> <code class="parameterName">value</code>)</code><i class="b"><code>R</code></i></h2>
+					<table class="H">
+						<tr class="I">
 							<td><code><a href="api/officelove.expression.ExpressionResolver.html">ExpressionResolver</a></code> <code>resolver</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code>matcher</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code>R</code> <code>value</code></td>
 							<td></td>
 						</tr>
-						<tr class="g">
+						<tr class="P">
 							<td><code>R</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><code><a href="api/officelove.expression.ExpressionResolver.html">ExpressionResolver</a></code> based value extractor.</span></section>
-				<section class="T" id="extract(java.lang.reflect.Method,java.lang.Object[],java.lang.Object)">
-					<h2 class="Y"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="V">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/reflect/Method.html">Method</a></code> <code class="parameterName">method</code>, <code array="fix"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">params</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="X"><code>R</code></i></h2>
-					<table class="K">
-						<tr class="h">
+				<section class="Q" id="extract(java.lang.reflect.Method,java.lang.Object[],java.lang.Object)">
+					<h2 class="N"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="a">extract</code><code class="l">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/reflect/Method.html">Method</a></code> <code class="parameterName">method</code>, <code array="fix"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">params</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="b"><code>R</code></i></h2>
+					<table class="H">
+						<tr class="I">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/reflect/Method.html">Method</a></code> <code>method</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code array="fix"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code> <code>params</code></td>
 							<td></td>
 						</tr>
-						<tr class="h">
+						<tr class="I">
 							<td><code>R</code> <code>object</code></td>
 							<td></td>
 						</tr>
-						<tr class="g">
+						<tr class="P">
 							<td><code>R</code></td>
 							<td></td>
 						</tr>
-						<tr class="e">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Exception.html">Exception</a></code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Method based balue extractor.</p>
-					</span></section>
+</span></section>
 			</article>
-			<aside class="L" id="SubNavi">
-				<div class="H">
-					<h5 class="b">Methods</h5>
+			<aside class="R" id="SubNavi">
+				<div class="c">
+					<h5 class="f">Methods</h5>
 					<ul>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#model(java.lang.Object)">model</a></code><code class="V">(<code>R</code> <code class="parameterName">object</code>)</code><i class="f"><code>kiss.Model</code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(kiss.Model,kiss.Property,java.lang.Object)">extract</a></code><code class="V">(<code>kiss.Model</code> <code class="parameterName">model</code>, <code>kiss.Property</code> <code class="parameterName">property</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="f"><code>R</code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(officelove.expression.Variable,java.lang.String)">extract</a></code><code class="V">(<code><a href="api/officelove.expression.Variable.html">Variable</a></code> <code class="parameterName">variable</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">name</code>)</code><i class="f"><code>R</code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(officelove.expression.ExpressionResolver,java.util.regex.Matcher,java.lang.Object)">extract</a></code><code class="V">(<code><a href="api/officelove.expression.ExpressionResolver.html">ExpressionResolver</a></code> <code class="parameterName">resolver</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code class="parameterName">matcher</code>, <code>R</code> <code class="parameterName">value</code>)</code><i class="f"><code>R</code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(java.lang.reflect.Method,java.lang.Object[],java.lang.Object)">extract</a></code><code class="V">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/reflect/Method.html">Method</a></code> <code class="parameterName">method</code>, <code array="fix"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">params</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="f"><code>R</code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#model(java.lang.Object)">model</a></code><code class="l">(<code>R</code> <code class="parameterName">object</code>)</code><i class="m"><code>kiss.Model</code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(kiss.Model,kiss.Property,java.lang.Object)">extract</a></code><code class="l">(<code>kiss.Model</code> <code class="parameterName">model</code>, <code>kiss.Property</code> <code class="parameterName">property</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="m"><code>R</code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(officelove.expression.Variable,java.lang.String)">extract</a></code><code class="l">(<code><a href="api/officelove.expression.Variable.html">Variable</a></code> <code class="parameterName">variable</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">name</code>)</code><i class="m"><code>R</code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(officelove.expression.ExpressionResolver,java.util.regex.Matcher,java.lang.Object)">extract</a></code><code class="l">(<code><a href="api/officelove.expression.ExpressionResolver.html">ExpressionResolver</a></code> <code class="parameterName">resolver</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/regex/Matcher.html">Matcher</a></code> <code class="parameterName">matcher</code>, <code>R</code> <code class="parameterName">value</code>)</code><i class="m"><code>R</code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/officelove.expression.Extractor.html#extract(java.lang.reflect.Method,java.lang.Object[],java.lang.Object)">extract</a></code><code class="l">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/reflect/Method.html">Method</a></code> <code class="parameterName">method</code>, <code array="fix"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code> <code class="parameterName">params</code>, <code>R</code> <code class="parameterName">object</code>)</code><i class="m"><code>R</code></i></li>
 					</ul>
 				</div>
 			</aside>
