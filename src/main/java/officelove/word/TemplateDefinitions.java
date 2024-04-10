@@ -90,6 +90,10 @@ public abstract class TemplateDefinitions<T> {
     }
 
     private Mergeable checkMergeable(List context) {
+        if (context.isEmpty()) {
+            return null;
+        }
+
         if (context.get(0) instanceof Mergeable m) {
             context.remove(0);
             return m;
