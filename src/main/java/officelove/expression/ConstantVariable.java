@@ -10,13 +10,11 @@
 package officelove.expression;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import kiss.I;
 
-/**
- * @version 2016/07/13 14:04:13
- */
 public interface ConstantVariable extends Variable<Object> {
 
     /**
@@ -33,7 +31,14 @@ public interface ConstantVariable extends Variable<Object> {
 
             return Modifier.isStatic(modifier) && Modifier.isFinal(modifier);
         } catch (Exception e) {
-            return false;
+            try {
+                Method method = getClass().getMethod(name);
+                int modifier = method.getModifiers();
+
+                return Modifier.isStatic(modifier);
+            } catch (Exception x) {
+                throw I.quiet(x);
+            }
         }
     }
 
@@ -48,7 +53,11 @@ public interface ConstantVariable extends Variable<Object> {
         try {
             return getClass().getField(name).get(null);
         } catch (Exception e) {
-            throw I.quiet(e);
+            try {
+                return getClass().getMethod(name).invoke(null);
+            } catch (Exception x) {
+                throw I.quiet(x);
+            }
         }
     }
 }
