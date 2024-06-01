@@ -120,7 +120,7 @@ Officelove depends on the following products on runtime.
 * [poi-5.2.5](https://mvnrepository.com/artifact/org.apache.poi/poi/5.2.5)
 * [poi-ooxml-5.2.5](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.2.5)
 * [poi-ooxml-lite-5.2.5](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.2.5)
-* [psychopath-1.12.1](https://mvnrepository.com/artifact/com.github.teletha/psychopath/1.12.1)
+* [psychopath-1.12.2](https://mvnrepository.com/artifact/com.github.teletha/psychopath/1.12.2)
 * [sinobu-3.11.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/3.11.0)
 * [xmlbeans-5.2.0](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.2.0)
 <p align="right"><a href="#top">back to top</a></p>
