@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.4.0](https://github.com/teletha/officelove/compare/v1.3.0...v1.4.0) (2024-06-01)
+
+
+### Features
+
+* ConstantVariable can use static methods. ([91a7497](https://github.com/teletha/officelove/commit/91a74973a044eefb713f4f2bd572d823ae4e35c9))
+* Enhance TemplateDefinitions. ([ec51eeb](https://github.com/teletha/officelove/commit/ec51eeb34bbf6d36e55a7fa94fc57f36c68ff77a))
+* Provide mergeable context type. ([907726e](https://github.com/teletha/officelove/commit/907726e8ce19551bc251cfd6c37d3bc7b7cf615b))
+* support mergeable list ([fbd33e3](https://github.com/teletha/officelove/commit/fbd33e3bac8cf13a6348cc1f0c465fd10add9849))
+* TemplateDefinitions can bind user data. ([4c96ae0](https://github.com/teletha/officelove/commit/4c96ae071102a43d138f5b4387eb802d2f09dee1))
+
+
+### Bug Fixes
+
+* avoid NPE ([164093f](https://github.com/teletha/officelove/commit/164093fe493f9b8a2cf1fd867baea95adf056634))
+* merging word is broken ([1b30dee](https://github.com/teletha/officelove/commit/1b30dee5e476c8a16266683433338ebab6a20275))
+* update ci process ([780a719](https://github.com/teletha/officelove/commit/780a719674fc7ff38ef62f406d93b6fe92b60e2e))
+* update license ([173e56f](https://github.com/teletha/officelove/commit/173e56f315e2c1fb51d023f53ac037487df81f2b))
+
 ## [1.3.0](https://github.com/teletha/officelove/compare/v1.2.0...v1.3.0) (2023-08-26)
 
 
