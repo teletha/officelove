@@ -43,7 +43,7 @@ Add it into in the dependencies element like so:
 <dependency>
     <groupId>com.github.teletha</groupId>
     <artifactId>officelove</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 #### [Gradle](https://gradle.org/)
@@ -56,7 +56,7 @@ repositories {
 Add it into the dependencies section like so:
 ```gradle
 dependencies {
-    implementation 'com.github.teletha:officelove:1.3.0'
+    implementation 'com.github.teletha:officelove:1.4.0'
 }
 ```
 #### [SBT](https://www.scala-sbt.org/)
@@ -66,7 +66,7 @@ resolvers += "jitpack" at "https://jitpack.io"
 ```
 Add it into the libraryDependencies section like so:
 ```scala
-libraryDependencies += "com.github.teletha" % "officelove" % "1.3.0"
+libraryDependencies += "com.github.teletha" % "officelove" % "1.4.0"
 ```
 #### [Leiningen](https://leiningen.org/)
 Add JitPack repository at the end of repositories in your project.clj:
@@ -75,12 +75,12 @@ Add JitPack repository at the end of repositories in your project.clj:
 ```
 Add it into the dependencies section like so:
 ```clj
-:dependencies [[com.github.teletha/officelove "1.3.0"]]
+:dependencies [[com.github.teletha/officelove "1.4.0"]]
 ```
 #### [Bee](https://teletha.github.io/bee)
 Add it into your project definition class like so:
 ```java
-require("com.github.teletha", "officelove", "1.3.0");
+require("com.github.teletha", "officelove", "1.4.0");
 ```
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -109,20 +109,21 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 ## Dependency
 Officelove depends on the following products on runtime.
 * [SparseBitSet-1.3](https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet/1.3)
-* [commons-codec-1.16.0](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.16.0)
+* [commons-codec-1.17.0](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.17.0)
 * [commons-collections4-4.4](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4/4.4)
-* [commons-compress-1.25.0](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.25.0)
-* [commons-io-2.15.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.15.0)
+* [commons-compress-1.26.2](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.26.2)
+* [commons-io-2.16.1](https://mvnrepository.com/artifact/commons-io/commons-io/2.16.1)
+* [commons-lang3-3.14.0](https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.14.0)
 * [commons-math3-3.6.1](https://mvnrepository.com/artifact/org.apache.commons/commons-math3/3.6.1)
 * [conjure-1.1.1](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.1.1)
 * [curvesapi-1.08](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.08)
-* [log4j-api-2.21.1](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.21.1)
-* [poi-5.2.5](https://mvnrepository.com/artifact/org.apache.poi/poi/5.2.5)
-* [poi-ooxml-5.2.5](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.2.5)
-* [poi-ooxml-lite-5.2.5](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.2.5)
-* [psychopath-1.12.2](https://mvnrepository.com/artifact/com.github.teletha/psychopath/1.12.2)
-* [sinobu-3.11.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/3.11.0)
-* [xmlbeans-5.2.0](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.2.0)
+* [log4j-api-2.23.1](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.23.1)
+* [poi-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi/5.3.0)
+* [poi-ooxml-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.3.0)
+* [poi-ooxml-lite-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.3.0)
+* [psychopath-1.13.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/1.13.0)
+* [sinobu-3.13.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/3.13.0)
+* [xmlbeans-5.2.1](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.2.1)
 <p align="right"><a href="#top">back to top</a></p>
 
 
