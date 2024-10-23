@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2024 The OFFICELOVE Development Team
  *
@@ -7,7 +8,6 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-import javax.lang.model.SourceVersion;
 
 /*
  * Copyright (C) 2023 The OFFICELOVE Development Team
@@ -22,8 +22,6 @@ public class Project extends bee.api.Project {
 
     {
         product("com.github.teletha", "officelove", ref("version.txt"));
-
-        require(SourceVersion.RELEASE_19, SourceVersion.RELEASE_17);
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "psychopath");

@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://docs.oracle.com/en/java/javase/17/"><img src="https://img.shields.io/badge/Java-Release%2017-green"/></a>
+    <a href="https://docs.oracle.com/en/java/javase/23/"><img src="https://img.shields.io/badge/Java-Release%2023-green"/></a>
     <span>&nbsp;</span>
     <a href="https://jitpack.io/#teletha/officelove"><img src="https://img.shields.io/jitpack/v/github/teletha/officelove?label=Repository&color=green"></a>
     <span>&nbsp;</span>
@@ -13,7 +13,7 @@
 
 
 ## Prerequisites
-Officelove runs on all major operating systems and requires only [Java version 17](https://docs.oracle.com/en/java/javase/17/) or later to run.
+Officelove runs on all major operating systems and requires only [Java version 23](https://docs.oracle.com/en/java/javase/23/) or later to run.
 To check, please run `java -version` on your terminal.
 <p align="right"><a href="#top">back to top</a></p>
 
