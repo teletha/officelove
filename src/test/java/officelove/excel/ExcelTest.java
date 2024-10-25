@@ -11,8 +11,6 @@ package officelove.excel;
 
 import org.junit.jupiter.api.Test;
 
-import officelove.excel.Excel;
-
 class ExcelTest {
 
     @Test

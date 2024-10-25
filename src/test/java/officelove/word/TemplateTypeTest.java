@@ -11,6 +11,7 @@ package officelove.word;
 
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("resource")
 class TemplateTypeTest extends WordTestSupport {
 
     @Test
