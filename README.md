@@ -104,14 +104,14 @@ Officelove depends on the following products on runtime.
 * [commons-io-2.16.1](https://mvnrepository.com/artifact/commons-io/commons-io/2.16.1)
 * [commons-lang3-3.14.0](https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.14.0)
 * [commons-math3-3.6.1](https://mvnrepository.com/artifact/org.apache.commons/commons-math3/3.6.1)
-* [conjure-1.1.1](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.1.1)
+* [conjure-1.2.0](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.2.0)
 * [curvesapi-1.08](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.08)
 * [log4j-api-2.23.1](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.23.1)
 * [poi-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi/5.3.0)
 * [poi-ooxml-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.3.0)
 * [poi-ooxml-lite-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.3.0)
-* [psychopath-2.0.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.0.0)
-* [sinobu-4.2.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.2.0)
+* [psychopath-2.0.2](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.0.2)
+* [sinobu-4.5.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.5.0)
 * [xmlbeans-5.2.1](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.2.1)
 <p align="right"><a href="#top">back to top</a></p>
 
