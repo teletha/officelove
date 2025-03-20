@@ -4,125 +4,133 @@
 		<meta charset="UTF-8"/>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
 		<meta content="Explains how to use Officelove and its API. " name="description"/>
-		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link crossorigin="null" href="https://fonts.gstatic.com" rel="preconnect"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
 		<title>Officelove API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
+		<link href="https://cdn.jsdelivr.net/npm/ress@4.0.0/dist/ress.min.css" rel="stylesheet"/>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
 	<body class="l">
-		<header class="k">
-			<h1 class="M" date="2024-06-01" ver="1.4.0"><code>Officelove</code></h1>
-			<nav class="W"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+		<header class="m" date="2024-06-01" ver="1.4.0">
+			<h1 class="f"><code>Officelove</code></h1>
+			<nav class="s"><a href="api/" id="API"><svg class="package A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
-					</svg><code>API</code></a><a href="https://github.com/teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#user"/>
-					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#activity"/>
-					</svg>Activity</a><a href="https://github.com/teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#github"/>
-					</svg>Repository</a></nav>
-			<div class="O" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#sun"/>
 					</svg>
-				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+				</a><a href="https://github.com/teletha/officelove/discussions" id="Community" target="_blank"><svg class="user A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>
+				</a><a href="doc/changelog.html" id="Activity"><svg class="activity A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>
+				</a><a href="https://github.com/teletha/officelove" id="Repository" target="_blank"><svg class="github A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>
+				</a></nav>
+			<div class="o"><a aria-label="Change color scheme" id="theme"><svg class="sun A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg><svg class="moon A svg" viewBox="0 0 24 24">
 						<use href="main.svg#moon"/>
 					</svg>
 				</a></div>
 		</header>
-		<main class="g">
-			<nav class="Y">
-				<div></div>
-			</nav>
-			<article class="U" id="Article">
-				<section class="N"><code class="i">officelove.word</code>
-					<h2 class="Class m"><code class="a">TemplateType</code></h2>
-					<div class="S"></div>
-				</section>
-				<section class="N" id="width">
-					<h2 class="P"><i class="FINAL"><i class="PUBLIC"></i></i><code class="a">width</code><i class="R"><code class="return">int</code></i></h2>
-				</section>
-				<section class="N" id="height">
-					<h2 class="P"><i class="FINAL"><i class="PUBLIC"></i></i><code class="a">height</code><i class="R"><code class="return">int</code></i></h2>
-				</section>
-				<section class="N" id="name">
-					<h2 class="P"><i class="FINAL"><i class="PUBLIC"></i></i><code class="a">name</code><i class="R"><code class="return"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-				</section>
-				<section class="N" id="direction">
-					<h2 class="P"><i class="FINAL"><i class="PUBLIC"></i></i><code class="a">direction</code><i class="R"><code class="return"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-				</section>
-				<section class="N" id="TemplateType(java.lang.String,int,int,java.lang.String)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">TemplateType</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">direction</code>)</code></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>name</code></td>
-							<td></td>
-						</tr>
-						<tr class="V">
-							<td><code>int</code><code>width</code></td>
-							<td><span><p>A width in portrait.</p></span></td>
-						</tr>
-						<tr class="V">
-							<td><code>int</code><code>height</code></td>
-							<td><span><p>A height in portrait.</p></span></td>
-						</tr>
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>direction</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Define template infomation.</p></span></section>
-				<section class="N" id="parse(org.apache.poi.xwpf.usermodel.XWPFDocument)">
-					<h2 class="P"><i class="PUBLIC STATIC"></i><code class="a">parse</code><code class="L">(<code>org.apache.poi.xwpf.usermodel.XWPFDocument</code><code class="parameterName">document</code>)</code><i class="R"><code><a href="api/officelove.word.TemplateType.html">TemplateType</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>org.apache.poi.xwpf.usermodel.XWPFDocument</code><code>document</code></td>
-							<td></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.TemplateType.html">TemplateType</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Detect infomation from document.</p></span></section>
-				<section class="N" id="define(java.lang.String,int,int)">
-					<h2 class="P"><i class="PUBLIC STATIC"></i><code class="a">define</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>name</code></td>
-							<td></td>
-						</tr>
-						<tr class="V">
-							<td><code>int</code><code>width</code></td>
-							<td><span><p>A width in portrait.</p></span></td>
-						</tr>
-						<tr class="V">
-							<td><code>int</code><code>height</code></td>
-							<td><span><p>A height in portrait.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Define the template type.</p></span></section>
-			</article>
-			<aside class="b" id="SubNavi">
-				<div class="h">
-					<h5 class="f">Constructors</h5>
-					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateType.html#TemplateType(java.lang.String,int,int,java.lang.String)">TemplateType</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">direction</code>)</code></li>
-					</ul>
-					<h5 class="f">Fields</h5>
-					<ul>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#width">width</a></code><i class="j"><code class="return">int</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#height">height</a></code><i class="j"><code class="return">int</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#name">name</a></code><i class="j"><code class="return"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#direction">direction</a></code><i class="j"><code class="return"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-					</ul>
-					<h5 class="f">Static Methods</h5>
-					<ul>
-						<li><i class="PUBLIC STATIC"></i><code><a href="api/officelove.word.TemplateType.html#parse(org.apache.poi.xwpf.usermodel.XWPFDocument)">parse</a></code><code class="L">(<code>org.apache.poi.xwpf.usermodel.XWPFDocument</code><code class="parameterName">document</code>)</code><i class="j"><code><a href="api/officelove.word.TemplateType.html">TemplateType</a></code></i></li>
-						<li><i class="PUBLIC STATIC"></i><code><a href="api/officelove.word.TemplateType.html#define(java.lang.String,int,int)">define</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>)</code><i class="j"><code>void</code></i></li>
-					</ul>
-				</div>
-			</aside>
-		</main>
-		<script src="root.js"></script>
-		<script src="main.js" type="module"></script>
+		<nav class="e"></nav>
+		<article class="W" id="Article">
+			<section class="O"><code class="P">officelove.word</code>
+				<h2 class="Class b"><code class="L">TemplateType</code></h2>
+				<div class="S"></div>
+			</section>
+			<section class="O" id="width">
+				<h2 class="H"><i class="FINAL"><i class="PUBLIC"></i></i><code class="L">width</code><i class="J"><code class="return">int</code></i></h2>
+			</section>
+			<section class="O" id="height">
+				<h2 class="H"><i class="FINAL"><i class="PUBLIC"></i></i><code class="L">height</code><i class="J"><code class="return">int</code></i></h2>
+			</section>
+			<section class="O" id="name">
+				<h2 class="H"><i class="FINAL"><i class="PUBLIC"></i></i><code class="L">name</code><i class="J"><code class="return"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+			</section>
+			<section class="O" id="direction">
+				<h2 class="H"><i class="FINAL"><i class="PUBLIC"></i></i><code class="L">direction</code><i class="J"><code class="return"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+			</section>
+			<section class="O" id="TemplateType(java.lang.String,int,int,java.lang.String)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">TemplateType</code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>, <code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">direction</code>)</code></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code></td>
+						<td></td>
+					</tr>
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">width</code></td>
+						<td><span><p>A width in portrait.</p></span></td>
+					</tr>
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">height</code></td>
+						<td><span><p>A height in portrait.</p></span></td>
+					</tr>
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">direction</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Define template infomation.</p></span></section>
+			<section class="O" id="parse(org.apache.poi.xwpf.usermodel.XWPFDocument)">
+				<h2 class="H"><i class="PUBLIC STATIC"></i><code class="L">parse</code><code class="T">(<code>org.apache.poi.xwpf.usermodel.XWPFDocument</code><code class="parameterName">document</code>)</code><i class="J"><code><a aria-label="officelove.word.TemplateType" href="api/officelove.word.TemplateType.html">TemplateType</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>org.apache.poi.xwpf.usermodel.XWPFDocument</code><code class="parameterName">document</code></td>
+						<td></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.TemplateType" href="api/officelove.word.TemplateType.html">TemplateType</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Detect infomation from document.</p></span></section>
+			<section class="O" id="define(java.lang.String,int,int)">
+				<h2 class="H"><i class="PUBLIC STATIC"></i><code class="L">define</code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>)</code><i class="J"><code>void</code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code></td>
+						<td></td>
+					</tr>
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">width</code></td>
+						<td><span><p>A width in portrait.</p></span></td>
+					</tr>
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">height</code></td>
+						<td><span><p>A height in portrait.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Define the template type.</p></span></section>
+		</article>
+		<aside class="N">
+			<div class="i">
+				<h5 class="c">Constructors</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateType.html#TemplateType(java.lang.String,int,int,java.lang.String)">TemplateType</a></code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>, <code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">direction</code>)</code></li>
+				</ul>
+				<h5 class="c">Fields</h5>
+				<ul>
+					<li class="d"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#width">width</a></code><i class="R"><code class="return">int</code></i></li>
+					<li class="d"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#height">height</a></code><i class="R"><code class="return">int</code></i></li>
+					<li class="d"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#name">name</a></code><i class="R"><code class="return"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="d"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/officelove.word.TemplateType.html#direction">direction</a></code><i class="R"><code class="return"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+				</ul>
+				<h5 class="c">Static Methods</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC STATIC"></i><code><a href="api/officelove.word.TemplateType.html#parse(org.apache.poi.xwpf.usermodel.XWPFDocument)">parse</a></code><code class="T">(<code>org.apache.poi.xwpf.usermodel.XWPFDocument</code><code class="parameterName">document</code>)</code><i class="R"><code><a aria-label="officelove.word.TemplateType" href="api/officelove.word.TemplateType.html">TemplateType</a></code></i></li>
+					<li class="d"><i class="PUBLIC STATIC"></i><code><a href="api/officelove.word.TemplateType.html#define(java.lang.String,int,int)">define</a></code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code>int</code><code class="parameterName">width</code>, <code>int</code><code class="parameterName">height</code>)</code><i class="R"><code>void</code></i></li>
+				</ul>
+			</div>
+		</aside>
+		<footer class="q"/>
 	</body>
+	<script src="root.js"></script>
+	<script src="main.js" type="module"></script>
 </html>

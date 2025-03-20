@@ -4,117 +4,125 @@
 		<meta charset="UTF-8"/>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
 		<meta content="Explains how to use Officelove and its API. " name="description"/>
-		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link crossorigin="null" href="https://fonts.gstatic.com" rel="preconnect"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
 		<title>Officelove API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
+		<link href="https://cdn.jsdelivr.net/npm/ress@4.0.0/dist/ress.min.css" rel="stylesheet"/>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
 	<body class="l">
-		<header class="k">
-			<h1 class="M" date="2024-06-01" ver="1.4.0"><code>Officelove</code></h1>
-			<nav class="W"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+		<header class="m" date="2024-06-01" ver="1.4.0">
+			<h1 class="f"><code>Officelove</code></h1>
+			<nav class="s"><a href="api/" id="API"><svg class="package A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
-					</svg><code>API</code></a><a href="https://github.com/teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#user"/>
-					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#activity"/>
-					</svg>Activity</a><a href="https://github.com/teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#github"/>
-					</svg>Repository</a></nav>
-			<div class="O" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#sun"/>
 					</svg>
-				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+				</a><a href="https://github.com/teletha/officelove/discussions" id="Community" target="_blank"><svg class="user A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>
+				</a><a href="doc/changelog.html" id="Activity"><svg class="activity A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>
+				</a><a href="https://github.com/teletha/officelove" id="Repository" target="_blank"><svg class="github A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>
+				</a></nav>
+			<div class="o"><a aria-label="Change color scheme" id="theme"><svg class="sun A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg><svg class="moon A svg" viewBox="0 0 24 24">
 						<use href="main.svg#moon"/>
 					</svg>
 				</a></div>
 		</header>
-		<main class="g">
-			<nav class="Y">
-				<div></div>
-			</nav>
-			<article class="U" id="Article">
-				<section class="N"><code class="i">officelove.expression</code>
-					<h2 class="Class m"><code class="a">Parser</code></h2>
-					<div class="S">
-						<ul class="C F">
-							<li><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code></li>
-							<li><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/UnaryOperator.html">UnaryOperator</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code></li>
-						</ul>
-					</div><span class="B"><p>Parser for the expression language.</p></span></section>
-				<section class="N" id="Parser(java.util.List)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">Parser</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Class.html">Class</a></code></code></code><code class="parameterName">models</code>)</code></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Class.html">Class</a></code></code></code><code>models</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Create parser by validation mode.</p></span></section>
-				<section class="N" id="Parser(java.lang.Object...)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">Parser</code><code class="L">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">models</code>)</code></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code>models</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Create parser with context models.</p></span></section>
-				<section class="N" id="Parser(java.util.List,boolean)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">Parser</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a></code><code class="parameterName">models</code>, <code>boolean</code><code class="parameterName">isVertical</code>)</code></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a></code><code>models</code></td>
-							<td></td>
-						</tr>
-						<tr class="V">
-							<td><code>boolean</code><code>isVertical</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Create parser with context models.</p></span></section>
-				<section class="N" id="apply(java.lang.String)">
-					<h2 class="P"><i class="OVERRIDE PUBLIC"></i><code class="a">apply</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="R"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>text</code></td>
-							<td></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="N" id="resolve(java.lang.String)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">resolve</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">expression</code>)</code><i class="R"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>expression</code></td>
-							<td></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Compute the specified property variable.</p></span></section>
-			</article>
-			<aside class="b" id="SubNavi">
-				<div class="h">
-					<h5 class="f">Constructors</h5>
-					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#Parser(java.util.List)">Parser</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Class.html">Class</a></code></code></code><code class="parameterName">models</code>)</code></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#Parser(java.lang.Object...)">Parser</a></code><code class="L">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">models</code>)</code></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#Parser(java.util.List,boolean)">Parser</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a></code><code class="parameterName">models</code>, <code>boolean</code><code class="parameterName">isVertical</code>)</code></li>
+		<nav class="e"></nav>
+		<article class="W" id="Article">
+			<section class="O"><code class="P">officelove.expression</code>
+				<h2 class="Class b"><code class="L">Parser</code></h2>
+				<div class="S">
+					<ul class="C F">
+						<li><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code>, <code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code></li>
+						<li><code><a aria-label="java.util.function.UnaryOperator 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/UnaryOperator.html">UnaryOperator</a><code class="parameters"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code></li>
 					</ul>
-					<h5 class="f">Methods</h5>
-					<ul>
-						<li><i class="OVERRIDE PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#apply(java.lang.String)">apply</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="j"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#resolve(java.lang.String)">resolve</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">expression</code>)</code><i class="j"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code></i></li>
-					</ul>
-				</div>
-			</aside>
-		</main>
-		<script src="root.js"></script>
-		<script src="main.js" type="module"></script>
+				</div><span class="B"><p>Parser for the expression language.</p></span></section>
+			<section class="O" id="Parser(java.util.List)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">Parser</code><code class="T">(<code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a aria-label="java.lang.Class 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Class.html">Class</a></code></code></code><code class="parameterName">models</code>)</code></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a aria-label="java.lang.Class 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Class.html">Class</a></code></code></code><code class="parameterName">models</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Create parser by validation mode.</p></span></section>
+			<section class="O" id="Parser(java.lang.Object...)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">Parser</code><code class="T">(<code array="var"><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">models</code>)</code></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code array="var"><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">models</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Create parser with context models.</p></span></section>
+			<section class="O" id="Parser(java.util.List,boolean)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">Parser</code><code class="T">(<code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a></code><code class="parameterName">models</code>, <code>boolean</code><code class="parameterName">isVertical</code>)</code></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a></code><code class="parameterName">models</code></td>
+						<td></td>
+					</tr>
+					<tr class="p">
+						<td><code>boolean</code><code class="parameterName">isVertical</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Create parser with context models.</p></span></section>
+			<section class="O" id="apply(java.lang.String)">
+				<h2 class="H"><i class="OVERRIDE PUBLIC"></i><code class="L">apply</code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="J"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code></td>
+						<td></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="O" id="resolve(java.lang.String)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">resolve</code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">expression</code>)</code><i class="J"><code><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">expression</code></td>
+						<td></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Compute the specified property variable.</p></span></section>
+		</article>
+		<aside class="N">
+			<div class="i">
+				<h5 class="c">Constructors</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#Parser(java.util.List)">Parser</a></code><code class="T">(<code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a aria-label="java.lang.Class 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Class.html">Class</a></code></code></code><code class="parameterName">models</code>)</code></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#Parser(java.lang.Object...)">Parser</a></code><code class="T">(<code array="var"><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">models</code>)</code></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#Parser(java.util.List,boolean)">Parser</a></code><code class="T">(<code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a></code><code class="parameterName">models</code>, <code>boolean</code><code class="parameterName">isVertical</code>)</code></li>
+				</ul>
+				<h5 class="c">Methods</h5>
+				<ul>
+					<li class="d"><i class="OVERRIDE PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#apply(java.lang.String)">apply</a></code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="R"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.expression.Parser.html#resolve(java.lang.String)">resolve</a></code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">expression</code>)</code><i class="R"><code><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code></i></li>
+				</ul>
+			</div>
+		</aside>
+		<footer class="q"/>
 	</body>
+	<script src="root.js"></script>
+	<script src="main.js" type="module"></script>
 </html>

@@ -4,91 +4,99 @@
 		<meta charset="UTF-8"/>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
 		<meta content="Explains how to use Officelove and its API. " name="description"/>
-		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link crossorigin="null" href="https://fonts.gstatic.com" rel="preconnect"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
 		<title>Officelove API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
+		<link href="https://cdn.jsdelivr.net/npm/ress@4.0.0/dist/ress.min.css" rel="stylesheet"/>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
 	<body class="l">
-		<header class="k">
-			<h1 class="M" date="2024-06-01" ver="1.4.0"><code>Officelove</code></h1>
-			<nav class="W"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+		<header class="m" date="2024-06-01" ver="1.4.0">
+			<h1 class="f"><code>Officelove</code></h1>
+			<nav class="s"><a href="api/" id="API"><svg class="package A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
-					</svg><code>API</code></a><a href="https://github.com/teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#user"/>
-					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#activity"/>
-					</svg>Activity</a><a href="https://github.com/teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#github"/>
-					</svg>Repository</a></nav>
-			<div class="O" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#sun"/>
 					</svg>
-				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+				</a><a href="https://github.com/teletha/officelove/discussions" id="Community" target="_blank"><svg class="user A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>
+				</a><a href="doc/changelog.html" id="Activity"><svg class="activity A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>
+				</a><a href="https://github.com/teletha/officelove" id="Repository" target="_blank"><svg class="github A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>
+				</a></nav>
+			<div class="o"><a aria-label="Change color scheme" id="theme"><svg class="sun A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg><svg class="moon A svg" viewBox="0 0 24 24">
 						<use href="main.svg#moon"/>
 					</svg>
 				</a></div>
 		</header>
-		<main class="g">
-			<nav class="Y">
-				<div></div>
-			</nav>
-			<article class="U" id="Article">
-				<section class="N"><code class="i">officelove.word</code>
-					<h2 class="Class m"><code class="a">TemplateDefinitions.Template</code></h2>
-					<div class="S">
-						<ul class="C E">
-							<li><code><a href="api/officelove.word.TemplateDefinitions.Templatable.html">Templatable</a><code class="parameters"><code><a href="api/officelove.word.TemplateDefinitions.Template.html">Template</a></code></code></code></li>
-						</ul>
-					</div><span class="B"><p>Template without context.</p></span></section>
-				<section class="N" id="Template()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">Template</code><code class="L">()</code></h2><span class="B"><p>Build without user data.</p></span></section>
-				<section class="N" id="Template(java.lang.Object)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">Template</code><code class="L">(<code>T</code><code class="parameterName">data</code>)</code></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>T</code><code>data</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Build with user data.</p></span></section>
-				<section class="N" id="print()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">print</code><code class="L">()</code><i class="R"><code>void</code></i></h2><span class="B"><p>Print the evaluated document.</p></span></section>
-				<section class="N" id="print(java.lang.String)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">print</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">printer</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>printer</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Print the evaluated document.</p></span></section>
-				<section class="N" id="publish(psychopath.File)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">publish</code><code class="L">(<code>psychopath.File</code><code class="parameterName">file</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>psychopath.File</code><code>file</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Publish the evaluated document.</p></span></section>
-			</article>
-			<aside class="b" id="SubNavi">
-				<div class="h">
-					<h5 class="f">Constructors</h5>
-					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#Template()">Template</a></code><code class="L">()</code></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#Template(java.lang.Object)">Template</a></code><code class="L">(<code>T</code><code class="parameterName">data</code>)</code></li>
+		<nav class="e"></nav>
+		<article class="W" id="Article">
+			<section class="O"><code class="P">officelove.word</code>
+				<h2 class="Class b"><code class="L">TemplateDefinitions.Template</code></h2>
+				<div class="S">
+					<ul class="C E">
+						<li><code><a aria-label="officelove.word.TemplateDefinitions.Templatable" href="api/officelove.word.TemplateDefinitions.Templatable.html">Templatable</a><code class="parameters"><code><a aria-label="officelove.word.TemplateDefinitions.Template" href="api/officelove.word.TemplateDefinitions.Template.html">Template</a></code></code></code></li>
 					</ul>
-					<h5 class="f">Methods</h5>
-					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#print()">print</a></code><code class="L">()</code><i class="j"><code>void</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#print(java.lang.String)">print</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">printer</code>)</code><i class="j"><code>void</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#publish(psychopath.File)">publish</a></code><code class="L">(<code>psychopath.File</code><code class="parameterName">file</code>)</code><i class="j"><code>void</code></i></li>
-					</ul>
-				</div>
-			</aside>
-		</main>
-		<script src="root.js"></script>
-		<script src="main.js" type="module"></script>
+				</div><span class="B"><p>Template without context.</p></span></section>
+			<section class="O" id="Template()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">Template</code><code class="T">()</code></h2><span class="B"><p>Build without user data.</p></span></section>
+			<section class="O" id="Template(java.lang.Object)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">Template</code><code class="T">(<code>T</code><code class="parameterName">data</code>)</code></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>T</code><code class="parameterName">data</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Build with user data.</p></span></section>
+			<section class="O" id="print()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">print</code><code class="T">()</code><i class="J"><code>void</code></i></h2><span class="B"><p>Print the evaluated document.</p></span></section>
+			<section class="O" id="print(java.lang.String)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">print</code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">printer</code>)</code><i class="J"><code>void</code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">printer</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Print the evaluated document.</p></span></section>
+			<section class="O" id="publish(psychopath.File)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">publish</code><code class="T">(<code>psychopath.File</code><code class="parameterName">file</code>)</code><i class="J"><code>void</code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>psychopath.File</code><code class="parameterName">file</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Publish the evaluated document.</p></span></section>
+		</article>
+		<aside class="N">
+			<div class="i">
+				<h5 class="c">Constructors</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#Template()">Template</a></code><code class="T">()</code></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#Template(java.lang.Object)">Template</a></code><code class="T">(<code>T</code><code class="parameterName">data</code>)</code></li>
+				</ul>
+				<h5 class="c">Methods</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#print()">print</a></code><code class="T">()</code><i class="R"><code>void</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#print(java.lang.String)">print</a></code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">printer</code>)</code><i class="R"><code>void</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.TemplateDefinitions.Template.html#publish(psychopath.File)">publish</a></code><code class="T">(<code>psychopath.File</code><code class="parameterName">file</code>)</code><i class="R"><code>void</code></i></li>
+				</ul>
+			</div>
+		</aside>
+		<footer class="q"/>
 	</body>
+	<script src="root.js"></script>
+	<script src="main.js" type="module"></script>
 </html>

@@ -4,282 +4,290 @@
 		<meta charset="UTF-8"/>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
 		<meta content="Explains how to use Officelove and its API. " name="description"/>
-		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link crossorigin="null" href="https://fonts.gstatic.com" rel="preconnect"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
 		<title>Officelove API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
+		<link href="https://cdn.jsdelivr.net/npm/ress@4.0.0/dist/ress.min.css" rel="stylesheet"/>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
 	<body class="l">
-		<header class="k">
-			<h1 class="M" date="2024-06-01" ver="1.4.0"><code>Officelove</code></h1>
-			<nav class="W"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+		<header class="m" date="2024-06-01" ver="1.4.0">
+			<h1 class="f"><code>Officelove</code></h1>
+			<nav class="s"><a href="api/" id="API"><svg class="package A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
-					</svg><code>API</code></a><a href="https://github.com/teletha/officelove/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#user"/>
-					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#activity"/>
-					</svg>Activity</a><a href="https://github.com/teletha/officelove" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#github"/>
-					</svg>Repository</a></nav>
-			<div class="O" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#sun"/>
 					</svg>
-				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+				</a><a href="https://github.com/teletha/officelove/discussions" id="Community" target="_blank"><svg class="user A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>
+				</a><a href="doc/changelog.html" id="Activity"><svg class="activity A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>
+				</a><a href="https://github.com/teletha/officelove" id="Repository" target="_blank"><svg class="github A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>
+				</a></nav>
+			<div class="o"><a aria-label="Change color scheme" id="theme"><svg class="sun A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg><svg class="moon A svg" viewBox="0 0 24 24">
 						<use href="main.svg#moon"/>
 					</svg>
 				</a></div>
 		</header>
-		<main class="g">
-			<nav class="Y">
-				<div></div>
-			</nav>
-			<article class="U" id="Article">
-				<section class="N"><code class="i">officelove.word</code>
-					<h2 class="Class m"><code class="a">Word.Section</code></h2>
-					<div class="S"></div><span class="B"><p>
+		<nav class="e"></nav>
+		<article class="W" id="Article">
+			<section class="O"><code class="P">officelove.word</code>
+				<h2 class="Class b"><code class="L">Word.Section</code></h2>
+				<div class="S"></div><span class="B"><p>
  Section configurator.
  </p>
-					</span></section>
-				<section class="N" id="Section()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">Section</code><code class="L">()</code></h2>
-				</section>
-				<section class="N" id="marginHorizontal(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginHorizontal</code><code class="L">(<code>int</code><code class="parameterName">size</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>size</code></td>
-							<td></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set margin on all side.</p></span></section>
-				<section class="N" id="marginVertical(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginVertical</code><code class="L">(<code>int</code><code class="parameterName">size</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>size</code></td>
-							<td></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set margin on all side.</p></span></section>
-				<section class="N" id="margin(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">margin</code><code class="L">(<code>int</code><code class="parameterName">size</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>size</code></td>
-							<td></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set margin on all side.</p></span></section>
-				<section class="N" id="landscape()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">landscape</code><code class="L">()</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td><span><p>Chainable API.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Set page orientation.</p></span></section>
-				<section class="N" id="portrait()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">portrait</code><code class="L">()</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td><span><p>Chainable API.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Set page orientation.</p></span></section>
-				<section class="N" id="head(java.lang.String)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">head</code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>text</code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="N" id="orientation()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">orientation</code><code class="L">()</code><i class="R"><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code></td>
-							<td><span><p>The orientation property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the orientation property of this Word.Section.</p></span></section>
-				<section class="N" id="orientation(org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">orientation</code><code class="L">(<code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code><code class="parameterName">orientation</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code><code>orientation</code></td>
-							<td><span><p>The orientation value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the orientation property of this Word.Section.</p></span></section>
-				<section class="N" id="height()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">height</code><code class="L">()</code><i class="R"><code>int</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>int</code></td>
-							<td><span><p>The height property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the height property of this Word.Section.</p></span></section>
-				<section class="N" id="height(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">height</code><code class="L">(<code>int</code><code class="parameterName">height</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>height</code></td>
-							<td><span><p>The height value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the height property of this Word.Section.</p></span></section>
-				<section class="N" id="width()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">width</code><code class="L">()</code><i class="R"><code>int</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>int</code></td>
-							<td><span><p>The width property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the width property of this Word.Section.</p></span></section>
-				<section class="N" id="width(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">width</code><code class="L">(<code>int</code><code class="parameterName">width</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>width</code></td>
-							<td><span><p>The width value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the width property of this Word.Section.</p></span></section>
-				<section class="N" id="marginTop()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginTop</code><code class="L">()</code><i class="R"><code>int</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>int</code></td>
-							<td><span><p>The marginTop property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the marginTop property of this Word.Section.</p></span></section>
-				<section class="N" id="marginTop(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginTop</code><code class="L">(<code>int</code><code class="parameterName">marginTop</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>marginTop</code></td>
-							<td><span><p>The marginTop value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the marginTop property of this Word.Section.</p></span></section>
-				<section class="N" id="marginBottom()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginBottom</code><code class="L">()</code><i class="R"><code>int</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>int</code></td>
-							<td><span><p>The marginBottom property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the marginBottom property of this Word.Section.</p></span></section>
-				<section class="N" id="marginBottom(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginBottom</code><code class="L">(<code>int</code><code class="parameterName">marginBottom</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>marginBottom</code></td>
-							<td><span><p>The marginBottom value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the marginBottom property of this Word.Section.</p></span></section>
-				<section class="N" id="marginLeft()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginLeft</code><code class="L">()</code><i class="R"><code>int</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>int</code></td>
-							<td><span><p>The marginLeft property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the marginLeft property of this Word.Section.</p></span></section>
-				<section class="N" id="marginLeft(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginLeft</code><code class="L">(<code>int</code><code class="parameterName">marginLeft</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>marginLeft</code></td>
-							<td><span><p>The marginLeft value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the marginLeft property of this Word.Section.</p></span></section>
-				<section class="N" id="marginRight()">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginRight</code><code class="L">()</code><i class="R"><code>int</code></i></h2>
-					<table class="d">
-						<tr class="Q">
-							<td><code>int</code></td>
-							<td><span><p>The marginRight property.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Get the marginRight property of this Word.Section.</p></span></section>
-				<section class="N" id="marginRight(int)">
-					<h2 class="P"><i class="PUBLIC"></i><code class="a">marginRight</code><code class="L">(<code>int</code><code class="parameterName">marginRight</code>)</code><i class="R"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
-					<table class="d">
-						<tr class="V">
-							<td><code>int</code><code>marginRight</code></td>
-							<td><span><p>The marginRight value to set.</p></span></td>
-						</tr>
-						<tr class="Q">
-							<td><code><a href="api/officelove.word.Word.Section.html">Section</a></code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Set the marginRight property of this Word.Section.</p></span></section>
-			</article>
-			<aside class="b" id="SubNavi">
-				<div class="h">
-					<h5 class="f">Constructors</h5>
-					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#Section()">Section</a></code><code class="L">()</code></li>
-					</ul>
-					<h5 class="f">Methods</h5>
-					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginHorizontal(int)">marginHorizontal</a></code><code class="L">(<code>int</code><code class="parameterName">size</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginVertical(int)">marginVertical</a></code><code class="L">(<code>int</code><code class="parameterName">size</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#margin(int)">margin</a></code><code class="L">(<code>int</code><code class="parameterName">size</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#landscape()">landscape</a></code><code class="L">()</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#portrait()">portrait</a></code><code class="L">()</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#head(java.lang.String)">head</a></code><code class="L">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="j"><code>void</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#orientation()">orientation</a></code><code class="L">()</code><i class="j"><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#orientation(org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum)">orientation</a></code><code class="L">(<code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code><code class="parameterName">orientation</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#height()">height</a></code><code class="L">()</code><i class="j"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#height(int)">height</a></code><code class="L">(<code>int</code><code class="parameterName">height</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#width()">width</a></code><code class="L">()</code><i class="j"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#width(int)">width</a></code><code class="L">(<code>int</code><code class="parameterName">width</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginTop()">marginTop</a></code><code class="L">()</code><i class="j"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginTop(int)">marginTop</a></code><code class="L">(<code>int</code><code class="parameterName">marginTop</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginBottom()">marginBottom</a></code><code class="L">()</code><i class="j"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginBottom(int)">marginBottom</a></code><code class="L">(<code>int</code><code class="parameterName">marginBottom</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginLeft()">marginLeft</a></code><code class="L">()</code><i class="j"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginLeft(int)">marginLeft</a></code><code class="L">(<code>int</code><code class="parameterName">marginLeft</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginRight()">marginRight</a></code><code class="L">()</code><i class="j"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginRight(int)">marginRight</a></code><code class="L">(<code>int</code><code class="parameterName">marginRight</code>)</code><i class="j"><code><a href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
-					</ul>
-				</div>
-			</aside>
-		</main>
-		<script src="root.js"></script>
-		<script src="main.js" type="module"></script>
+				</span></section>
+			<section class="O" id="Section()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">Section</code><code class="T">()</code></h2>
+			</section>
+			<section class="O" id="marginHorizontal(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginHorizontal</code><code class="T">(<code>int</code><code class="parameterName">size</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">size</code></td>
+						<td></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set margin on all side.</p></span></section>
+			<section class="O" id="marginVertical(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginVertical</code><code class="T">(<code>int</code><code class="parameterName">size</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">size</code></td>
+						<td></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set margin on all side.</p></span></section>
+			<section class="O" id="margin(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">margin</code><code class="T">(<code>int</code><code class="parameterName">size</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">size</code></td>
+						<td></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set margin on all side.</p></span></section>
+			<section class="O" id="landscape()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">landscape</code><code class="T">()</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td><span><p>Chainable API.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Set page orientation.</p></span></section>
+			<section class="O" id="portrait()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">portrait</code><code class="T">()</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td><span><p>Chainable API.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Set page orientation.</p></span></section>
+			<section class="O" id="head(java.lang.String)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">head</code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="J"><code>void</code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="O" id="orientation()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">orientation</code><code class="T">()</code><i class="J"><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code></td>
+						<td><span><p>The orientation property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the orientation property of this Word.Section.</p></span></section>
+			<section class="O" id="orientation(org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">orientation</code><code class="T">(<code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code><code class="parameterName">orientation</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code><code class="parameterName">orientation</code></td>
+						<td><span><p>The orientation value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the orientation property of this Word.Section.</p></span></section>
+			<section class="O" id="height()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">height</code><code class="T">()</code><i class="J"><code>int</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>int</code></td>
+						<td><span><p>The height property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the height property of this Word.Section.</p></span></section>
+			<section class="O" id="height(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">height</code><code class="T">(<code>int</code><code class="parameterName">height</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">height</code></td>
+						<td><span><p>The height value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the height property of this Word.Section.</p></span></section>
+			<section class="O" id="width()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">width</code><code class="T">()</code><i class="J"><code>int</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>int</code></td>
+						<td><span><p>The width property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the width property of this Word.Section.</p></span></section>
+			<section class="O" id="width(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">width</code><code class="T">(<code>int</code><code class="parameterName">width</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">width</code></td>
+						<td><span><p>The width value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the width property of this Word.Section.</p></span></section>
+			<section class="O" id="marginTop()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginTop</code><code class="T">()</code><i class="J"><code>int</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>int</code></td>
+						<td><span><p>The marginTop property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the marginTop property of this Word.Section.</p></span></section>
+			<section class="O" id="marginTop(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginTop</code><code class="T">(<code>int</code><code class="parameterName">marginTop</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">marginTop</code></td>
+						<td><span><p>The marginTop value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the marginTop property of this Word.Section.</p></span></section>
+			<section class="O" id="marginBottom()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginBottom</code><code class="T">()</code><i class="J"><code>int</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>int</code></td>
+						<td><span><p>The marginBottom property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the marginBottom property of this Word.Section.</p></span></section>
+			<section class="O" id="marginBottom(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginBottom</code><code class="T">(<code>int</code><code class="parameterName">marginBottom</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">marginBottom</code></td>
+						<td><span><p>The marginBottom value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the marginBottom property of this Word.Section.</p></span></section>
+			<section class="O" id="marginLeft()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginLeft</code><code class="T">()</code><i class="J"><code>int</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>int</code></td>
+						<td><span><p>The marginLeft property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the marginLeft property of this Word.Section.</p></span></section>
+			<section class="O" id="marginLeft(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginLeft</code><code class="T">(<code>int</code><code class="parameterName">marginLeft</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">marginLeft</code></td>
+						<td><span><p>The marginLeft value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the marginLeft property of this Word.Section.</p></span></section>
+			<section class="O" id="marginRight()">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginRight</code><code class="T">()</code><i class="J"><code>int</code></i></h2>
+				<table class="M">
+					<tr class="r">
+						<td><code>int</code></td>
+						<td><span><p>The marginRight property.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Get the marginRight property of this Word.Section.</p></span></section>
+			<section class="O" id="marginRight(int)">
+				<h2 class="H"><i class="PUBLIC"></i><code class="L">marginRight</code><code class="T">(<code>int</code><code class="parameterName">marginRight</code>)</code><i class="J"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></h2>
+				<table class="M">
+					<tr class="p">
+						<td><code>int</code><code class="parameterName">marginRight</code></td>
+						<td><span><p>The marginRight value to set.</p></span></td>
+					</tr>
+					<tr class="r">
+						<td><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Set the marginRight property of this Word.Section.</p></span></section>
+		</article>
+		<aside class="N">
+			<div class="i">
+				<h5 class="c">Constructors</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#Section()">Section</a></code><code class="T">()</code></li>
+				</ul>
+				<h5 class="c">Methods</h5>
+				<ul>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginHorizontal(int)">marginHorizontal</a></code><code class="T">(<code>int</code><code class="parameterName">size</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginVertical(int)">marginVertical</a></code><code class="T">(<code>int</code><code class="parameterName">size</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#margin(int)">margin</a></code><code class="T">(<code>int</code><code class="parameterName">size</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#landscape()">landscape</a></code><code class="T">()</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#portrait()">portrait</a></code><code class="T">()</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#head(java.lang.String)">head</a></code><code class="T">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">text</code>)</code><i class="R"><code>void</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#orientation()">orientation</a></code><code class="T">()</code><i class="R"><code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#orientation(org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum)">orientation</a></code><code class="T">(<code>org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation.Enum</code><code class="parameterName">orientation</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#height()">height</a></code><code class="T">()</code><i class="R"><code>int</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#height(int)">height</a></code><code class="T">(<code>int</code><code class="parameterName">height</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#width()">width</a></code><code class="T">()</code><i class="R"><code>int</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#width(int)">width</a></code><code class="T">(<code>int</code><code class="parameterName">width</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginTop()">marginTop</a></code><code class="T">()</code><i class="R"><code>int</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginTop(int)">marginTop</a></code><code class="T">(<code>int</code><code class="parameterName">marginTop</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginBottom()">marginBottom</a></code><code class="T">()</code><i class="R"><code>int</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginBottom(int)">marginBottom</a></code><code class="T">(<code>int</code><code class="parameterName">marginBottom</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginLeft()">marginLeft</a></code><code class="T">()</code><i class="R"><code>int</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginLeft(int)">marginLeft</a></code><code class="T">(<code>int</code><code class="parameterName">marginLeft</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginRight()">marginRight</a></code><code class="T">()</code><i class="R"><code>int</code></i></li>
+					<li class="d"><i class="PUBLIC"></i><code><a href="api/officelove.word.Word.Section.html#marginRight(int)">marginRight</a></code><code class="T">(<code>int</code><code class="parameterName">marginRight</code>)</code><i class="R"><code><a aria-label="officelove.word.Word.Section" href="api/officelove.word.Word.Section.html">Section</a></code></i></li>
+				</ul>
+			</div>
+		</aside>
+		<footer class="q"/>
 	</body>
+	<script src="root.js"></script>
+	<script src="main.js" type="module"></script>
 </html>
