@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://docs.oracle.com/en/java/javase/23/"><img src="https://img.shields.io/badge/Java-Release%2023-green"/></a>
+    <a href="https://docs.oracle.com/en/java/javase/24/"><img src="https://img.shields.io/badge/Java-Release%2024-green"/></a>
     <span>&nbsp;</span>
     <a href="https://jitpack.io/#teletha/officelove"><img src="https://img.shields.io/jitpack/v/github/teletha/officelove?label=Repository&color=green"></a>
     <span>&nbsp;</span>
@@ -13,7 +13,7 @@
 
 
 ## Prerequisites
-Officelove runs on all major operating systems and requires only [Java version 23](https://docs.oracle.com/en/java/javase/23/) or later to run.
+Officelove runs on all major operating systems and requires only [Java version 24](https://docs.oracle.com/en/java/javase/24/) or later to run.
 To check, please run `java -version` on your terminal.
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -98,26 +98,26 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 ## Dependency
 Officelove depends on the following products on runtime.
 * [SparseBitSet-1.3](https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet/1.3)
-* [commons-codec-1.17.0](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.17.0)
+* [commons-codec-1.17.1](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.17.1)
 * [commons-collections4-4.4](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4/4.4)
-* [commons-compress-1.26.2](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.26.2)
-* [commons-io-2.16.1](https://mvnrepository.com/artifact/commons-io/commons-io/2.16.1)
-* [commons-lang3-3.14.0](https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.14.0)
+* [commons-compress-1.27.1](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.27.1)
+* [commons-io-2.18.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.18.0)
+* [commons-lang3-3.16.0](https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.16.0)
 * [commons-math3-3.6.1](https://mvnrepository.com/artifact/org.apache.commons/commons-math3/3.6.1)
-* [conjure-1.2.0](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.2.0)
+* [conjure-1.2.1](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.2.1)
 * [curvesapi-1.08](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.08)
-* [log4j-api-2.23.1](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.23.1)
-* [poi-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi/5.3.0)
-* [poi-ooxml-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.3.0)
-* [poi-ooxml-lite-5.3.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.3.0)
-* [psychopath-2.0.2](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.0.2)
-* [sinobu-4.5.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.5.0)
-* [xmlbeans-5.2.1](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.2.1)
+* [log4j-api-2.24.3](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.24.3)
+* [poi-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi/5.4.0)
+* [poi-ooxml-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.4.0)
+* [poi-ooxml-lite-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.4.0)
+* [psychopath-2.1.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.1.0)
+* [sinobu-4.6.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.6.0)
+* [xmlbeans-5.3.0](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.3.0)
 <p align="right"><a href="#top">back to top</a></p>
 
 
 ## License
-Copyright (C) 2024 The OFFICELOVE Development Team
+Copyright (C) 2025 The OFFICELOVE Development Team
 
 MIT License
 
