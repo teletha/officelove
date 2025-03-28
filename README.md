@@ -58,7 +58,7 @@ Add it into the libraryDependencies section like so:
 libraryDependencies += "com.github.teletha" % "officelove" % "1.4.0"
 ```
 #### [Leiningen](https://leiningen.org/)
-Add JitPack repository at the end of repositories in your project.clj:
+Add JitPack repository at the end of repositories in your project().clj:
 ```clj
 :repositories [["jitpack" "https://jitpack.io"]]
 ```
@@ -111,7 +111,7 @@ Officelove depends on the following products on runtime.
 * [poi-ooxml-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.4.0)
 * [poi-ooxml-lite-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.4.0)
 * [psychopath-2.1.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.1.0)
-* [sinobu-4.6.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.6.0)
+* [sinobu-4.6.1](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.6.1)
 * [xmlbeans-5.3.0](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.3.0)
 <p align="right"><a href="#top">back to top</a></p>
 
