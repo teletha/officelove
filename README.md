@@ -98,7 +98,7 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 ## Dependency
 Officelove depends on the following products on runtime.
 * [SparseBitSet-1.3](https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet/1.3)
-* [commons-codec-1.17.1](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.17.1)
+* [commons-codec-1.18.0](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.18.0)
 * [commons-collections4-4.4](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4/4.4)
 * [commons-compress-1.27.1](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.27.1)
 * [commons-io-2.18.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.18.0)
@@ -107,11 +107,11 @@ Officelove depends on the following products on runtime.
 * [conjure-1.2.1](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.2.1)
 * [curvesapi-1.08](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.08)
 * [log4j-api-2.24.3](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.24.3)
-* [poi-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi/5.4.0)
-* [poi-ooxml-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.4.0)
-* [poi-ooxml-lite-5.4.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.4.0)
-* [psychopath-2.1.0](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.1.0)
-* [sinobu-4.6.1](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.6.1)
+* [poi-5.4.1](https://mvnrepository.com/artifact/org.apache.poi/poi/5.4.1)
+* [poi-ooxml-5.4.1](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.4.1)
+* [poi-ooxml-lite-5.4.1](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.4.1)
+* [psychopath-2.2.1](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.2.1)
+* [sinobu-4.7.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.7.0)
 * [xmlbeans-5.3.0](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.3.0)
 <p align="right"><a href="#top">back to top</a></p>
 
