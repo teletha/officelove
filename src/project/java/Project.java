@@ -11,13 +11,13 @@
 public class Project extends bee.api.Project {
 
     {
-        product("com.github.teletha", "officelove", ref("version.txt"));
+        product("io.github.teletha", "officelove", ref("version.txt"));
 
-        require("com.github.teletha", "sinobu");
-        require("com.github.teletha", "psychopath");
-        require("com.github.teletha", "conjure");
+        require("io.github.teletha", "sinobu");
+        require("io.github.teletha", "psychopath");
+        require("io.github.teletha", "conjure");
         require("org.apache.poi", "poi-ooxml");
-        require("com.github.teletha", "antibug").atTest();
+        require("io.github.teletha", "antibug").atTest();
 
         versionControlSystem("https://github.com/teletha/officelove");
     }

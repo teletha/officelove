@@ -1,7 +1,7 @@
 <p align="center">
-    <a href="https://docs.oracle.com/en/java/javase/24/"><img src="https://img.shields.io/badge/Java-Release%2024-green"/></a>
+    <a href="https://docs.oracle.com/en/java/javase/25/"><img src="https://img.shields.io/badge/Java-Release%2025-green"/></a>
     <span>&nbsp;</span>
-    <a href="https://jitpack.io/#teletha/officelove"><img src="https://img.shields.io/jitpack/v/github/teletha/officelove?label=Repository&color=green"></a>
+    <a href="https://jitpack.io/#io.github.teletha/officelove"><img src="https://img.shields.io/jitpack/version/io.github.teletha/officelove?label=Repository&color=green"></a>
     <span>&nbsp;</span>
     <a href="https://teletha.github.io/officelove"><img src="https://img.shields.io/website.svg?down_color=red&down_message=CLOSE&label=Official%20Site&up_color=green&up_message=OPEN&url=https%3A%2F%2Fteletha.github.io%2Fofficelove"></a>
 </p>
@@ -13,7 +13,7 @@
 
 
 ## Prerequisites
-Officelove runs on all major operating systems and requires only [Java version 24](https://docs.oracle.com/en/java/javase/24/) or later to run.
+Officelove runs on all major operating systems and requires only [Java version 25](https://docs.oracle.com/en/java/javase/25/) or later to run.
 To check, please run `java -version` on your terminal.
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -30,7 +30,7 @@ Add JitPack repository at the end of repositories element in your build.xml:
 Add it into in the dependencies element like so:
 ```xml
 <dependency>
-    <groupId>com.github.teletha</groupId>
+    <groupId>io.github.teletha</groupId>
     <artifactId>officelove</artifactId>
     <version>1.4.0</version>
 </dependency>
@@ -45,7 +45,7 @@ repositories {
 Add it into the dependencies section like so:
 ```gradle
 dependencies {
-    implementation 'com.github.teletha:officelove:1.4.0'
+    implementation 'io.github.teletha:officelove:1.4.0'
 }
 ```
 #### [SBT](https://www.scala-sbt.org/)
@@ -55,7 +55,7 @@ resolvers += "jitpack" at "https://jitpack.io"
 ```
 Add it into the libraryDependencies section like so:
 ```scala
-libraryDependencies += "com.github.teletha" % "officelove" % "1.4.0"
+libraryDependencies += "io.github.teletha" % "officelove" % "1.4.0"
 ```
 #### [Leiningen](https://leiningen.org/)
 Add JitPack repository at the end of repositories in your project().clj:
@@ -64,12 +64,12 @@ Add JitPack repository at the end of repositories in your project().clj:
 ```
 Add it into the dependencies section like so:
 ```clj
-:dependencies [[com.github.teletha/officelove "1.4.0"]]
+:dependencies [[io.github.teletha/officelove "1.4.0"]]
 ```
 #### [Bee](https://teletha.github.io/bee)
 Add it into your project definition class like so:
 ```java
-require("com.github.teletha", "officelove", "1.4.0");
+require("io.github.teletha", "officelove", "1.4.0");
 ```
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -98,26 +98,26 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 ## Dependency
 Officelove depends on the following products on runtime.
 * [SparseBitSet-1.3](https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet/1.3)
-* [commons-codec-1.18.0](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.18.0)
-* [commons-collections4-4.4](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4/4.4)
-* [commons-compress-1.27.1](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.27.1)
-* [commons-io-2.18.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.18.0)
-* [commons-lang3-3.16.0](https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.16.0)
+* [commons-codec-1.20.0](https://mvnrepository.com/artifact/commons-codec/commons-codec/1.20.0)
+* [commons-collections4-4.5.0](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4/4.5.0)
+* [commons-compress-1.28.0](https://mvnrepository.com/artifact/org.apache.commons/commons-compress/1.28.0)
+* [commons-io-2.21.0](https://mvnrepository.com/artifact/commons-io/commons-io/2.21.0)
+* [commons-lang3-3.18.0](https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.18.0)
 * [commons-math3-3.6.1](https://mvnrepository.com/artifact/org.apache.commons/commons-math3/3.6.1)
-* [conjure-1.2.1](https://mvnrepository.com/artifact/com.github.teletha/conjure/1.2.1)
+* [conjure-1.2.2](https://mvnrepository.com/artifact/io.github.teletha/conjure/1.2.2)
 * [curvesapi-1.08](https://mvnrepository.com/artifact/com.github.virtuald/curvesapi/1.08)
 * [log4j-api-2.24.3](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api/2.24.3)
-* [poi-5.4.1](https://mvnrepository.com/artifact/org.apache.poi/poi/5.4.1)
-* [poi-ooxml-5.4.1](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.4.1)
-* [poi-ooxml-lite-5.4.1](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.4.1)
-* [psychopath-2.2.1](https://mvnrepository.com/artifact/com.github.teletha/psychopath/2.2.1)
-* [sinobu-4.7.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.7.0)
+* [poi-5.5.1](https://mvnrepository.com/artifact/org.apache.poi/poi/5.5.1)
+* [poi-ooxml-5.5.1](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.5.1)
+* [poi-ooxml-lite-5.5.1](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite/5.5.1)
+* [psychopath-2.3.0](https://mvnrepository.com/artifact/io.github.teletha/psychopath/2.3.0)
+* [sinobu-4.14.0](https://mvnrepository.com/artifact/io.github.teletha/sinobu/4.14.0)
 * [xmlbeans-5.3.0](https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans/5.3.0)
 <p align="right"><a href="#top">back to top</a></p>
 
 
 ## License
-Copyright (C) 2025 The OFFICELOVE Development Team
+Copyright (C) 2026 The OFFICELOVE Development Team
 
 MIT License
 
